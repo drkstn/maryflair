@@ -1,12 +1,16 @@
+import { Link } from "@remix-run/react";
+
 export default function Index() {
   return (
     <>
       <nav className="flex justify-between h-16">
         <h1 className="flex items-center text-3xl font-bold">Mary Flair</h1>
         <div className="flex items-center">
-          <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
-            Log In / Sign Up
-          </button>
+          <Link to="/home">
+            <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
+              Log In / Sign Up
+            </button>
+          </Link>
         </div>
       </nav>
       <hr />

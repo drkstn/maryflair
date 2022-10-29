@@ -18,9 +18,11 @@ export default function Home() {
             <Link to="/home">Create New Plan</Link>
           </li>
           <li>
-            <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
-              Log Out
-            </button>
+            <Link to="/">
+              <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
+                Log Out
+              </button>
+            </Link>
           </li>
         </ul>
       </nav>
