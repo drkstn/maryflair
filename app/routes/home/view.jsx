@@ -1,4 +1,4 @@
-export default function HomeView({ user }) {
+export default function HomeView() {
   return (
     <section>
       <h2 className="mt-2 text-md font-bold">Home - View</h2>

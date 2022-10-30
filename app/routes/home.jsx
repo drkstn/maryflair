@@ -9,8 +9,6 @@ export const loader = async ({ request }) => {
     failureRedirect: "/",
   });
 
-  console.log("Authenticated!");
-
   return json(user._json);
 };
 

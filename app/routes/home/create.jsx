@@ -1,4 +1,4 @@
-export default function HomeCreate({ user }) {
+export default function HomeCreate() {
   return (
     <section>
       <h2 className="mt-2 text-md font-bold">Home - Create</h2>
