@@ -1,7 +1,7 @@
-export default function HomeIndex() {
+export default function HomeIndex({ user }) {
   return (
     <>
-      <h2 className=" text-xl font-bold">Home - Index</h2>
+      <h2 className="text-lg font-bold">Home - Index</h2>
       <p>
         Quisque quis scelerisque odio, vitae rhoncus tellus. Nullam facilisis
         accumsan tortor, eu pretium enim dictum non. Sed imperdiet pellentesque
