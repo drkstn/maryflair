@@ -18,18 +18,16 @@ export default function Home() {
   return (
     <>
       <nav className="flex justify-between h-16">
-        <h1 className="flex items-center text-3xl font-bold">
-          Mary Flair - Home Navbar goes here
-        </h1>
+        <h1 className="flex items-center text-3xl font-bold">Mary Flair</h1>
         <ul className="flex items-center space-x-5">
           <li className="hover:text-purple-500">
             <Link to="/home">Home</Link>
           </li>
           <li className="hover:text-purple-500">
-            <Link to="/home">Lesson Plans</Link>
+            <Link to="/home">View</Link>
           </li>
           <li className="hover:text-purple-500">
-            <Link to="/home">Create New Plan</Link>
+            <Link to="/home">Create</Link>
           </li>
           <li>
             <Form action="/logout" method="post">
@@ -40,10 +38,10 @@ export default function Home() {
           </li>
         </ul>
       </nav>
-      <h2 className="text-xl font-bold text-purple-500">
+      <hr />
+      <h2 className="mt-2 text-xl font-bold text-purple-500">
         Hello, {user.displayName || "friend"}!
       </h2>
-      <hr />
       <Outlet />
     </>
   );

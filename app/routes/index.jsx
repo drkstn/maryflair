@@ -3,7 +3,7 @@ import { SocialsProvider } from "remix-auth-socials";
 
 export default function Index() {
   return (
-    <>
+    <main>
       <nav className="flex justify-between h-16">
         <h1 className="flex items-center text-3xl font-bold">Mary Flair</h1>
         <div className="flex items-center">
@@ -15,8 +15,8 @@ export default function Index() {
         </div>
       </nav>
       <hr />
-      <h2 className=" text-xl font-bold">Root - Index</h2>
-      <p>
+      <h2 className="mt-2 text-md font-bold">Root - Index</h2>
+      <p className="mt-2">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis a
         fermentum odio. Praesent consectetur tortor massa, in feugiat sapien
         semper et. Etiam dapibus, est sed rhoncus ultrices, augue lacus bibendum
@@ -27,7 +27,6 @@ export default function Index() {
         sagittis sapien pellentesque. Aliquam id consequat mauris. In sed quam
         facilisis, finibus dolor nec, posuere arcu.
       </p>
-      <hr />
-    </>
+    </main>
   );
 }

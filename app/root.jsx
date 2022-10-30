@@ -25,10 +25,8 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
-        <div className="p-4">
-          <Outlet />
-        </div>
+      <body className="p-4">
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

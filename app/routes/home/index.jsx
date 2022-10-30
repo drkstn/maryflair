@@ -1,8 +1,8 @@
 export default function HomeIndex({ user }) {
   return (
     <>
-      <h2 className="text-lg font-bold">Home - Index</h2>
-      <p>
+      <h2 className="mt-2 text-md font-bold">Home - Index</h2>
+      <p className="mt-2">
         Quisque quis scelerisque odio, vitae rhoncus tellus. Nullam facilisis
         accumsan tortor, eu pretium enim dictum non. Sed imperdiet pellentesque
         tristique. Proin sit amet metus fermentum, eleifend sem eget, egestas
