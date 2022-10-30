@@ -9,7 +9,10 @@ import {
 import styles from "./styles/app.css";
 
 export function links() {
-  return [{ rel: "stylesheet", href: styles }];
+  return [
+    { rel: "preload", href: styles, as: "style" },
+    { rel: "stylesheet", href: styles },
+  ];
 }
 
 export const meta = () => ({

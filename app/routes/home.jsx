@@ -9,16 +9,21 @@ export const loader = async ({ request }) => {
     failureRedirect: "/",
   });
 
-  return json(user);
+  console.log("Authenticated!");
+
+  return json(user._json);
 };
 
 export default function Home() {
-  const user = useLoaderData();
+  const data = useLoaderData();
+  const context = data;
 
   return (
-    <>
+    <main>
       <nav className="flex justify-between h-16">
-        <h1 className="flex items-center text-3xl font-bold">Mary Flair</h1>
+        <h1 className="flex items-center text-3xl font-bold">
+          <Link to="/">Mary Flair</Link>
+        </h1>
         <ul className="flex items-center space-x-5">
           <li className="hover:text-purple-500">
             <Link to="/home">Home</Link>
@@ -40,9 +45,9 @@ export default function Home() {
       </nav>
       <hr />
       <h2 className="mt-2 text-xl font-bold text-purple-500">
-        Hello, {user.displayName || "friend"}!
+        Hello, {data.given_name || "friend"}!
       </h2>
-      <Outlet />
-    </>
+      <Outlet context={context} />
+    </main>
   );
 }

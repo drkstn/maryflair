@@ -1,6 +1,6 @@
 export default function HomeCreate({ user }) {
   return (
-    <>
+    <section>
       <h2 className="mt-2 text-md font-bold">Home - Create</h2>
       <p className="mt-2">
         Cras eleifend vitae metus eget egestas. Nullam dignissim leo id iaculis
@@ -17,6 +17,6 @@ export default function HomeCreate({ user }) {
         ut blandit sem cursus. Duis non tincidunt ante. In hac habitasse platea
         dictumst.
       </p>
-    </>
+    </section>
   );
 }

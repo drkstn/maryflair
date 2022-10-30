@@ -1,6 +1,6 @@
 export default function HomeView({ user }) {
   return (
-    <>
+    <section>
       <h2 className="mt-2 text-md font-bold">Home - View</h2>
       <p className="mt-2">
         Vivamus a nisi eu erat imperdiet tempus nec eu urna. Morbi tempus elit
@@ -11,6 +11,6 @@ export default function HomeView({ user }) {
         sit amet elementum. Sed eu tellus quis orci mattis iaculis. Suspendisse
         non ante ligula. Proin mi est, rhoncus nec laoreet et, mollis at dolor.
       </p>
-    </>
+    </section>
   );
 }
