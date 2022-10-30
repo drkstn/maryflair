@@ -24,10 +24,10 @@ export default function Home() {
             <Link to="/home">Home</Link>
           </li>
           <li className="hover:text-purple-500">
-            <Link to="/home">View</Link>
+            <Link to="view">View</Link>
           </li>
           <li className="hover:text-purple-500">
-            <Link to="/home">Create</Link>
+            <Link to="create">Create</Link>
           </li>
           <li>
             <Form action="/logout" method="post">
