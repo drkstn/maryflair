@@ -1,7 +1,22 @@
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { getUsers } from "~/services/requests.server";
+
+export const loader = async () => {
+  const data = await getUsers();
+  return json(data);
+};
+
 export default function HomeView() {
+  const data = useLoaderData();
+  console.log(data);
+
   return (
     <section>
       <h2 className="mt-2 text-md font-bold">Home - View</h2>
+      <p>
+        {data[0].email} {data[0].name}
+      </p>
       <p className="mt-2">
         Vivamus a nisi eu erat imperdiet tempus nec eu urna. Morbi tempus elit
         lectus, a rhoncus urna vehicula at. Aenean facilisis nunc non massa
