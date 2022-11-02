@@ -9,7 +9,6 @@ export const loader = async () => {
 
 export default function HomeView() {
   const data = useLoaderData();
-  console.log(data);
 
   return (
     <section>

@@ -1,13 +1,16 @@
-import { mongoose } from "~/services/db.server";
-
-const userSchema = new mongoose.Schema({
-  email: String,
-  name: String,
-});
-
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+import User from "./models/User";
 
 export async function getUsers() {
   const res = await User.find();
+  return res;
+}
+
+export async function getUser(email) {
+  const res = await User.findOne({ email });
+  return res;
+}
+
+export async function createUser(email, name) {
+  const res = await User.create({ email, name });
   return res;
 }
