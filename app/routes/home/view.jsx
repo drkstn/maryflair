@@ -13,9 +13,11 @@ export default function HomeView() {
   return (
     <section>
       <h2 className="mt-2 text-md font-bold">Home - View</h2>
-      <p>
-        {data[0].email} {data[0].name}
-      </p>
+      {data.map((user) => (
+        <p key={user._id}>
+          {user.name} {user.email}
+        </p>
+      ))}
       <p className="mt-2">
         Vivamus a nisi eu erat imperdiet tempus nec eu urna. Morbi tempus elit
         lectus, a rhoncus urna vehicula at. Aenean facilisis nunc non massa
