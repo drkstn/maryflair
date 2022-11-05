@@ -1,4 +1,5 @@
 import User from "./models/User";
+import Lesson from "./models/Lesson";
 
 export async function getUsers() {
   const res = await User.find();
@@ -12,5 +13,16 @@ export async function getUser(email) {
 
 export async function createUser(email, name) {
   const res = await User.create({ email, name });
+  return res;
+}
+
+export async function createLesson(data) {
+  console.log(data);
+  const res = await Lesson.create(data);
+  return res;
+}
+
+export async function getLessons(owner) {
+  const res = await Lesson.find({ owner });
   return res;
 }
