@@ -20,28 +20,28 @@ export default function Home() {
     <main>
       <nav className="flex justify-between h-16">
         <h1 className="flex items-center text-3xl font-bold">
-          <Link to="/">Mary Flair</Link>
+          <Link className="text-purple-500 hover:text-purple-700" to="/">
+            Mary Flair
+          </Link>
         </h1>
+
         <ul className="flex items-center space-x-5">
           <li className="hover:text-purple-500">
             <Link to="/home">Home</Link>
           </li>
           <li className="hover:text-purple-500">
-            <Link to="view">View</Link>
+            <Link to="manage">Manage</Link>
           </li>
           <li>
             <Form action="/logout" method="post">
               <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
-                Log Out
+                {data.given_name}
               </button>
             </Form>
           </li>
         </ul>
       </nav>
-      <hr />
-      <h2 className="mt-2 text-xl font-bold text-purple-500">
-        Hello, {data.given_name || "friend"}!
-      </h2>
+      <hr className="mb-4" />
       <Outlet context={context} />
     </main>
   );

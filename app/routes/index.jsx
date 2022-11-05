@@ -1,11 +1,15 @@
-import { Form } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { SocialsProvider } from "remix-auth-socials";
 
 export default function Index() {
   return (
     <main>
       <nav className="flex justify-between h-16">
-        <h1 className="flex items-center text-3xl font-bold">Mary Flair</h1>
+        <h1 className="flex items-center text-3xl font-bold">
+          <Link className="text-purple-500 hover:text-purple-700" to="/">
+            Mary Flair
+          </Link>
+        </h1>
         <div className="flex items-center">
           <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`}>
             <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
@@ -14,9 +18,9 @@ export default function Index() {
           </Form>
         </div>
       </nav>
-      <hr />
-      <h2 className="mt-2 text-md font-bold">Root - Index</h2>
-      <p className="mt-2">
+      <hr className="mb-4" />
+      <h1 className="mb-2 font-bold text-3xl">Welcome</h1>
+      <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis a
         fermentum odio. Praesent consectetur tortor massa, in feugiat sapien
         semper et. Etiam dapibus, est sed rhoncus ultrices, augue lacus bibendum
