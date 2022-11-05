@@ -17,8 +17,12 @@ export async function createUser(email, name) {
 }
 
 export async function createLesson(data) {
-  console.log(data);
   const res = await Lesson.create(data);
+  return res;
+}
+
+export async function deleteLesson(_id) {
+  const res = await Lesson.deleteOne({ _id });
   return res;
 }
 

@@ -1,7 +1,7 @@
-import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { Form, Outlet, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
-import { getLessons } from "~/services/requests.server";
+import { deleteLesson, getLessons } from "~/services/requests.server";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -11,6 +11,16 @@ export const loader = async ({ request }) => {
 
   return json(data);
 };
+
+export async function action({ request }) {
+  const formData = await request.formData();
+
+  const id = formData.get("id");
+  // console.log(id);
+  await deleteLesson(id);
+
+  return redirect("/home/view");
+}
 
 export default function HomeView() {
   const data = useLoaderData();
@@ -22,6 +32,12 @@ export default function HomeView() {
         <div key={lesson._id}>
           <h1 className="text-xl font-bold">{lesson.title}</h1>
           <p>{lesson.description}</p>
+          <Form method="post">
+            <input type="hidden" name="id" value={lesson._id} />
+            <button type="submit" className="text-purple-500">
+              Delete
+            </button>
+          </Form>
           <hr />
         </div>
       ))}
