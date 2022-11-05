@@ -29,9 +29,6 @@ export default function Home() {
           <li className="hover:text-purple-500">
             <Link to="view">View</Link>
           </li>
-          <li className="hover:text-purple-500">
-            <Link to="create">Create</Link>
-          </li>
           <li>
             <Form action="/logout" method="post">
               <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">

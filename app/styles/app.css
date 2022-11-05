@@ -543,6 +543,10 @@ video {
   width: 16rem;
 }
 
+.flex-auto {
+  flex: 1 1 auto;
+}
+
 .items-center {
   align-items: center;
 }
@@ -600,6 +604,11 @@ video {
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .text-3xl {
