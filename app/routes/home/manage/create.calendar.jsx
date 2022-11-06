@@ -146,12 +146,9 @@ export default function HomeCreate() {
           >
             Create
           </button>
-          <Link
-            to="/home/manage"
-            className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700"
-          >
-            Cancel
-          </Link>
+          <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
+            <Link to="/home/manage">Cancel</Link>
+          </button>
         </div>
         <input type="hidden" name="owner" value={data} />
       </Form>

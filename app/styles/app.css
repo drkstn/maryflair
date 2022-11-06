@@ -536,6 +536,10 @@ video {
   margin-top: 1rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -546,6 +550,10 @@ video {
 
 .h-16 {
   height: 4rem;
+}
+
+.h-auto {
+  height: auto;
 }
 
 .items-center {
@@ -606,6 +614,11 @@ video {
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .text-3xl {

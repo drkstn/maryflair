@@ -35,12 +35,9 @@ export default function ManageIndex() {
         <p>Create a new calendar to get started.</p>
       )}
       <div className="mt-4">
-        <Link
-          to="create/calendar"
-          className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700"
-        >
-          Create New Calendar
-        </Link>
+        <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
+          <Link to="create/calendar">Create New Calendar</Link>
+        </button>
       </div>
     </section>
   );
