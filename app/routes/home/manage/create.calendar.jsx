@@ -70,9 +70,9 @@ export async function action({ request }) {
     days,
     weeks,
   };
-  await createCalendar(data);
+  const res = await createCalendar(data);
 
-  return redirect(`/home/manage/calendar/${slug}`);
+  return redirect(`/home/manage/calendar/${res._id}/${res.slug}`);
 }
 
 export default function HomeCreate() {
