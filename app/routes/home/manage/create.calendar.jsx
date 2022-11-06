@@ -27,22 +27,22 @@ export async function action({ request }) {
   const slug = title.replace(/\s+/g, "-").toLowerCase();
   const startDate = formData.get("startDate");
   const endDate = formData.get("endDate");
-  const blockOutHolidays = formData.get("blockOutHolidays") || "off";
-  const blockOutWeekends = formData.get("blockOutWeekends") || "off";
+  const blockOutHolidays = formData.get("blockOutHolidays") || false;
+  const blockOutWeekends = formData.get("blockOutWeekends") || false;
 
   const unfilteredDates = eachDayOfInterval({
     start: parseISO(startDate),
     end: parseISO(endDate),
   });
 
-  const blockoutDates = [];
+  const blockOutDates = [];
 
   const days = unfilteredDates
-    .filter((date) => (blockOutHolidays === "on" ? !isHoliday(date) : date))
-    .filter((date) => (blockOutWeekends === "on" ? !isWeekend(date) : date))
+    .filter((date) => (blockOutHolidays ? !isHoliday(date) : date))
+    .filter((date) => (blockOutWeekends ? !isWeekend(date) : date))
     .filter(
       (date) =>
-        !blockoutDates.includes(formatISO(date, { representation: "date" }))
+        !blockOutDates.includes(formatISO(date, { representation: "date" }))
     )
     .map((date) => formatISO(date, { representation: "date" }));
 
@@ -64,15 +64,17 @@ export async function action({ request }) {
     slug,
     startDate,
     endDate,
-    blockOutHolidays,
-    blockOutWeekends,
-    blockoutDates,
+    blockOut: {
+      holidays: blockOutHolidays,
+      weekends: blockOutWeekends,
+      dates: blockOutDates,
+    },
     days,
     weeks,
   };
   const res = await createCalendar(data);
 
-  return redirect(`/home/manage/calendar/${res._id}/${res.slug}`);
+  return redirect(`/home/manage/${res._id}/${res.slug}`);
 }
 
 export default function HomeCreate() {
@@ -120,9 +122,19 @@ export default function HomeCreate() {
         <div>
           <div className="font-bold text-purple-500">Block Out:</div>
           <div className=" space-x-2">
-            <input type="checkbox" id="holidays" name="blockOutHolidays" />
+            <input
+              type="checkbox"
+              id="holidays"
+              name="blockOutHolidays"
+              value={true}
+            />
             <label htmlFor="holidays">Holidays</label>
-            <input type="checkbox" id="weekends" name="blockOutWeekends" />
+            <input
+              type="checkbox"
+              id="weekends"
+              name="blockOutWeekends"
+              value={true}
+            />
             <label htmlFor="weekends">Weekends</label>
           </div>
         </div>

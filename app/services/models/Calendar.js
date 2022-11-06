@@ -6,9 +6,11 @@ const CalendarSchema = new mongoose.Schema({
   slug: String,
   startDate: String,
   endDate: String,
-  blockOutHolidays: String,
-  blockOutWeekends: String,
-  blockOutDates: [String],
+  blockOut: {
+    holidays: Boolean,
+    weekends: Boolean,
+    dates: [String],
+  },
   weeks: [String],
   days: [String],
 });

@@ -23,7 +23,7 @@ export default function ManageIndex() {
           {data.map((calendar) => (
             <section key={calendar._id}>
               <p className="text-purple-500 font-bold mt-4 mb-2">
-                <Link to={`calendar/${calendar._id}/${calendar.slug}`}>
+                <Link to={`${calendar._id}/${calendar.slug}`}>
                   {calendar.title}
                 </Link>
               </p>
