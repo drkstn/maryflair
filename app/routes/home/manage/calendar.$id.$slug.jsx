@@ -6,8 +6,8 @@ import { authenticator } from "~/services/auth.server";
 import { getCalendar } from "~/services/requests.server";
 
 export const loader = async ({ params }) => {
-  const { slug } = params;
-  const data = await getCalendar(slug);
+  const { id } = params;
+  const data = await getCalendar(id);
   return json(data);
 };
 

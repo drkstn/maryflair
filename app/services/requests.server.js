@@ -39,8 +39,8 @@ export async function getCalendars(owner) {
   return res;
 }
 
-export async function getCalendar(slug) {
-  const res = await Calendar.findOne({ slug });
+export async function getCalendar(id) {
+  const res = await Calendar.findById(id);
   return res;
 }
 

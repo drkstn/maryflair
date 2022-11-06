@@ -1,7 +1,5 @@
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { isSameWeek, parseISO } from "date-fns";
-import { format } from "date-fns/fp";
 import { authenticator } from "~/services/auth.server";
 import { getCalendars } from "~/services/requests.server";
 
@@ -16,7 +14,6 @@ export const loader = async ({ request }) => {
 
 export default function ManageIndex() {
   const data = useLoaderData();
-  const formatDate = format("EEEE, MMMM d, y");
 
   return (
     <section>
@@ -26,7 +23,9 @@ export default function ManageIndex() {
           {data.map((calendar) => (
             <section key={calendar._id}>
               <p className="text-purple-500 font-bold mt-4 mb-2">
-                <Link to={`calendar/${calendar.slug}`}>{calendar.title}</Link>
+                <Link to={`calendar/${calendar._id}/${calendar.slug}`}>
+                  {calendar.title}
+                </Link>
               </p>
               <hr className="my-4" />
             </section>

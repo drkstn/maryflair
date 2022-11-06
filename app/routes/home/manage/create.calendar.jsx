@@ -1,6 +1,6 @@
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import { createCalendar, createLesson } from "~/services/requests.server";
+import { createCalendar } from "~/services/requests.server";
 import { authenticator } from "~/services/auth.server";
 import {
   eachDayOfInterval,
