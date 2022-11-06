@@ -72,7 +72,7 @@ export async function action({ request }) {
   };
   await createCalendar(data);
 
-  return redirect("/home/manage");
+  return redirect(`/home/manage/calendar/${slug}`);
 }
 
 export default function HomeCreate() {

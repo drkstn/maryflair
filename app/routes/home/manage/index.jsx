@@ -28,19 +28,6 @@ export default function ManageIndex() {
               <p className="text-purple-500 font-bold mt-4 mb-2">
                 <Link to={`calendar/${calendar.slug}`}>{calendar.title}</Link>
               </p>
-              {calendar.weeks.map((week, index) => (
-                <div key={index} className="mb-4">
-                  <h1 className="font-bold text-lg">
-                    Week {index + 1} - {formatDate(parseISO(week))}
-                  </h1>
-                  {calendar.days
-                    .filter((day) => isSameWeek(parseISO(week), parseISO(day)))
-                    .map((day) => (
-                      <p key={day}>{formatDate(parseISO(day))}</p>
-                    ))}
-                  <p></p>
-                </div>
-              ))}
               <hr className="my-4" />
             </section>
           ))}
