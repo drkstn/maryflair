@@ -1,5 +1,6 @@
 import User from "./models/User";
 import Lesson from "./models/Lesson";
+import Calendar from "./models/Calendar";
 
 export async function getUsers() {
   const res = await User.find();
@@ -28,5 +29,17 @@ export async function deleteLesson(_id) {
 
 export async function getLessons(owner) {
   const res = await Lesson.find({ owner });
+  return res;
+}
+
+// CALENDAR Requests
+
+export async function getCalendars(owner) {
+  const res = await Calendar.find({ owner });
+  return res;
+}
+
+export async function createCalendar(data) {
+  const res = await Calendar.create(data);
   return res;
 }

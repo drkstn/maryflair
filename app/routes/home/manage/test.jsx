@@ -70,7 +70,7 @@ export default function HomeIndex() {
     { weekStartsOn: 1 }
   );
 
-  // console.log(weekArray.map(formatDate).map((v, i) => `Week ${i + 1}, ${v}`));
+  console.log(weekArray.map(formatDate).map((v, i) => `Week ${i + 1}, ${v}`));
 
   return (
     <section>
