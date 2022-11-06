@@ -48,3 +48,8 @@ export async function createCalendar(data) {
   const res = await Calendar.create(data);
   return res;
 }
+
+export async function deleteCalendar(_id) {
+  const res = await Calendar.deleteOne({ _id });
+  return res;
+}

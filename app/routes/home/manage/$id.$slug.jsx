@@ -2,7 +2,6 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { isSameWeek, parseISO } from "date-fns";
 import { format } from "date-fns/fp";
-import { authenticator } from "~/services/auth.server";
 import { getCalendar } from "~/services/requests.server";
 
 export const loader = async ({ params }) => {

@@ -41,9 +41,9 @@ export default function HomeIndex() {
     .map(addWeeks(1))
     .map(addDays(1))
     .map(formatDate);
-  // console.log(arr1);
-  // console.log(arr2);
-  // console.log(arrDates);
+  console.log(arr1);
+  console.log(arr2);
+  console.log(arrDates);
 
   const dateArray = eachDayOfInterval({
     start: parseISO("2022-11-12"),
