@@ -1,13 +1,13 @@
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
-import { deleteCalendar, getCalendars } from "~/services/requests.server";
+import { deletePlan, getPlans } from "~/services/requests.server";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
 
   const owner = user._json.email;
-  const data = await getCalendars(owner);
+  const data = await getPlans(owner);
 
   return json(data);
 };
@@ -17,7 +17,7 @@ export async function action({ request }) {
 
   const id = formData.get("id");
   // console.log(id);
-  await deleteCalendar(id);
+  await deletePlan(id);
 
   return redirect("/home/manage");
 }
@@ -30,15 +30,13 @@ export default function ManageIndex() {
       <h1 className="mb-2 font-bold text-3xl">Manage Lesson Plans</h1>
       {data?.length > 0 ? (
         <div className="my-4">
-          {data.map((calendar) => (
-            <section key={calendar._id}>
+          {data.map((plan) => (
+            <section key={plan._id}>
               <p className="text-purple-500 font-bold text-lg">
-                <Link to={`${calendar._id}/${calendar.slug}`}>
-                  {calendar.title}
-                </Link>
+                <Link to={`${plan._id}/${plan.slug}`}>{plan.title}</Link>
               </p>
               <Form method="post">
-                <input type="hidden" name="id" value={calendar._id} />
+                <input type="hidden" name="id" value={plan._id} />
                 <button type="submit" className="hover:text-rose-500">
                   Delete
                 </button>
@@ -48,11 +46,11 @@ export default function ManageIndex() {
           ))}
         </div>
       ) : (
-        <p>Create a new calendar to get started.</p>
+        <p>Create a new lesson plan to get started.</p>
       )}
       <div className="mt-4">
         <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
-          <Link to="create/calendar">Create New Calendar</Link>
+          <Link to="create">Create New Lesson Plan</Link>
         </button>
       </div>
     </section>

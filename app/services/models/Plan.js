@@ -1,9 +1,10 @@
 import { mongoose } from "~/services/db.server";
 
-const CalendarSchema = new mongoose.Schema({
+const PlanSchema = new mongoose.Schema({
   owner: String,
   title: String,
   slug: String,
+  type: String,
   startDate: String,
   endDate: String,
   blockOut: {
@@ -15,7 +16,6 @@ const CalendarSchema = new mongoose.Schema({
   days: [String],
 });
 
-const Calendar =
-  mongoose.models.Calendar || mongoose.model("Calendar", CalendarSchema);
+const Plan = mongoose.models.Plan || mongoose.model("Plan", PlanSchema);
 
-export default Calendar;
+export default Plan;

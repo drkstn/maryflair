@@ -1,6 +1,6 @@
 import User from "./models/User";
 import Lesson from "./models/Lesson";
-import Calendar from "./models/Calendar";
+import Plan from "./models/Plan";
 
 export async function getUsers() {
   const res = await User.find();
@@ -32,24 +32,26 @@ export async function getLessons(owner) {
   return res;
 }
 
-// CALENDAR Requests
+// PLAN Requests
 
-export async function getCalendars(owner) {
-  const res = await Calendar.find({ owner });
+export async function getPlans(owner) {
+  const res = await Plan.find({ owner });
   return res;
 }
 
-export async function getCalendar(id) {
-  const res = await Calendar.findById(id);
+export async function getPlan(_id, owner) {
+  console.log(_id);
+  const res = await Plan.findOne({ _id, owner });
+  console.log(res);
   return res;
 }
 
-export async function createCalendar(data) {
-  const res = await Calendar.create(data);
+export async function createPlan(data) {
+  const res = await Plan.create(data);
   return res;
 }
 
-export async function deleteCalendar(_id) {
-  const res = await Calendar.deleteOne({ _id });
+export async function deletePlan(_id) {
+  const res = await Plan.deleteOne({ _id });
   return res;
 }

@@ -1,6 +1,6 @@
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import { createCalendar } from "~/services/requests.server";
+import { createPlan } from "~/services/requests.server";
 import { authenticator } from "~/services/auth.server";
 import {
   eachDayOfInterval,
@@ -25,6 +25,7 @@ export async function action({ request }) {
     .replace(/[^a-zA-Z0-9 ]/g, "")
     .trim();
   const slug = title.replace(/\s+/g, "-").toLowerCase();
+  const type = formData.get("type");
   const startDate = formData.get("startDate");
   const endDate = formData.get("endDate");
   const blockOutHolidays = formData.get("blockOutHolidays") || false;
@@ -62,6 +63,7 @@ export async function action({ request }) {
     owner,
     title,
     slug,
+    type,
     startDate,
     endDate,
     blockOut: {
@@ -72,17 +74,17 @@ export async function action({ request }) {
     days,
     weeks,
   };
-  const res = await createCalendar(data);
+  const res = await createPlan(data);
 
   return redirect(`/home/manage/${res._id}/${res.slug}`);
 }
 
-export default function HomeCreate() {
+export default function ManageCreate() {
   const data = useLoaderData();
 
   return (
     <section>
-      <h1 className="mb-2 font-bold text-3xl">Create a New Calendar</h1>
+      <h1 className="mb-2 font-bold text-3xl">Create a New Lesson Plan</h1>
       <p className="mt-2">Cras eleifend vitae metus eget egestas.</p>
       <Form method="post" className="mt-4">
         <input type="hidden" name="owner" value={data} />
@@ -95,6 +97,26 @@ export default function HomeCreate() {
               type="text"
               className="my-2 p-1 border rounded-lg border-purple-500"
             />
+          </label>
+        </div>
+        <div className="mb-2">
+          <label htmlFor="type-select">
+            <span className="font-bold text-purple-500">
+              What time period is this plan for?
+            </span>
+            <br />
+            <select
+              name="type"
+              id="type-select"
+              className="my-2 p-1 border rounded-lg border-purple-500"
+            >
+              {/* <option value="">--Please choose an option--</option> */}
+              <option value="">Please Select</option>
+              <option value="semester">Semester</option>
+              <option value="quarter">Quarter</option>
+              <option value="year">Year</option>
+              <option value="other">Other</option>
+            </select>
           </label>
         </div>
         <div className="mb-2">

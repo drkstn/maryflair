@@ -1,16 +1,20 @@
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { isSameWeek, parseISO } from "date-fns";
 import { format } from "date-fns/fp";
-import { getCalendar } from "~/services/requests.server";
+import { getPlan } from "~/services/requests.server";
+import { authenticator } from "~/services/auth.server";
 
-export const loader = async ({ params }) => {
+export const loader = async ({ params, request }) => {
+  const user = await authenticator.isAuthenticated(request);
   const { id } = params;
-  const data = await getCalendar(id);
+
+  const data = await getPlan(id, user._json.email);
+
   return json(data);
 };
 
-export default function CalendarItem() {
+export default function LessonPlan() {
   const data = useLoaderData();
   const formatDate = format("EEEE, MMMM d, y");
 
