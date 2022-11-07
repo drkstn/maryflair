@@ -14,6 +14,12 @@ const PlanSchema = new mongoose.Schema({
   },
   weeks: [String],
   days: [String],
+  lessons: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Lesson",
+    },
+  ],
 });
 
 const Plan = mongoose.models.Plan || mongoose.model("Plan", PlanSchema);
