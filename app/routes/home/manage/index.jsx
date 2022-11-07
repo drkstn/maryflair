@@ -5,8 +5,8 @@ import { deletePlan, getPlans } from "~/services/requests.server";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
-
   const owner = user._json.email;
+
   const data = await getPlans(owner);
 
   return json(data);
@@ -14,9 +14,8 @@ export const loader = async ({ request }) => {
 
 export async function action({ request }) {
   const formData = await request.formData();
-
   const id = formData.get("id");
-  // console.log(id);
+
   await deletePlan(id);
 
   return redirect("/home/manage");

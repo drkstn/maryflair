@@ -1,4 +1,4 @@
-import { json, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { isSameWeek, parseISO } from "date-fns";
 import { format } from "date-fns/fp";
@@ -7,9 +7,10 @@ import { authenticator } from "~/services/auth.server";
 
 export const loader = async ({ params, request }) => {
   const user = await authenticator.isAuthenticated(request);
+  const owner = user._json.email;
   const { id } = params;
 
-  const data = await getPlan(id, user._json.email);
+  const data = await getPlan(id, owner);
 
   return json(data);
 };
