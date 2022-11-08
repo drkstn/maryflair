@@ -34,11 +34,21 @@ export default function ManageIndex() {
   return (
     <section>
       <div>
-        <h1 className="mb-2 font-bold text-3xl">Lesson Plans</h1>
+        <h1 className="mb-2 font-bold text-2xl sm:flex items-end sm:space-x-2">
+          <p>Lesson Plans</p>
+          <button
+            type="button"
+            className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
+          >
+            <Link className="flex py-1 px-4" to="new/lesson-plan">
+              Create a New Lesson Plan
+            </Link>
+          </button>
+        </h1>
         {data?.plans?.length > 0 ? (
-          <div className="my-4">
+          <div className="my-2">
             {data.plans.map((plan) => (
-              <section key={plan._id}>
+              <section className="mb-2" key={plan._id}>
                 <p className="text-purple-500 font-bold text-lg">
                   <Link to={`${plan._id}/${plan.slug}`}>{plan.title}</Link>
                 </p>
@@ -48,25 +58,16 @@ export default function ManageIndex() {
                     Delete
                   </button>
                 </Form>
-                <hr className="my-4" />
               </section>
             ))}
           </div>
         ) : (
           <p>Create a new lesson plan to get started.</p>
         )}
-        <button
-          type="button"
-          className="mt-2 mb-6 rounded-full text-white bg-purple-500 hover:bg-purple-700"
-        >
-          <Link className="flex py-2 px-4" to="new/lesson-plan">
-            Create New Lesson Plan
-          </Link>
-        </button>
+        <hr className="my-6" />
       </div>
-      <hr />
-      <div className="mt-6">
-        <h1 className="mb-2 font-bold text-2xl flex items-end space-x-2">
+      <div>
+        <h1 className="mb-2 font-bold text-2xl sm:flex items-end sm:space-x-2">
           <p>Subjects</p>
           <button
             type="button"
@@ -80,15 +81,19 @@ export default function ManageIndex() {
         {data?.subjects?.length > 0 ? (
           <ul className="my-2">
             {data.subjects.map((subject) => (
-              <li key={subject._id}>• {subject.name}</li>
+              <li key={subject._id}>
+                <span className=" text-purple-300 font-bold">- </span>
+                {subject.name}
+              </li>
             ))}
           </ul>
         ) : (
           <p>You currently have no subjects.</p>
         )}
+        <hr className="my-6" />
       </div>
-      <div className="mt-6">
-        <h1 className="mb-2 font-bold text-2xl flex items-end space-x-2">
+      <div>
+        <h1 className="mb-2 font-bold text-2xl sm:flex items-end sm:space-x-2">
           <p>Units</p>
           <button
             type="button"
@@ -102,12 +107,16 @@ export default function ManageIndex() {
         {data?.units?.length > 0 ? (
           <ul className="my-2">
             {data.units.map((unit) => (
-              <li key={unit._id}>• {unit.name}</li>
+              <li key={unit._id}>
+                <span className=" text-purple-300 font-bold">- </span>
+                {unit.name}
+              </li>
             ))}
           </ul>
         ) : (
           <p>You currently have no units.</p>
         )}
+        <hr className="my-6" />
       </div>
     </section>
   );

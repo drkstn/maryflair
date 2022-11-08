@@ -18,14 +18,14 @@ export default function Home() {
 
   return (
     <main>
-      <nav className="flex justify-between h-16">
+      <nav className="flex justify-between mb-6">
         <h1 className="flex items-center text-3xl font-bold">
           <Link className="text-purple-500 hover:text-purple-700" to="/">
             Mary Flair
           </Link>
         </h1>
 
-        <ul className="flex items-center space-x-5">
+        <ul className="flex justify-end items-center space-x-5">
           <li className="hover:text-purple-500">
             <Link to="/home">Home</Link>
           </li>
@@ -41,7 +41,7 @@ export default function Home() {
           </li>
         </ul>
       </nav>
-      <hr className="mb-4" />
+      <hr className="mb-6" />
       <Outlet context={context} />
     </main>
   );
