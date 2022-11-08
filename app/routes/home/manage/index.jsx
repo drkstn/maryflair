@@ -4,7 +4,7 @@ import { authenticator } from "~/services/auth.server";
 import {
   deletePlan,
   getPlans,
-  getResources,
+  getUnits,
   getSubjects,
 } from "~/services/requests.server";
 
@@ -14,9 +14,9 @@ export const loader = async ({ request }) => {
 
   const plans = await getPlans(owner);
   const subjects = await getSubjects(owner);
-  const resources = await getResources(owner);
+  const units = await getUnits(owner);
 
-  return json({ plans, subjects, resources });
+  return json({ plans, subjects, units });
 };
 
 export async function action({ request }) {
@@ -89,24 +89,24 @@ export default function ManageIndex() {
       </div>
       <div className="mt-6">
         <h1 className="mb-2 font-bold text-2xl flex items-end space-x-2">
-          <p>Resources</p>
+          <p>Units</p>
           <button
             type="button"
             className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
           >
-            <Link className="flex py-1 px-4" to="new/resource">
-              Add a Resource
+            <Link className="flex py-1 px-4" to="new/unit">
+              Add a Unit
             </Link>
           </button>
         </h1>
-        {data?.resources?.length > 0 ? (
+        {data?.units?.length > 0 ? (
           <ul className="my-2">
-            {data.resources.map((resource) => (
-              <li key={resource._id}>• {resource.title}</li>
+            {data.units.map((unit) => (
+              <li key={unit._id}>• {unit.name}</li>
             ))}
           </ul>
         ) : (
-          <p>You currently have no resources.</p>
+          <p>You currently have no units.</p>
         )}
       </div>
     </section>

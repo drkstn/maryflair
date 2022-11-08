@@ -2,11 +2,7 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { Link } from "react-router-dom";
 import { authenticator } from "~/services/auth.server";
-import {
-  createResource,
-  createSubject,
-  getSubjects,
-} from "~/services/requests.server";
+import { createUnit, getSubjects } from "~/services/requests.server";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -21,14 +17,13 @@ export async function action({ request }) {
   const formData = await request.formData();
 
   const owner = formData.get("owner");
-  const title = formData.get("title");
+  const name = formData.get("name");
   const subject = formData.get("subject");
   const notes = formData.get("notes");
 
-  const data = { owner, title, subject, notes: [notes] };
-  // console.log(data);
+  const data = { owner, name, subject, notes: [notes] };
 
-  await createResource(data);
+  await createUnit(data);
 
   return redirect("/home/manage");
 }
@@ -38,16 +33,16 @@ export default function ManageCreate() {
 
   return (
     <section>
-      <h1 className="mb-2 font-bold text-3xl">Add a New Subject</h1>
+      <h1 className="mb-2 font-bold text-3xl">Add a New Unit</h1>
       <p className="mt-2">Cras eleifend vitae metus eget egestas.</p>
       <Form method="post" className="mt-4">
         <input type="hidden" name="owner" value={data.owner} />
         <div className="mb-2">
           <label>
-            <span className="font-bold text-purple-500">Title: </span>
+            <span className="font-bold text-purple-500">Name: </span>
             <br />
             <input
-              name="title"
+              name="name"
               type="text"
               className="my-2 p-1 border rounded-lg border-purple-500"
             />

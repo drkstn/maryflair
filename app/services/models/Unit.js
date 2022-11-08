@@ -1,14 +1,13 @@
 import { mongoose } from "~/services/db.server";
 
-const ResourceSchema = new mongoose.Schema({
+const UnitSchema = new mongoose.Schema({
   owner: String,
-  title: String,
+  name: String,
   subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" },
   lessons: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
   notes: [String],
 });
 
-const Resource =
-  mongoose.models.Resource || mongoose.model("Resource", ResourceSchema);
+const Unit = mongoose.models.Unit || mongoose.model("Unit", UnitSchema);
 
-export default Resource;
+export default Unit;

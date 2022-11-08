@@ -2,7 +2,7 @@ import User from "./models/User";
 import Lesson from "./models/Lesson";
 import Plan from "./models/Plan";
 import Subject from "./models/Subject";
-import Resource from "./models/Resource";
+import Unit from "./models/Unit";
 
 export async function getUsers() {
   const res = await User.find();
@@ -68,14 +68,14 @@ export async function createSubject(data) {
   return res;
 }
 
-// RESOURCE Requests
+// Unit Requests
 
-export async function getResources(owner) {
-  const res = await Resource.find({ owner });
+export async function getUnits(owner) {
+  const res = await Unit.find({ owner });
   return res;
 }
 
-export async function createResource(data) {
-  const res = await Resource.create(data);
+export async function createUnit(data) {
+  const res = await Unit.create(data);
   return res;
 }
