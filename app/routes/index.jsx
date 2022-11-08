@@ -4,13 +4,14 @@ import { SocialsProvider } from "remix-auth-socials";
 export default function Index() {
   return (
     <main>
-      <nav className="flex justify-between h-16">
+      <nav className="flex justify-between mb-6 mt-2">
         <h1 className="flex items-center text-3xl font-bold">
           <Link className="text-purple-500 hover:text-purple-700" to="/">
             Mary Flair
           </Link>
         </h1>
-        <div className="flex items-center">
+
+        <div className="flex justify-end items-center">
           <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`}>
             <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
               Log In / Sign Up

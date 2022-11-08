@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <main>
-      <nav className="flex justify-between mb-6">
+      <nav className="flex justify-between mb-6 mt-2">
         <h1 className="flex items-center text-3xl font-bold">
           <Link className="text-purple-500 hover:text-purple-700" to="/">
             Mary Flair
