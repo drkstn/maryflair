@@ -34,7 +34,7 @@ export default function ManageIndex() {
   return (
     <section>
       <div>
-        <h1 className="mb-2 font-bold text-2xl sm:flex items-end sm:space-x-2">
+        <h1 className="mb-2 font-bold text-2xl flex justify-between items-end">
           <p>Lesson Plans</p>
           <button
             type="button"
@@ -67,7 +67,7 @@ export default function ManageIndex() {
         <hr className="my-6" />
       </div>
       <div>
-        <h1 className="mb-2 font-bold text-2xl sm:flex items-end sm:space-x-2">
+        <h1 className="mb-2 font-bold text-2xl flex justify-between items-end">
           <p>Subjects</p>
           <button
             type="button"
@@ -93,7 +93,7 @@ export default function ManageIndex() {
         <hr className="my-6" />
       </div>
       <div>
-        <h1 className="mb-2 font-bold text-2xl sm:flex items-end sm:space-x-2">
+        <h1 className="mb-2 font-bold text-2xl flex justify-between items-end">
           <p>Units</p>
           <button
             type="button"
