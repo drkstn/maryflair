@@ -4,7 +4,7 @@ const UnitSchema = new mongoose.Schema({
   owner: String,
   name: String,
   subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" },
-  lessons: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
+  lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
   notes: [String],
 });
 

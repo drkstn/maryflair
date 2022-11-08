@@ -82,8 +82,19 @@ export default function ManageIndex() {
           <ul className="my-2">
             {data.subjects.map((subject) => (
               <li key={subject._id}>
-                <span className=" text-purple-300 font-bold">- </span>
-                {subject.name}
+                <span className=" text-purple-500 font-bold">
+                  {subject.name}
+                </span>
+                <ul>
+                  {data.units.map((unit) =>
+                    subject._id === unit.subject ? (
+                      <li key={unit._id} className="ml-4">
+                        <span className=" text-purple-300 font-bold">- </span>
+                        {unit.name}
+                      </li>
+                    ) : null
+                  )}
+                </ul>
               </li>
             ))}
           </ul>
