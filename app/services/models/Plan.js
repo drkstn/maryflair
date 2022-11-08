@@ -5,10 +5,10 @@ const PlanSchema = new mongoose.Schema({
   title: String,
   slug: String,
   calendar: {
-    type: String,
-    start_date: String,
-    end_date: String,
-    block_out: {
+    timePeriod: String,
+    startDate: String,
+    endDate: String,
+    blockOut: {
       holidays: Boolean,
       weekends: Boolean,
       dates: [String],
@@ -24,7 +24,7 @@ const PlanSchema = new mongoose.Schema({
   ],
   resources: [
     {
-      start_date: String,
+      startDate: String,
       resource: { type: mongoose.Schema.Types.ObjectId, ref: "Resource" },
     },
   ],

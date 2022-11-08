@@ -40,9 +40,7 @@ export async function getPlans(owner) {
 }
 
 export async function getPlan(_id, owner) {
-  console.log(_id);
   const res = await Plan.findOne({ _id, owner });
-  console.log(res);
   return res;
 }
 

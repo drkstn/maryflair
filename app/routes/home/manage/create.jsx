@@ -25,7 +25,7 @@ export async function action({ request }) {
     .replace(/[^a-zA-Z0-9 ]/g, "")
     .trim();
   const slug = title.replace(/\s+/g, "-").toLowerCase();
-  const type = formData.get("type");
+  const timePeriod = formData.get("timePeriod");
   const startDate = formData.get("startDate");
   const endDate = formData.get("endDate");
   const blockOutHolidays = formData.get("blockOutHolidays") || false;
@@ -38,7 +38,7 @@ export async function action({ request }) {
 
   const blockOutDates = [];
 
-  const days = unfilteredDates
+  const dates = unfilteredDates
     .filter((date) => (blockOutHolidays ? !isHoliday(date) : date))
     .filter((date) => (blockOutWeekends ? !isWeekend(date) : date))
     .filter(
@@ -63,16 +63,18 @@ export async function action({ request }) {
     owner,
     title,
     slug,
-    type,
-    startDate,
-    endDate,
-    blockOut: {
-      holidays: blockOutHolidays,
-      weekends: blockOutWeekends,
-      dates: blockOutDates,
+    calendar: {
+      timePeriod,
+      startDate,
+      endDate,
+      blockOut: {
+        holidays: blockOutHolidays,
+        weekends: blockOutWeekends,
+        dates: blockOutDates,
+      },
+      weeks,
+      dates,
     },
-    days,
-    weeks,
   };
   const res = await createPlan(data);
 
@@ -100,14 +102,14 @@ export default function ManageCreate() {
           </label>
         </div>
         <div className="mb-2">
-          <label htmlFor="type-select">
+          <label htmlFor="timePeriod-select">
             <span className="font-bold text-purple-500">
               What time period is this plan for?
             </span>
             <br />
             <select
-              name="type"
-              id="type-select"
+              name="timePeriod"
+              id="timePeriod-select"
               className="my-2 p-1 border rounded-lg border-purple-500"
             >
               {/* <option value="">--Please choose an option--</option> */}

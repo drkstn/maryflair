@@ -22,15 +22,15 @@ export default function LessonPlan() {
   return (
     <section>
       <h1 className="mb-2 font-bold text-3xl">{data.title}</h1>
-      {data.weeks.map((week, index) => (
+      {data.calendar.weeks.map((week, index) => (
         <div key={index} className="mb-4">
           <h1 className="font-bold text-lg">
             Week {index + 1} - {formatDate(parseISO(week))}
           </h1>
-          {data.days
-            .filter((day) => isSameWeek(parseISO(week), parseISO(day)))
-            .map((day) => (
-              <p key={day}>{formatDate(parseISO(day))}</p>
+          {data.calendar.dates
+            .filter((date) => isSameWeek(parseISO(week), parseISO(date)))
+            .map((date) => (
+              <p key={date}>{formatDate(parseISO(date))}</p>
             ))}
           <p></p>
         </div>
