@@ -4,6 +4,7 @@ const ResourceSchema = new mongoose.Schema({
   owner: String,
   title: String,
   subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" },
+  lessons: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
   notes: [String],
 });
 

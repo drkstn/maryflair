@@ -170,8 +170,13 @@ export default function ManageCreate() {
           >
             Create
           </button>
-          <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
-            <Link to="/home/manage">Cancel</Link>
+          <button
+            type="button"
+            className="rounded-full text-white bg-purple-500 hover:bg-purple-700"
+          >
+            <Link className="flex py-2 px-4" to="/home/manage">
+              Cancel
+            </Link>
           </button>
         </div>
         <input type="hidden" name="owner" value={data} />
