@@ -41,7 +41,7 @@ export default function ManageIndex() {
             className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
           >
             <Link className="flex py-1 px-4" to="new/lesson-plan">
-              Create a New Lesson Plan
+              Add Plan
             </Link>
           </button>
         </h1>
@@ -74,7 +74,7 @@ export default function ManageIndex() {
             className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
           >
             <Link className="flex py-1 px-4" to="new/subject">
-              Add a Subject
+              Add Subject
             </Link>
           </button>
         </h1>
@@ -100,7 +100,7 @@ export default function ManageIndex() {
             className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
           >
             <Link className="flex py-1 px-4" to="new/unit">
-              Add a Unit
+              Add Unit
             </Link>
           </button>
         </h1>

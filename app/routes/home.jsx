@@ -35,7 +35,7 @@ export default function Home() {
           <li>
             <Form action="/logout" method="post">
               <button className="py-2 px-4 rounded-full text-white bg-purple-500 hover:bg-purple-700">
-                Hi, <b>{data.given_name}</b>
+                <b>{data.given_name}</b>
               </button>
             </Form>
           </li>
