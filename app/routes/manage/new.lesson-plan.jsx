@@ -78,7 +78,7 @@ export async function action({ request }) {
   };
   const res = await createPlan(data);
 
-  return redirect(`/home/manage/${res._id}/${res.slug}`);
+  return redirect(`/manage/plan/${res._id}`);
 }
 
 export default function ManageCreate() {

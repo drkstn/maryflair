@@ -25,7 +25,7 @@ export async function action({ request }) {
 
   await deletePlan(id);
 
-  return redirect("/home/manage");
+  return redirect("/manage");
 }
 
 export default function ManageIndex() {
@@ -50,7 +50,7 @@ export default function ManageIndex() {
             {data.plans.map((plan) => (
               <section className="mb-2" key={plan._id}>
                 <p className="text-purple-500 font-bold text-lg">
-                  <Link to={`${plan._id}/${plan.slug}`}>{plan.title}</Link>
+                  <Link to={`plan/${plan._id}`}>{plan.title}</Link>
                 </p>
                 <Form method="post">
                   <input type="hidden" name="id" value={plan._id} />
