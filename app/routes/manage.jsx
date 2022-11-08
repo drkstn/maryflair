@@ -1,7 +1,7 @@
 import { Outlet, useLoaderData } from "@remix-run/react";
-import NavBar from "~/components/NavBar";
 import { json } from "@remix-run/node";
 import { authenticator } from "../services/auth.server.js";
+import NavBar from "~/components/NavBar.jsx";
 
 export const loader = async ({ request }) => {
   // authenticator.isAuthenticated function returns the user object if found
@@ -19,7 +19,7 @@ export default function Manage() {
   return (
     <main>
       <NavBar data={data} />
-      <Outlet context={data} />
+      <Outlet />
     </main>
   );
 }

@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <main>
       <NavBar data={data} />
-      <Outlet context={data} />
+      <Outlet />
     </main>
   );
 }
