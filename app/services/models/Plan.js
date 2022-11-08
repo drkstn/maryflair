@@ -4,20 +4,34 @@ const PlanSchema = new mongoose.Schema({
   owner: String,
   title: String,
   slug: String,
-  type: String,
-  startDate: String,
-  endDate: String,
-  blockOut: {
-    holidays: Boolean,
-    weekends: Boolean,
+  calendar: {
+    type: String,
+    start_date: String,
+    end_date: String,
+    block_out: {
+      holidays: Boolean,
+      weekends: Boolean,
+      dates: [String],
+    },
+    weeks: [String],
     dates: [String],
   },
-  weeks: [String],
-  days: [String],
+  subjects: [
+    {
+      frequency: [Number],
+      subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" },
+    },
+  ],
+  resources: [
+    {
+      start_date: String,
+      resource: { type: mongoose.Schema.Types.ObjectId, ref: "Resource" },
+    },
+  ],
   lessons: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Lesson",
+      date: String,
+      lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
     },
   ],
 });
