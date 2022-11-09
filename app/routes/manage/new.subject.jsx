@@ -14,9 +14,9 @@ export async function action({ request }) {
 
   const owner = formData.get("owner");
   const name = formData.get("name");
-  const notes = formData.get("notes");
+  const notes = formData.get("notes") ? [formData.get("notes")] : [];
 
-  const data = { owner, name, notes: [notes] };
+  const data = { owner, name, notes };
 
   await createSubject(data);
 

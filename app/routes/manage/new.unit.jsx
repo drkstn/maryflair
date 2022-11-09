@@ -19,9 +19,9 @@ export async function action({ request }) {
   const owner = formData.get("owner");
   const name = formData.get("name");
   const subject = formData.get("subject");
-  const notes = formData.get("notes");
+  const notes = formData.get("notes") ? [formData.get("notes")] : [];
 
-  const data = { owner, name, subject, notes: [notes] };
+  const data = { owner, name, subject, notes };
 
   await createUnit(data);
 
