@@ -20,7 +20,10 @@ export default function LessonPlan() {
 
   return (
     <section>
-      <h1 className="mb-2 font-bold text-3xl">{data.name}</h1>
+      <h2 className="min-w-max mb-1 font-bold text-sm tracking-wider text-purple-500 uppercase">
+        Lesson Plan
+      </h2>
+      <h1 className="mb-4 text-slate-700 font-bold text-3xl">{data.name}</h1>
       <LessonPlanList weeks={weeks} dates={dates} />
     </section>
   );
