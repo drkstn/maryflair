@@ -1,9 +1,10 @@
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
+import Button from "~/components/Button";
 import { authenticator } from "~/services/auth.server";
 import {
-  deletePlan,
-  getPlans,
+  deleteSchedule,
+  getSchedules,
   getUnits,
   getSubjects,
 } from "~/services/requests.server";
@@ -12,18 +13,18 @@ export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
 
-  const plans = await getPlans(owner);
+  const schedules = await getSchedules(owner);
   const subjects = await getSubjects(owner);
   const units = await getUnits(owner);
 
-  return json({ plans, subjects, units });
+  return json({ schedules, subjects, units });
 };
 
 export async function action({ request }) {
   const formData = await request.formData();
   const id = formData.get("id");
 
-  await deletePlan(id);
+  await deleteSchedule(id);
 
   return redirect("/manage");
 }
@@ -34,26 +35,25 @@ export default function ManageIndex() {
   return (
     <section>
       <div>
-        <h1 className="mb-2 font-bold text-2xl flex justify-between items-end">
-          <p>Lesson Plans</p>
-          <button
-            type="button"
-            className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
-          >
-            <Link className="flex py-1 px-4" to="new/lesson-plan">
-              Add Plan
-            </Link>
-          </button>
-        </h1>
-        {data?.plans?.length > 0 ? (
+        <div className="mb-4 flex justify-between items-start">
+          <div>
+            <h1 className="font-bold text-2xl">Schedules</h1>
+            <p className="text-sm text-slate-400">
+              A schedule is a defined period of time in which one or more
+              courses occur.
+            </p>
+          </div>
+          <Button label="New Schedule" path="schedule/add" />
+        </div>
+        {data?.schedules?.length > 0 ? (
           <div className="my-2">
-            {data.plans.map((plan) => (
-              <section className="mb-2" key={plan._id}>
+            {data.schedules.map((schedule) => (
+              <section className="mb-2" key={schedule._id}>
                 <p className="text-purple-500 font-bold text-lg">
-                  <Link to={`plan/${plan._id}`}>{plan.name}</Link>
+                  <Link to={`schedule/${schedule._id}`}>{schedule.name}</Link>
                 </p>
                 <Form method="post">
-                  <input type="hidden" name="id" value={plan._id} />
+                  <input type="hidden" name="id" value={schedule._id} />
                   <button type="submit" className="hover:text-rose-500">
                     Delete
                   </button>
@@ -62,7 +62,7 @@ export default function ManageIndex() {
             ))}
           </div>
         ) : (
-          <p>Create a new lesson plan to get started.</p>
+          <p>Create a new schedule to get started.</p>
         )}
         <hr className="my-6" />
       </div>

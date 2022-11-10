@@ -3,6 +3,7 @@ import Lesson from "./models/Lesson";
 import Plan from "./models/Plan";
 import Subject from "./models/Subject";
 import Unit from "./models/Unit";
+import Schedule from "./models/Schedule";
 
 export async function getUsers() {
   const res = await User.find();
@@ -68,6 +69,11 @@ export async function createSubject(data) {
   return res;
 }
 
+export async function applySubject(data) {
+  const res = await Plan.create(data);
+  return res;
+}
+
 // Unit Requests
 
 export async function getUnits(owner) {
@@ -77,5 +83,27 @@ export async function getUnits(owner) {
 
 export async function createUnit(data) {
   const res = await Unit.create(data);
+  return res;
+}
+
+// SCHEDULE Requests
+
+export async function getSchedules(owner) {
+  const res = await Schedule.find({ owner });
+  return res;
+}
+
+export async function getSchedule(_id, owner) {
+  const res = await Schedule.findOne({ _id, owner });
+  return res;
+}
+
+export async function createSchedule(data) {
+  const res = await Schedule.create(data);
+  return res;
+}
+
+export async function deleteSchedule(_id) {
+  const res = await Schedule.deleteOne({ _id });
   return res;
 }
