@@ -10,7 +10,7 @@ export default function LessonPlanByIdIndex() {
     <>
       <Button label="Apply Subject" path="apply/subject" />
       <section className="my-4">
-        <LessonPlanList weeks={weeks} dates={dates} />
+        <LessonPlanList data={data} />
       </section>
     </>
   );

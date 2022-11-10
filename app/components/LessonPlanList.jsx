@@ -1,8 +1,11 @@
-import { isSameWeek, parseISO } from "date-fns";
+import { isSameWeek, parseISO, getDay } from "date-fns";
 import { format } from "date-fns/fp";
 
-export default function LessonPlanList({ weeks, dates }) {
+export default function LessonPlanList({ data }) {
+  const { dates, weeks } = data.calendar;
   const formatDate = format("EEEE, MMMM d, y");
+
+  const { subjects } = data;
 
   return (
     <section>
@@ -14,7 +17,16 @@ export default function LessonPlanList({ weeks, dates }) {
           {dates
             .filter((date) => isSameWeek(parseISO(week), parseISO(date)))
             .map((date) => (
-              <p key={date}>{formatDate(parseISO(date))}</p>
+              <div key={date}>
+                <p className="text-purple-500 font-bold">
+                  {formatDate(parseISO(date))}
+                </p>
+                {subjects.map((subject) =>
+                  subject.frequency.includes(getDay(parseISO(date))) ? (
+                    <p key={subject.name}>- {subject.name}</p>
+                  ) : null
+                )}
+              </div>
             ))}
           <p></p>
         </div>
