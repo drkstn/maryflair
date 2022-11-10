@@ -2,7 +2,7 @@ import { mongoose } from "~/services/db.server";
 
 const PlanSchema = new mongoose.Schema({
   owner: String,
-  title: String,
+  name: String,
   slug: String,
   calendar: {
     timePeriod: String,

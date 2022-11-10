@@ -20,11 +20,11 @@ export async function action({ request }) {
   const formData = await request.formData();
 
   const owner = formData.get("owner");
-  const title = formData
-    .get("title")
+  const name = formData
+    .get("name")
     .replace(/[^a-zA-Z0-9 ]/g, "")
     .trim();
-  const slug = title.replace(/\s+/g, "-").toLowerCase();
+  const slug = name.replace(/\s+/g, "-").toLowerCase();
   const timePeriod = formData.get("timePeriod");
   const startDate = formData.get("startDate");
   const endDate = formData.get("endDate");
@@ -61,7 +61,7 @@ export async function action({ request }) {
 
   const data = {
     owner,
-    title,
+    name,
     slug,
     calendar: {
       timePeriod,
@@ -92,10 +92,10 @@ export default function ManageCreate() {
         <input type="hidden" name="owner" value={data} />
         <div className="mb-2">
           <label>
-            <span className="font-bold text-purple-500">Title: </span>
+            <span className="font-bold text-purple-500">Name: </span>
             <br />
             <input
-              name="title"
+              name="name"
               type="text"
               className="my-2 p-1 border rounded-lg border-purple-500"
             />

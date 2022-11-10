@@ -21,7 +21,7 @@ export default function LessonPlan() {
 
   return (
     <section>
-      <h1 className="mb-2 font-bold text-3xl">{data.title}</h1>
+      <h1 className="mb-2 font-bold text-3xl">{data.name}</h1>
       {data.calendar.weeks.map((week, index) => (
         <div key={index} className="mb-4">
           <h1 className="font-bold text-lg">

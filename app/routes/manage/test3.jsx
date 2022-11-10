@@ -66,7 +66,7 @@ const deployLessons3 = deployLessons2.reduce((start, value, index) => {
   ];
 }, []);
 
-console.log(possibleDates);
-console.log(deployLessons);
-console.log(deployLessons2);
-console.log(deployLessons3);
+// console.log(possibleDates);
+// console.log(deployLessons);
+// console.log(deployLessons2);
+// console.log(deployLessons3);
