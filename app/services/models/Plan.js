@@ -18,20 +18,23 @@ const PlanSchema = new mongoose.Schema({
   },
   subjects: [
     {
+      name: String,
       frequency: [Number],
-      subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" },
-    },
-  ],
-  resources: [
-    {
-      startDate: String,
-      resource: { type: mongoose.Schema.Types.ObjectId, ref: "Resource" },
-    },
-  ],
-  lessons: [
-    {
-      date: String,
-      lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
+      notes: [String],
+      units: [
+        {
+          name: String,
+          startDate: String,
+          notes: [String],
+          lessons: [
+            {
+              name: String,
+              date: String,
+              notes: [String],
+            },
+          ],
+        },
+      ],
     },
   ],
 });

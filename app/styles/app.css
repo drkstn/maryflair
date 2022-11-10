@@ -536,16 +536,12 @@ video {
   margin-bottom: 0.5rem;
 }
 
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.ml-6 {
-  margin-left: 1.5rem;
-}
-
 .ml-4 {
   margin-left: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .flex {
@@ -639,11 +635,6 @@ video {
   line-height: 2.25rem;
 }
 
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -652,6 +643,11 @@ video {
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .font-bold {
