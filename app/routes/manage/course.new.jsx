@@ -38,65 +38,69 @@ export const action = async ({ request }) => {
 export default function CourseNew() {
   const data = useLoaderData();
 
-  const [numberOfNotes, setNumberOfNotes] = useState(1);
-  const noteInputs = Array(numberOfNotes).fill("note");
+  const [noteCounter, setNoteCounter] = useState(1);
+  const numOfNotes = Array(noteCounter).fill();
 
   const handleClick = (event) => {
-    setNumberOfNotes(numberOfNotes + 1);
+    setNoteCounter(noteCounter + 1);
   };
 
   return (
     <section>
-      <div className="mb-4">
+      <div className="mb-6">
         <h1 className="text-slate-700 font-bold text-3xl">Create New Course</h1>
         <p className="mt-2 text-sm text-slate-500">
           A course is a sequential collection of lessons.
         </p>
       </div>
 
-      <Form method="post" className="mt-4">
+      <Form method="post">
         <input type="hidden" name="owner" value={data} />
 
-        <div className="mb-2">
+        <div className="mb-6">
           <label>
-            <div className="font-bold text-purple-500">Name: </div>
+            <div className="mb-2 font-bold text-purple-500">Name: </div>
             <input
               name="name"
               type="text"
-              className="my-2 p-1 border rounded-lg border-purple-500 w-full max-w-md"
+              className="p-1 border rounded-lg border-purple-500 w-full max-w-md"
             />
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-6">
           <label>
-            <div className="font-bold text-purple-500">Objective: </div>
+            <div className="mb-2 font-bold text-purple-500">Objective: </div>
             <textarea
               name="objective"
               type="text"
-              className="my-2 p-1 border rounded-lg border-purple-500 h-20 w-full max-w-md"
+              className="p-1 border rounded-lg border-purple-500 h-20 w-full max-w-md"
             />
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-6">
           <label>
-            <div className="font-bold text-purple-500">Notes: </div>
-            {noteInputs.map((value, index) => (
-              <textarea
-                key={index}
-                name="notes"
-                type="text"
-                className="flex my-2 p-1 border rounded-lg border-purple-500 h-16 w-full max-w-md"
-              />
-            ))}
-            <button
-              type="button"
-              onClick={handleClick}
-              className="text-purple-500 hover:text-purple-700 min-w-max"
-            >
-              + Add Note
-            </button>
+            <div className="mb-2 font-bold text-purple-500 ">Notes: </div>
+            <div className="mb-2 p-4 border rounded-lg border-purple-500 max-w-md space-y-4">
+              {numOfNotes.map((value, index) => (
+                <textarea
+                  key={index}
+                  name="notes"
+                  type="text"
+                  className="flex p-1 border rounded-md border-purple-200 w-full h-16"
+                />
+              ))}
+            </div>
+            <div className="flex justify-end max-w-md">
+              <button
+                type="button"
+                onClick={handleClick}
+                className="text-purple-500 hover:text-purple-700 min-w-max text-sm font-bold"
+              >
+                + Add Note
+              </button>
+            </div>
           </label>
         </div>
 

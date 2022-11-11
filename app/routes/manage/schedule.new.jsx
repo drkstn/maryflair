@@ -86,7 +86,7 @@ export default function ScheduleNew() {
 
   return (
     <section>
-      <div className="mb-4">
+      <div className="mb-6">
         <h1 className="text-slate-700 font-bold text-3xl">
           Create New Schedule
         </h1>
@@ -96,26 +96,26 @@ export default function ScheduleNew() {
         </p>
       </div>
 
-      <Form method="post" className="mt-4">
+      <Form method="post">
         <input type="hidden" name="owner" value={data} />
 
-        <div className="mb-2">
+        <div className="mb-6">
           <label>
-            <div className="font-bold text-purple-500">Name: </div>
+            <div className="mb-2 font-bold text-purple-500">Name: </div>
             <input
               name="name"
               type="text"
-              className="my-2 p-1 border rounded-lg border-purple-500 w-full max-w-md"
+              className="p-1 border rounded-lg border-purple-500 w-full max-w-md"
             />
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-6">
           <label>
-            <div className="font-bold text-purple-500">Time Period:</div>
+            <div className="mb-2 font-bold text-purple-500">Time Period:</div>
             <select
               name="period"
-              className="my-2 p-1 border rounded-lg border-purple-500"
+              className="p-1 border rounded-lg border-purple-500"
             >
               <option value="">Please Select</option>
               <option value="semester">Semester</option>
@@ -126,45 +126,45 @@ export default function ScheduleNew() {
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-6">
           <label>
-            <div className="font-bold text-purple-500">Start Date: </div>
+            <div className="mb-2 font-bold text-purple-500">Start Date: </div>
             <input
               name="start"
               type="date"
-              className="my-2 p-1 border rounded-lg border-purple-500"
+              className="p-1 border rounded-lg border-purple-500"
             />
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-6">
           <label>
-            <div className="font-bold text-purple-500">End Date: </div>
+            <div className="mb-2 font-bold text-purple-500">End Date: </div>
             <input
               name="end"
               type="date"
-              className="my-2 p-1 border rounded-lg border-purple-500"
+              className="p-1 border rounded-lg border-purple-500"
             />
           </label>
         </div>
 
-        <div className="mb-2">
-          <div className="mb-1 font-bold text-purple-500">Exclude:</div>
-          <div className="space-x-3">
-            <label>
+        <div className="mb-6">
+          <div className="mb-2 font-bold text-purple-500">Exclude:</div>
+          <div>
+            <label className="whitespace-nowrap mr-4">
               <input
                 type="checkbox"
                 name="excludeHolidays"
-                className="mr-1"
+                className="mr-2"
                 value={true}
               />
               Holidays
             </label>
-            <label>
+            <label className="whitespace-nowrap mr-4">
               <input
                 type="checkbox"
                 name="excludeWeekends"
-                className="mr-1"
+                className="mr-2"
                 value={true}
               />
               Weekends

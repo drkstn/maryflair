@@ -21,7 +21,7 @@ export default function ScheduleById() {
       <h2 className="min-w-max mb-1 font-bold text-sm tracking-wider text-purple-500 uppercase">
         Schedule
       </h2>
-      <h1 className="mb-2 text-slate-700 font-bold text-3xl">{data.name}</h1>
+      <h1 className=" text-slate-700 font-bold text-3xl">{data.name}</h1>
       <Outlet context={data} />
     </section>
   );

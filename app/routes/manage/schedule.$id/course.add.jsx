@@ -21,7 +21,7 @@ export default function ManageCreate() {
         </p>
       </div>
 
-      <Form method="post" className="mt-4">
+      <Form method="post" className="mt-6">
         <input type="hidden" name="owner" value={data} />
 
         <div className="space-x-2 mt-4">
