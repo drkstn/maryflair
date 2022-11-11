@@ -105,7 +105,7 @@ export default function ScheduleNew() {
             <input
               name="name"
               type="text"
-              className="my-2 p-1 border rounded-lg border-purple-500"
+              className="my-2 p-1 border rounded-lg border-purple-500 w-full max-w-md"
             />
           </label>
         </div>

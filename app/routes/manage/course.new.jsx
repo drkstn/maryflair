@@ -63,7 +63,7 @@ export default function CourseNew() {
             <input
               name="name"
               type="text"
-              className="my-2 p-1 border rounded-lg border-purple-500"
+              className="my-2 p-1 border rounded-lg border-purple-500 w-full max-w-md"
             />
           </label>
         </div>
@@ -74,7 +74,7 @@ export default function CourseNew() {
             <textarea
               name="objective"
               type="text"
-              className="my-2 p-1 border rounded-lg border-purple-500 h-24"
+              className="my-2 p-1 border rounded-lg border-purple-500 h-20 w-full max-w-md"
             />
           </label>
         </div>
@@ -87,7 +87,7 @@ export default function CourseNew() {
                 key={index}
                 name="notes"
                 type="text"
-                className="flex my-2 p-1 border rounded-lg border-purple-500 h-24"
+                className="flex my-2 p-1 border rounded-lg border-purple-500 h-16 w-full max-w-md"
               />
             ))}
             <button

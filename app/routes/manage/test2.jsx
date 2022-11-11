@@ -2,11 +2,23 @@ import { json } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 
 export async function action({ request }) {
-  const formData = await request.formData();
-  const intent = formData.get("intent");
-  console.log(intent);
+  const body = await request.formData();
 
-  return json({ message: `You pressed ${intent.toUpperCase()}` });
+  const data = Object.fromEntries(body);
+  console.log(data);
+
+  switch (data.intent) {
+    case "create":
+      return "CREATE!!!";
+    case "update":
+      return "UPDATE!!!";
+    case "delete":
+      return "DELETE!!!";
+    default:
+      return "Press a button 2";
+  }
+
+  // return json({ message: `You pressed ${intent.toUpperCase()}` });
 }
 
 export default function Test() {
@@ -14,7 +26,7 @@ export default function Test() {
 
   return (
     <section>
-      <p className="mb-4">{data ? data.message : "Press a button"}</p>
+      <p className="mb-4">{data ? data : "Press a button"}</p>
       <Form method="post" className="space-x-2">
         <button
           className="py-2 px-4 bg-purple-500 hover:bg-purple-700 text-white rounded-full"
