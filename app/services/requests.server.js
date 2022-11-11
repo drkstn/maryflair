@@ -94,8 +94,8 @@ export async function getSchedules(owner) {
   return res;
 }
 
-export async function getSchedule(_id, owner) {
-  const res = await Schedule.findOne({ _id, owner });
+export async function getSchedule(nanoid, owner) {
+  const res = await Schedule.findOne({ nanoid, owner });
   return res;
 }
 
@@ -104,8 +104,8 @@ export async function createSchedule(data) {
   return res;
 }
 
-export async function deleteSchedule(_id) {
-  const res = await Schedule.deleteOne({ _id });
+export async function deleteSchedule(nanoid) {
+  const res = await Schedule.deleteOne({ nanoid });
   return res;
 }
 
@@ -116,8 +116,8 @@ export async function getCourses(owner) {
   return res;
 }
 
-export async function getCourse(_id, owner) {
-  const res = await Course.findOne({ _id, owner });
+export async function getCourse(nanoid, owner) {
+  const res = await Course.findOne({ nanoid, owner });
   return res;
 }
 
@@ -126,7 +126,7 @@ export async function createCourse(data) {
   return res;
 }
 
-export async function deleteCourse(_id) {
-  const res = await Course.deleteOne({ _id });
+export async function deleteCourse(nanoid) {
+  const res = await Course.deleteOne({ nanoid });
   return res;
 }

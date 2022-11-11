@@ -52,16 +52,18 @@ export default function ManageIndex() {
               courses occur.
             </p>
           </div>
-          <Button label="New Schedule" path="schedule/new" />
+          <Button label="New Schedule" path="schedules/new" />
         </div>
         {data?.schedules?.length > 0 ? (
           <div>
             {data.schedules.map((schedule) => (
-              <section className="mb-2" key={schedule._id}>
+              <section className="mb-2" key={schedule.nanoid}>
                 <Form method="post">
-                  <input type="hidden" name="id" value={schedule._id} />
+                  <input type="hidden" name="id" value={schedule.nanoid} />
                   <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
-                    <Link to={`schedule/${schedule._id}`}>{schedule.name}</Link>
+                    <Link to={`schedules/${schedule.nanoid}/${schedule.slug}`}>
+                      {schedule.name}
+                    </Link>
                     <button
                       type="submit"
                       name="intent"
@@ -88,16 +90,18 @@ export default function ManageIndex() {
               A course is a sequential collection of lessons.
             </p>
           </div>
-          <Button label="New Course" path="course/new" />
+          <Button label="New Course" path="courses/new" />
         </div>
         {data?.courses?.length > 0 ? (
           <div>
             {data.courses.map((course) => (
-              <section className="mb-2" key={course._id}>
+              <section className="mb-2" key={course.nanoid}>
                 <Form method="post">
-                  <input type="hidden" name="id" value={course._id} />
+                  <input type="hidden" name="id" value={course.nanoid} />
                   <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
-                    <Link to={`course/${course._id}`}>{course.name}</Link>
+                    <Link to={`courses/${course.nanoid}/${course.slug}`}>
+                      {course.name}
+                    </Link>
                     <button
                       type="submit"
                       name="intent"

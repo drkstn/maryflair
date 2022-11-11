@@ -78,7 +78,7 @@ export async function action({ request }) {
 
   const res = await createSchedule(data);
 
-  return redirect(`/manage/schedule/${res._id}`);
+  return redirect(`/manage/schedules/${res.nanoid}/${res.slug}`);
 }
 
 export default function ScheduleNew() {

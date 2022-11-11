@@ -32,7 +32,7 @@ export const action = async ({ request }) => {
 
   const res = await createCourse(data);
 
-  return redirect(`/manage/course/${res._id}`);
+  return redirect(`/manage/courses/${res.nanoid}/${res.slug}`);
 };
 
 export default function CourseNew() {
