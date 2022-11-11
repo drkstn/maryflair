@@ -15,7 +15,7 @@ export default function ManageCreate() {
     <section>
       <div className="mb-4">
         <h1 className="text-purple-500 font-bold text-3xl">Add Course</h1>
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-slate-500">
           Add and apply a new or existing course to this schedule.
         </p>
       </div>

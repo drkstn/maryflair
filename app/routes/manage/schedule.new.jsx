@@ -1,11 +1,10 @@
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
-import { createPlan, createSchedule } from "~/services/requests.server";
+import { createSchedule } from "~/services/requests.server";
 import { authenticator } from "~/services/auth.server";
 import {
   eachDayOfInterval,
   eachWeekOfInterval,
-  formatISO,
   isWeekend,
   parseISO,
 } from "date-fns";
@@ -82,7 +81,7 @@ export async function action({ request }) {
   return redirect(`/manage/schedule/${res._id}`);
 }
 
-export default function ManageCreate() {
+export default function ScheduleNew() {
   const data = useLoaderData();
 
   return (
@@ -91,7 +90,7 @@ export default function ManageCreate() {
         <h1 className="text-slate-700 font-bold text-3xl">
           Create New Schedule
         </h1>
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-slate-500">
           A schedule is a defined period of time in which one or more courses
           occur.
         </p>

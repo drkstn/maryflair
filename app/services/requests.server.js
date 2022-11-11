@@ -4,6 +4,7 @@ import Plan from "./models/Plan";
 import Subject from "./models/Subject";
 import Unit from "./models/Unit";
 import Schedule from "./models/Schedule";
+import Course from "./models/Course";
 
 export async function getUsers() {
   const res = await User.find();
@@ -105,5 +106,27 @@ export async function createSchedule(data) {
 
 export async function deleteSchedule(_id) {
   const res = await Schedule.deleteOne({ _id });
+  return res;
+}
+
+// COURSE Requests
+
+export async function getCourses(owner) {
+  const res = await Course.find({ owner });
+  return res;
+}
+
+export async function getCourse(_id, owner) {
+  const res = await Course.findOne({ _id, owner });
+  return res;
+}
+
+export async function createCourse(data) {
+  const res = await Course.create(data);
+  return res;
+}
+
+export async function deleteCourse(_id) {
+  const res = await Course.deleteOne({ _id });
   return res;
 }

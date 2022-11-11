@@ -3,10 +3,10 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
 import { authenticator } from "~/services/auth.server";
 import {
+  deleteCourse,
   deleteSchedule,
+  getCourses,
   getSchedules,
-  getUnits,
-  getSubjects,
 } from "~/services/requests.server";
 
 export const loader = async ({ request }) => {
@@ -14,17 +14,26 @@ export const loader = async ({ request }) => {
   const owner = user._json.email;
 
   const schedules = await getSchedules(owner);
-  const subjects = await getSubjects(owner);
-  const units = await getUnits(owner);
+  const courses = await getCourses(owner);
 
-  return json({ schedules, subjects, units });
+  return json({ schedules, courses });
 };
 
 export async function action({ request }) {
   const formData = await request.formData();
   const id = formData.get("id");
+  const intent = formData.get("intent");
 
-  await deleteSchedule(id);
+  switch (intent) {
+    case "deleteSchedule":
+      await deleteSchedule(id);
+      break;
+    case "deleteCourse":
+      await deleteCourse(id);
+      break;
+    default:
+      console.log(`Sorry, can't find ${intent}.`);
+  }
 
   return redirect("/manage");
 }
@@ -38,7 +47,7 @@ export default function ManageIndex() {
         <div className="mb-2 flex justify-between items-start space-x-4">
           <div>
             <h1 className="text-slate-700 font-bold text-3xl">Schedules</h1>
-            <p className="mt-2 text-sm text-slate-400">
+            <p className="mt-2 text-sm text-slate-500">
               A schedule is a defined period of time in which one or more
               courses occur.
             </p>
@@ -55,7 +64,9 @@ export default function ManageIndex() {
                     <Link to={`schedule/${schedule._id}`}>{schedule.name}</Link>
                     <button
                       type="submit"
-                      className="px-2 rounded-full text-sm border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white"
+                      name="intent"
+                      value="deleteSchedule"
+                      className="px-2 rounded-full text-sm font-normal border border-slate-500 text-slate-500 hover:bg-slate-500 hover:text-white"
                     >
                       Delete
                     </button>
@@ -73,34 +84,35 @@ export default function ManageIndex() {
         <div className="mb-2 flex justify-between items-start space-x-4">
           <div>
             <h1 className="text-slate-700 font-bold text-3xl">Courses</h1>
-            <p className="mt-2 text-sm text-slate-400">
+            <p className="mt-2 text-sm text-slate-500">
               A course is a sequential collection of lessons.
             </p>
           </div>
           <Button label="New Course" path="course/new" />
         </div>
-        {data?.subjects?.length > 0 ? (
-          <ul className="my-2">
-            {data.subjects.map((subject) => (
-              <li key={subject._id}>
-                <span className=" text-purple-500 font-bold">
-                  {subject.name}
-                </span>
-                <ul>
-                  {data.units.map((unit) =>
-                    subject._id === unit.subject ? (
-                      <li key={unit._id} className="ml-4">
-                        <span className=" text-purple-300 font-bold">- </span>
-                        {unit.name}
-                      </li>
-                    ) : null
-                  )}
-                </ul>
-              </li>
+        {data?.courses?.length > 0 ? (
+          <div>
+            {data.courses.map((course) => (
+              <section className="mb-2" key={course._id}>
+                <Form method="post">
+                  <input type="hidden" name="id" value={course._id} />
+                  <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
+                    <Link to={`course/${course._id}`}>{course.name}</Link>
+                    <button
+                      type="submit"
+                      name="intent"
+                      value="deleteCourse"
+                      className="px-2 rounded-full text-sm font-normal border border-slate-500 text-slate-500 hover:bg-slate-500 hover:text-white"
+                    >
+                      Delete
+                    </button>
+                  </p>
+                </Form>
+              </section>
             ))}
-          </ul>
+          </div>
         ) : (
-          <p>You currently have no courses.</p>
+          <p>You currently do not have any courses.</p>
         )}
         <hr className="my-6" />
       </div>
