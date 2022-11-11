@@ -23,9 +23,11 @@ export default function ManageCreate() {
   return (
     <section>
       <div className="mb-4">
-        <h1 className="text-purple-500 font-bold text-3xl">Add New Course</h1>
+        <h1 className="text-purple-500 font-bold text-3xl">
+          Import New Course
+        </h1>
         <p className="mt-2 text-sm text-slate-500">
-          Add a new course to this schedule.
+          Import a new course to this schedule.
         </p>
       </div>
 
@@ -131,7 +133,7 @@ export default function ManageCreate() {
         </div>
 
         <div className="space-x-2 mt-4">
-          <ButtonOutline label="Back" path="../course/add" />
+          <ButtonOutline label="Back" path="../courses/import" />
           <Button label="Create" type="submit" />
         </div>
       </Form>
