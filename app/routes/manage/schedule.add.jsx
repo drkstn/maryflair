@@ -88,8 +88,10 @@ export default function ManageCreate() {
   return (
     <section>
       <div className="mb-4">
-        <h1 className="font-bold text-2xl">Create a New Schedule</h1>
-        <p className="text-sm text-slate-400">
+        <h1 className="text-slate-700 font-bold text-3xl">
+          Create New Schedule
+        </h1>
+        <p className="mt-2 text-sm text-slate-400">
           A schedule is a defined period of time in which one or more courses
           occur.
         </p>

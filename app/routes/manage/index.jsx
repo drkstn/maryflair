@@ -35,10 +35,10 @@ export default function ManageIndex() {
   return (
     <section>
       <div>
-        <div className="mb-4 flex justify-between items-start">
+        <div className="mb-2 flex justify-between items-start space-x-4">
           <div>
-            <h1 className="font-bold text-2xl">Schedules</h1>
-            <p className="text-sm text-slate-400">
+            <h1 className="text-slate-700 font-bold text-3xl">Schedules</h1>
+            <p className="mt-2 text-sm text-slate-400">
               A schedule is a defined period of time in which one or more
               courses occur.
             </p>
@@ -46,17 +46,20 @@ export default function ManageIndex() {
           <Button label="New Schedule" path="schedule/add" />
         </div>
         {data?.schedules?.length > 0 ? (
-          <div className="my-2">
+          <div>
             {data.schedules.map((schedule) => (
               <section className="mb-2" key={schedule._id}>
-                <p className="text-purple-500 font-bold text-lg">
-                  <Link to={`schedule/${schedule._id}`}>{schedule.name}</Link>
-                </p>
                 <Form method="post">
                   <input type="hidden" name="id" value={schedule._id} />
-                  <button type="submit" className="hover:text-rose-500">
-                    Delete
-                  </button>
+                  <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
+                    <Link to={`schedule/${schedule._id}`}>{schedule.name}</Link>
+                    <button
+                      type="submit"
+                      className="px-2 rounded-full text-sm border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white"
+                    >
+                      Delete
+                    </button>
+                  </p>
                 </Form>
               </section>
             ))}
@@ -67,14 +70,14 @@ export default function ManageIndex() {
         <hr className="my-6" />
       </div>
       <div>
-        <h1 className="mb-2 font-bold text-2xl flex justify-between items-end">
-          <p>Subjects</p>
+        <h1 className="mb-2 font-bold text-slate-700 text-2xl flex justify-between items-end">
+          <p>Courses</p>
           <button
             type="button"
             className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
           >
             <Link className="flex py-1 px-4" to="new/subject">
-              Add Subject
+              Add Course
             </Link>
           </button>
         </h1>
@@ -100,32 +103,6 @@ export default function ManageIndex() {
           </ul>
         ) : (
           <p>You currently have no subjects.</p>
-        )}
-        <hr className="my-6" />
-      </div>
-      <div>
-        <h1 className="mb-2 font-bold text-2xl flex justify-between items-end">
-          <p>Units</p>
-          <button
-            type="button"
-            className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
-          >
-            <Link className="flex py-1 px-4" to="new/unit">
-              Add Unit
-            </Link>
-          </button>
-        </h1>
-        {data?.units?.length > 0 ? (
-          <ul className="my-2">
-            {data.units.map((unit) => (
-              <li key={unit._id}>
-                <span className=" text-purple-300 font-bold">- </span>
-                {unit.name}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>You currently have no units.</p>
         )}
         <hr className="my-6" />
       </div>
