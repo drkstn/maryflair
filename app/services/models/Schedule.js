@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 mongoose.plugin(slugGenerator);
 
 const ScheduleSchema = new mongoose.Schema({
-  nanoid: { type: String, unique: true, default: nanoid(10) },
+  nanoid: { type: String, default: () => nanoid(10), unique: true },
   owner: String,
   name: String,
   slug: { type: String, slug: "name" },
