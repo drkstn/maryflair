@@ -43,7 +43,7 @@ export default function ManageIndex() {
               courses occur.
             </p>
           </div>
-          <Button label="New Schedule" path="schedule/add" />
+          <Button label="New Schedule" path="schedule/new" />
         </div>
         {data?.schedules?.length > 0 ? (
           <div>
@@ -70,17 +70,15 @@ export default function ManageIndex() {
         <hr className="my-6" />
       </div>
       <div>
-        <h1 className="mb-2 font-bold text-slate-700 text-2xl flex justify-between items-end">
-          <p>Courses</p>
-          <button
-            type="button"
-            className="mt-2 rounded-full font-normal text-base text-white bg-purple-500 hover:bg-purple-700"
-          >
-            <Link className="flex py-1 px-4" to="new/subject">
-              Add Course
-            </Link>
-          </button>
-        </h1>
+        <div className="mb-2 flex justify-between items-start space-x-4">
+          <div>
+            <h1 className="text-slate-700 font-bold text-3xl">Courses</h1>
+            <p className="mt-2 text-sm text-slate-400">
+              A course is a sequential collection of lessons.
+            </p>
+          </div>
+          <Button label="New Course" path="course/new" />
+        </div>
         {data?.subjects?.length > 0 ? (
           <ul className="my-2">
             {data.subjects.map((subject) => (
@@ -102,7 +100,7 @@ export default function ManageIndex() {
             ))}
           </ul>
         ) : (
-          <p>You currently have no subjects.</p>
+          <p>You currently have no courses.</p>
         )}
         <hr className="my-6" />
       </div>
