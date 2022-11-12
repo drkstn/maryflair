@@ -32,7 +32,7 @@ export const meta = ({ data, params }) => {
   }
 
   return {
-    title: `Mary Flair • Manage Course • ${data.name}`,
+    title: `${data.name} - Manage Courses - Mary Flair`,
     description: data?.objective || data.name,
   };
 };
