@@ -594,6 +594,10 @@ video {
   max-width: 28rem;
 }
 
+.max-w-lg {
+  max-width: 32rem;
+}
+
 .list-outside {
   list-style-position: outside;
 }

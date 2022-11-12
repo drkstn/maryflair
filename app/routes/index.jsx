@@ -21,7 +21,7 @@ export default function Index() {
       </nav>
       <hr className="mb-6" />
       <h1 className="text-slate-700 font-bold text-3xl">Welcome</h1>
-      <div className=" space-y-4 max-w-md mt-2 text-slate-700">
+      <div className=" space-y-4 max-w-lg mt-2 text-slate-700">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis a
           fermentum odio. Praesent consectetur tortor massa, in feugiat sapien
