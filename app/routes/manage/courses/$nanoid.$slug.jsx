@@ -1,14 +1,14 @@
 import { json, redirect } from "@remix-run/node";
 import { Outlet, useLoaderData, useParams } from "@remix-run/react";
-import { getCourse } from "~/services/requests.server";
 import { authenticator } from "~/services/auth.server";
+import Course from "~/services/models/Course";
 
 export const loader = async ({ params, request }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
   const { nanoid } = params;
 
-  const data = await getCourse(nanoid, owner);
+  const data = await Course.findOne({ nanoid, owner }).populate("lessons");
 
   if (!data) {
     throw new Response("Not Found", {

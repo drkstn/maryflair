@@ -1,11 +1,13 @@
 import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useOutletContext } from "@remix-run/react";
 import Button from "~/components/Button";
 import ButtonOutline from "~/components/ButtonOutline";
 import InputArray from "~/components/InputArray";
 import TextAreaArray from "~/components/TextAreaArray";
 import { authenticator } from "~/services/auth.server";
-import { removeEmptyStrings } from "~/services/helpers.server";
+import { clear } from "~/services/helpers.server";
+import Course from "~/services/models/Course";
+import Lesson from "~/services/models/Lesson";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -14,24 +16,31 @@ export const loader = async ({ request }) => {
 
 export const action = async ({ request }) => {
   const body = await request.formData();
+  const owner = body.get("owner");
   const name = body.get("name");
-  const materials = removeEmptyStrings(body.getAll("materials"));
-  const assignments = removeEmptyStrings(body.getAll("assignments"));
-  const notes = removeEmptyStrings(body.getAll("notes"));
+  const materials = clear(body.getAll("materials"));
+  const assignments = clear(body.getAll("assignments"));
+  const notes = clear(body.getAll("notes"));
+  const course = body.get("courseId");
 
   const data = {
+    owner,
     name,
     materials,
     assignments,
     notes,
+    course,
   };
 
-  console.log(data);
+  const newLesson = await Lesson.create(data);
+  await Course.updateOne({ _id: course }, { $push: { lessons: newLesson } });
+
   return null;
 };
 
 export default function NewLesson() {
   const data = useLoaderData();
+  const context = useOutletContext();
 
   return (
     <section>
@@ -44,6 +53,7 @@ export default function NewLesson() {
 
       <Form method="post" className="mt-6 max-w-md">
         <input type="hidden" name="owner" value={data} />
+        <input type="hidden" name="courseId" value={context._id} />
 
         <div className="mb-6">
           <label>

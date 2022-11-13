@@ -21,21 +21,6 @@ export async function createUser(email, name) {
   return res;
 }
 
-export async function createLesson(data) {
-  const res = await Lesson.create(data);
-  return res;
-}
-
-export async function deleteLesson(_id) {
-  const res = await Lesson.deleteOne({ _id });
-  return res;
-}
-
-export async function getLessons(owner) {
-  const res = await Lesson.find({ owner });
-  return res;
-}
-
 // PLAN Requests
 
 export async function getPlans(owner) {
@@ -128,5 +113,22 @@ export async function createCourse(data) {
 
 export async function deleteCourse(nanoid) {
   const res = await Course.deleteOne({ nanoid });
+  return res;
+}
+
+// LESSON Requests
+
+export async function getLessons(owner) {
+  const res = await Lesson.find({ owner });
+  return res;
+}
+
+export async function createLesson(data) {
+  const res = await Lesson.create(data);
+  return res;
+}
+
+export async function deleteLesson(_id) {
+  const res = await Lesson.deleteOne({ _id });
   return res;
 }
