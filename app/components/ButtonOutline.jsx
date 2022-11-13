@@ -3,10 +3,10 @@ import { Link } from "@remix-run/react";
 export default function ButtonOutline({ type, label, path }) {
   return (
     <>
-      {type === "submit" ? (
+      {type === "submit" || type === "reset" ? (
         <button
-          type="submit"
-          className="rounded-full text-purple-500 border border-purple-500 hover:bg-purple-500 min-w-max hover:text-white"
+          type={type}
+          className="py-2 px-4 rounded-full text-purple-500 border border-purple-500 hover:bg-purple-500 min-w-max hover:text-white"
         >
           {label}
         </button>
