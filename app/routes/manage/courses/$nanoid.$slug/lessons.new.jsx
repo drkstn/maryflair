@@ -5,6 +5,7 @@ import ButtonOutline from "~/components/ButtonOutline";
 import InputArray from "~/components/InputArray";
 import TextAreaArray from "~/components/TextAreaArray";
 import { authenticator } from "~/services/auth.server";
+import { removeEmptyStrings } from "~/services/helpers.server";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -12,18 +13,11 @@ export const loader = async ({ request }) => {
 };
 
 export const action = async ({ request }) => {
-  const clear = (arr) => {
-    return arr.reduce(
-      (start, value) => (value.length > 0 ? [...start, value] : start),
-      []
-    );
-  };
-
   const body = await request.formData();
   const name = body.get("name");
-  const materials = clear(body.getAll("materials"));
-  const assignments = clear(body.getAll("assignments"));
-  const notes = clear(body.getAll("notes"));
+  const materials = removeEmptyStrings(body.getAll("materials"));
+  const assignments = removeEmptyStrings(body.getAll("assignments"));
+  const notes = removeEmptyStrings(body.getAll("notes"));
 
   const data = {
     name,
