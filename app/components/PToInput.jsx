@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function PToInput({ label, name, type, input }) {
+export default function PToInput({ label, name, type, initialValue }) {
   const [isInput, setIsInput] = useState(true);
 
   const handleKeyUp = (e) => {
@@ -13,13 +13,16 @@ export default function PToInput({ label, name, type, input }) {
     <>
       {isInput ? (
         <p
+          tabIndex={0}
           onClick={() => setIsInput(false)}
-          className="py-1 hover:p-1 text-purple-400 hover:bg-purple-500 hover:text-white"
+          onFocus={() => setIsInput(false)}
+          className="py-1 hover:p-1 text-purple-400 w-fit
+           hover:bg-purple-500 hover:text-white hover:rounded-full hover:px-3"
         >
-          {label} {input}
+          {label} {initialValue}
         </p>
       ) : (
-        <p className="p-1 bg-purple-500 text-white">
+        <p className="px-3 py-1 rounded-full bg-purple-500 text-white w-fit">
           <label>
             {label}
             <input
@@ -28,8 +31,7 @@ export default function PToInput({ label, name, type, input }) {
               type={type || "text"}
               onBlur={() => setIsInput(true)}
               onKeyUp={handleKeyUp}
-              className="ml-1 px-1 h-full w-10 text-center border rounded-md border-purple-500 focus:outline-none text-purple-500"
-              // placeholder={input}
+              className="ml-1 px-1 h-full w-10 text-center border rounded-full border-purple-500 focus:outline-none text-purple-500"
             />
           </label>
         </p>
