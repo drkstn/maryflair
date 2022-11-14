@@ -18,3 +18,15 @@ export const moveElement = (arr, value, pos) => {
 
   return newArr;
 };
+
+export const moveByIndex = (arr, fromIndex, pos, to) => {
+  const newArr = [...arr];
+  // const toIndex = fromIndex + pos >= 0 ? fromIndex + pos : 0;
+  const toIndex = to ? to : fromIndex + pos >= 0 ? fromIndex + pos : 0;
+
+  const element = newArr.splice(fromIndex, 1)[0];
+
+  newArr.splice(toIndex, 0, element);
+
+  return newArr;
+};

@@ -618,6 +618,11 @@ video {
   max-width: 28rem;
 }
 
+.max-w-min {
+  max-width: -moz-min-content;
+  max-width: min-content;
+}
+
 .list-outside {
   list-style-position: outside;
 }

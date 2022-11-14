@@ -4,21 +4,50 @@ import Button from "~/components/Button";
 import Notes from "~/components/Notes";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
-import { moveElement } from "~/services/helpers.server";
+import { moveByIndex, moveElement } from "~/services/helpers.server";
 
 export const action = async ({ request, params }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
   const body = await request.formData();
   const lessonId = body.get("lessonId");
+  const lessonIndex = body.get("lessonIndex");
   const intent = body.get("intent");
-
+  const toIndex = body.get("toIndex");
   const { nanoid, slug } = params;
   const course = await Course.findOne({ nanoid, owner });
   const lessons = course.lessons.map((lesson) => lesson.toString());
 
-  const newLessonList = moveElement(lessons, lessonId, +intent);
+  let newLessonList;
+
+  switch (intent) {
+    case "up":
+      newLessonList = moveByIndex(course.lessons, parseInt(lessonIndex), -1);
+      break;
+    case "down":
+      newLessonList = moveByIndex(course.lessons, parseInt(lessonIndex), 1);
+      break;
+    case "move":
+      newLessonList = moveByIndex(
+        course.lessons,
+        parseInt(lessonIndex),
+        0,
+        parseInt(toIndex)
+      );
+      break;
+    default:
+      console.log(`Sorry, can't find ${intent}.`);
+  }
+
+  // const newLessonList = moveElement(lessons, lessonId, +intent);
+  // const newLessonList = moveByIndex(
+  //   course.lessons,
+  //   parseInt(lessonIndex),
+  //   parseInt(intent)
+  // );
   await Course.updateOne({ nanoid }, { lessons: newLessonList });
+
+  // return json(newLessonList);
 
   return redirect(`/manage/courses/${nanoid}/${slug}`);
 };
@@ -44,15 +73,32 @@ export default function ScheduleByIdIndex() {
           {lessons.map((lesson, index) => (
             <section key={lesson._id} className="mb-2">
               <Form method="post">
-                <p className=" text-purple-400">Lesson {index}</p>
+                <p className=" text-purple-400">
+                  Lesson
+                  <input
+                    type="text"
+                    name="toIndex"
+                    className="border rounded-full px-2 w-12"
+                    placeholder={index}
+                  />
+                  <button
+                    type="submit"
+                    name="intent"
+                    value="move"
+                    className="font-mono text-purple-500 hover:text-purple-300 text-sm"
+                  >
+                    move
+                  </button>
+                </p>
                 <div className="flex justify-between ">
                   <p className="font-bold text-purple-500">{lesson.name}</p>
                   <input type="hidden" name="lessonId" value={lesson._id} />
+                  <input type="hidden" name="lessonIndex" value={index} />
                   <div className="space-x-4">
                     <button
                       type="submit"
                       name="intent"
-                      value={1}
+                      value="down"
                       className="font-mono text-purple-500 hover:text-purple-300 text-sm"
                     >
                       down
@@ -60,7 +106,7 @@ export default function ScheduleByIdIndex() {
                     <button
                       type="submit"
                       name="intent"
-                      value={-1}
+                      value="up"
                       className="font-mono text-purple-500 hover:text-purple-300 text-sm"
                     >
                       up
