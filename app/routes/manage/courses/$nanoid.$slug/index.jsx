@@ -5,6 +5,8 @@ import Notes from "~/components/Notes";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
 import { moveByIndex, moveElement } from "~/services/helpers.server";
+import { useState } from "react";
+import PToInput from "~/components/PToInput";
 
 export const action = async ({ request, params }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -19,7 +21,7 @@ export const action = async ({ request, params }) => {
   const lessons = course.lessons.map((lesson) => lesson.toString());
 
   let newLessonList;
-
+  console.log({ intent });
   switch (intent) {
     case "up":
       newLessonList = moveByIndex(course.lessons, parseInt(lessonIndex), -1);
@@ -27,16 +29,13 @@ export const action = async ({ request, params }) => {
     case "down":
       newLessonList = moveByIndex(course.lessons, parseInt(lessonIndex), 1);
       break;
-    case "move":
+    default:
       newLessonList = moveByIndex(
         course.lessons,
         parseInt(lessonIndex),
         0,
-        parseInt(toIndex)
+        parseInt(intent)
       );
-      break;
-    default:
-      console.log(`Sorry, can't find ${intent}.`);
   }
 
   // const newLessonList = moveElement(lessons, lessonId, +intent);
@@ -48,7 +47,7 @@ export const action = async ({ request, params }) => {
   await Course.updateOne({ nanoid }, { lessons: newLessonList });
 
   // return json(newLessonList);
-
+  console.log("SUBMIT!!!!");
   return redirect(`/manage/courses/${nanoid}/${slug}`);
 };
 
@@ -90,6 +89,7 @@ export default function ScheduleByIdIndex() {
                     move
                   </button>
                 </p>
+                <PToInput label="Lesson" name="intent" input={index} />
                 <div className="flex justify-between ">
                   <p className="font-bold text-purple-500">{lesson.name}</p>
                   <input type="hidden" name="lessonId" value={lesson._id} />
