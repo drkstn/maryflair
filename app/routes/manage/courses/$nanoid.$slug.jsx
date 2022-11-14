@@ -1,5 +1,5 @@
 import { json, redirect } from "@remix-run/node";
-import { Outlet, useLoaderData, useParams } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
 
@@ -38,7 +38,6 @@ export const meta = ({ data, params }) => {
 };
 
 export function CatchBoundary() {
-  const params = useParams();
   return (
     <section>
       <h2 className="min-w-max mb-1 font-bold text-sm tracking-wider text-purple-500 uppercase">

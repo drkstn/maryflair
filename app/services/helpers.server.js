@@ -5,15 +5,9 @@ export const clear = (arr) => {
   );
 };
 
-export const move = (arr, obj, pos) => {
+export const moveElement = (arr, value, pos) => {
   const newArr = [...arr];
-
-  const entry = Object.entries(obj).flat();
-  const key = entry[0];
-  const value = entry[1];
-
-  const fromIndex = newArr.findIndex((item) => item[key] === value);
-
+  const fromIndex = newArr.indexOf(value);
   if (fromIndex === -1) return "not found";
 
   const toIndex = fromIndex + pos >= 0 ? fromIndex + pos : 0;

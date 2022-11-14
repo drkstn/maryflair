@@ -1,7 +1,6 @@
 import { getCourse } from "~/services/requests.server";
 import { authenticator } from "~/services/auth.server";
 import { redirect } from "@remix-run/node";
-import { Outlet, useLoaderData, useParams } from "@remix-run/react";
 
 export const loader = async ({ params, request }) => {
   const user = await authenticator.isAuthenticated(request);
