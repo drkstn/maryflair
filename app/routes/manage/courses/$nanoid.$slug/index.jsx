@@ -1,5 +1,5 @@
-import { redirect } from "@remix-run/node";
-import { Form, useOutletContext } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { Form, useFetcher, useOutletContext } from "@remix-run/react";
 import Button from "~/components/Button";
 import Notes from "~/components/Notes";
 import { authenticator } from "~/services/auth.server";
@@ -10,11 +10,12 @@ import PToInput from "~/components/PToInput";
 export const action = async ({ request, params }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
-  const body = await request.formData();
-  const lessonIndex = body.get("lessonIndex");
-  const moveLessonIntent = body.get("moveLessonIntent");
   const { nanoid, slug } = params;
   const course = await Course.findOne({ nanoid, owner });
+  const formData = await request.formData();
+
+  const moveLessonIntent = formData.get("moveLessonIntent");
+  const lessonIndex = formData.get("lessonIndex");
 
   const MoveLessonIntents = {
     up: moveByIndex(
@@ -39,17 +40,19 @@ export const action = async ({ request, params }) => {
 
   const newLessonList = moveLessonIntentLookup(moveLessonIntent);
 
-  await Course.updateOne({ nanoid }, { lessons: newLessonList });
+  const res = await Course.updateOne({ nanoid }, { lessons: newLessonList });
 
-  return redirect(`/manage/courses/${nanoid}/${slug}`);
+  return json(res);
+  // return redirect(`/manage/courses/${nanoid}/${slug}`);
 };
 
 export default function ScheduleByIdIndex() {
+  const fetcher = useFetcher();
   const context = useOutletContext();
   const { objective, notes, lessons } = context;
 
   return (
-    <section>
+    <section style={{ "overflow-anchor": "none" }}>
       <p className="mb-6 mt-2 text-sm text-slate-500 max-w-xl">
         {objective
           ? objective
@@ -70,7 +73,7 @@ export default function ScheduleByIdIndex() {
         <div className="mb-6">
           {lessons.map((lesson, index) => (
             <section key={lesson._id} className="mb-2">
-              <Form method="post">
+              <fetcher.Form method="post">
                 <PToInput
                   label="Lesson"
                   name="moveLessonIntent"
@@ -98,7 +101,7 @@ export default function ScheduleByIdIndex() {
                     </button>
                   </div>
                 </div>
-              </Form>
+              </fetcher.Form>
 
               {lesson.materials.length > 0 ? (
                 <p>Materials: {lesson.materials}</p>

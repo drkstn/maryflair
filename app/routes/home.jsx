@@ -17,7 +17,7 @@ export default function Home() {
   const data = useLoaderData();
 
   return (
-    <main>
+    <main className="lg:mx-16">
       <NavBar data={data} />
       <Outlet />
     </main>
