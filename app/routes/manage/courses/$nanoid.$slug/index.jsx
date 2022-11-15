@@ -12,34 +12,32 @@ export const action = async ({ request, params }) => {
   const owner = user._json.email;
   const body = await request.formData();
   const lessonIndex = body.get("lessonIndex");
-  const intent = body.get("intent");
+  const moveLessonIntent = body.get("moveLessonIntent");
   const { nanoid, slug } = params;
   const course = await Course.findOne({ nanoid, owner });
 
-  let newLessonList;
+  const MoveLessonIntents = {
+    up: moveByIndex(
+      course.lessons,
+      parseInt(lessonIndex),
+      parseInt(lessonIndex) - 1
+    ),
+    down: moveByIndex(
+      course.lessons,
+      parseInt(lessonIndex),
+      parseInt(lessonIndex) + 1
+    ),
+    default: moveByIndex(
+      course.lessons,
+      parseInt(lessonIndex),
+      parseInt(moveLessonIntent) - 1
+    ),
+  };
 
-  switch (intent) {
-    case "up":
-      newLessonList = moveByIndex(
-        course.lessons,
-        parseInt(lessonIndex),
-        parseInt(lessonIndex) - 1
-      );
-      break;
-    case "down":
-      newLessonList = moveByIndex(
-        course.lessons,
-        parseInt(lessonIndex),
-        parseInt(lessonIndex) + 1
-      );
-      break;
-    default:
-      newLessonList = moveByIndex(
-        course.lessons,
-        parseInt(lessonIndex),
-        parseInt(intent) - 1
-      );
-  }
+  const moveLessonIntentLookup = (moveLessonIntent) =>
+    MoveLessonIntents[moveLessonIntent] || MoveLessonIntents.default;
+
+  const newLessonList = moveLessonIntentLookup(moveLessonIntent);
 
   await Course.updateOne({ nanoid }, { lessons: newLessonList });
 
@@ -48,7 +46,7 @@ export const action = async ({ request, params }) => {
 
 export default function ScheduleByIdIndex() {
   const context = useOutletContext();
-  const { objective, notes, lessons, name } = context;
+  const { objective, notes, lessons } = context;
 
   return (
     <section>
@@ -75,7 +73,7 @@ export default function ScheduleByIdIndex() {
               <Form method="post">
                 <PToInput
                   label="Lesson"
-                  name="intent"
+                  name="moveLessonIntent"
                   initialValue={index + 1}
                 />
                 <div className="flex justify-between ">
@@ -84,7 +82,7 @@ export default function ScheduleByIdIndex() {
                   <div className="space-x-4">
                     <button
                       type="submit"
-                      name="intent"
+                      name="moveLessonIntent"
                       value="down"
                       className="font-mono text-purple-500 hover:text-purple-300 text-sm"
                     >
@@ -92,7 +90,7 @@ export default function ScheduleByIdIndex() {
                     </button>
                     <button
                       type="submit"
-                      name="intent"
+                      name="moveLessonIntent"
                       value="up"
                       className="font-mono text-purple-500 hover:text-purple-300 text-sm"
                     >

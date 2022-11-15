@@ -1,6 +1,5 @@
 import { json, redirect } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import Button from "~/components/Button";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
 
