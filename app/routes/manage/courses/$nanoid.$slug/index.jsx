@@ -37,7 +37,7 @@ export const action = async ({ request, params }) => {
       newLessonList = moveByIndex(
         course.lessons,
         parseInt(lessonIndex),
-        parseInt(intent)
+        parseInt(intent) - 1
       );
   }
 
@@ -67,7 +67,11 @@ export default function ScheduleByIdIndex() {
           {lessons.map((lesson, index) => (
             <section key={lesson._id} className="mb-2">
               <Form method="post">
-                <PToInput label="Lesson" name="intent" initialValue={index} />
+                <PToInput
+                  label="Lesson"
+                  name="intent"
+                  initialValue={index + 1}
+                />
                 <div className="flex justify-between ">
                   <p className="font-bold text-purple-500">{lesson.name}</p>
                   <input type="hidden" name="lessonIndex" value={index} />
