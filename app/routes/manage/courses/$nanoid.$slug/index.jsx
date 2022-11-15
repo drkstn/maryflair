@@ -51,21 +51,21 @@ export default function ScheduleByIdIndex() {
   const { objective, notes, lessons, name } = context;
 
   return (
-    <section className="max-w-lg">
-      <p className="mb-6 mt-2 text-sm text-slate-500">
+    <section>
+      <p className="mb-6 mt-2 text-sm text-slate-500 max-w-xl">
         {objective
           ? objective
           : "A course is a sequential collection of lessons."}
       </p>
 
       <div className="mb-6 flex items-center justify-between space-x-4">
+        <Button label="Add New Lesson" path="lessons/new" />
         <div className="flex items-center space-x-2">
           <div className="flex items-center justify-center h-10 w-10 rounded-full align-middle border border-purple-500 text-purple-500">
             <p className="w-10 text-center text-xl">{lessons.length}</p>
           </div>
           <p className="text-slate-700 font-bold text-lg">Lessons</p>
         </div>
-        <Button label="Add New Lesson" path="lessons/new" />
       </div>
       <hr className="my-6" />
       {lessons.length > 0 ? (

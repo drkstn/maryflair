@@ -525,6 +525,21 @@ video {
   margin-bottom: 1rem;
 }
 
+.mx-36 {
+  margin-left: 9rem;
+  margin-right: 9rem;
+}
+
+.mx-12 {
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+.mx-60 {
+  margin-left: 15rem;
+  margin-right: 15rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -664,6 +679,10 @@ video {
 .max-w-min {
   max-width: -moz-min-content;
   max-width: min-content;
+}
+
+.max-w-xl {
+  max-width: 36rem;
 }
 
 .list-outside {
@@ -996,4 +1015,20 @@ video {
 
 .active\:bg-none:active {
   background-image: none;
+}
+
+@media (min-width: 1024px) {
+  .lg\:mx-12 {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+
+  .lg\:mx-16 {
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
+
+  .lg\:max-w-screen-lg {
+    max-width: 1024px;
+  }
 }

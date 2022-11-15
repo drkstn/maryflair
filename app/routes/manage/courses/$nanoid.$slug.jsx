@@ -1,5 +1,6 @@
 import { json, redirect } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+import Button from "~/components/Button";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
 
@@ -54,11 +55,15 @@ export default function CourseById() {
   const data = useLoaderData();
 
   return (
-    <section>
-      <h2 className="min-w-max mb-1 font-bold text-sm tracking-wider text-purple-500 uppercase">
-        Course
-      </h2>
-      <h1 className="text-slate-700 font-bold text-3xl">{data.name}</h1>
+    <section className="">
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="min-w-max mb-1 font-bold text-sm tracking-wider text-purple-500 uppercase">
+            Course
+          </h2>
+          <h1 className="text-slate-700 font-bold text-3xl">{data.name}</h1>
+        </div>
+      </div>
       <Outlet context={data} />
     </section>
   );
