@@ -17,7 +17,7 @@ export const action = async ({ request, params }) => {
   const course = await Course.findOne({ nanoid, owner });
 
   let newLessonList;
-  console.log({ intent });
+
   switch (intent) {
     case "up":
       newLessonList = moveByIndex(
@@ -48,7 +48,7 @@ export const action = async ({ request, params }) => {
 
 export default function ScheduleByIdIndex() {
   const context = useOutletContext();
-  const { objective, notes, lessons } = context;
+  const { objective, notes, lessons, name } = context;
 
   return (
     <section className="max-w-lg">
@@ -58,7 +58,13 @@ export default function ScheduleByIdIndex() {
           : "A course is a sequential collection of lessons."}
       </p>
 
-      <div className="mb-6">
+      <div className="mb-6 flex items-center justify-between space-x-4">
+        <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-center h-10 w-10 rounded-full align-middle border border-purple-500 text-purple-500">
+            <p className="w-10 text-center text-xl">{lessons.length}</p>
+          </div>
+          <p className="text-slate-700 font-bold text-lg">Lessons</p>
+        </div>
         <Button label="Add New Lesson" path="lessons/new" />
       </div>
       <hr className="my-6" />

@@ -15,7 +15,7 @@ export const loader = async ({ params, request }) => {
     });
   }
 
-  return redirect(`../courses/${nanoid}/${data.slug}`);
+  return redirect(`/manage/courses/${nanoid}/${data.slug}`);
 };
 
 export const meta = ({ params }) => {
