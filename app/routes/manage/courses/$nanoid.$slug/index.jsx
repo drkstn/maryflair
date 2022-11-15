@@ -20,16 +20,23 @@ export const action = async ({ request, params }) => {
   console.log({ intent });
   switch (intent) {
     case "up":
-      newLessonList = moveByIndex(course.lessons, parseInt(lessonIndex), -1);
+      newLessonList = moveByIndex(
+        course.lessons,
+        parseInt(lessonIndex),
+        parseInt(lessonIndex) - 1
+      );
       break;
     case "down":
-      newLessonList = moveByIndex(course.lessons, parseInt(lessonIndex), 1);
+      newLessonList = moveByIndex(
+        course.lessons,
+        parseInt(lessonIndex),
+        parseInt(lessonIndex) + 1
+      );
       break;
     default:
       newLessonList = moveByIndex(
         course.lessons,
         parseInt(lessonIndex),
-        0,
         parseInt(intent)
       );
   }
