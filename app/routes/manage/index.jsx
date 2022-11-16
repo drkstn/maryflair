@@ -58,7 +58,14 @@ export default function ManageIndex() {
           <div>
             {data.schedules.map((schedule) => (
               <section className="mb-2" key={schedule.nanoid}>
-                <Form method="post">
+                <Form
+                  method="post"
+                  onSubmit={(event) => {
+                    if (!confirm("Are you sure?")) {
+                      event.preventDefault();
+                    }
+                  }}
+                >
                   <input type="hidden" name="id" value={schedule.nanoid} />
                   <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
                     <Link to={`schedules/${schedule.nanoid}/${schedule.slug}`}>
@@ -96,7 +103,14 @@ export default function ManageIndex() {
           <div>
             {data.courses.map((course) => (
               <section className="mb-2" key={course.nanoid}>
-                <Form method="post">
+                <Form
+                  method="post"
+                  onSubmit={(event) => {
+                    if (!confirm("Are you sure?")) {
+                      event.preventDefault();
+                    }
+                  }}
+                >
                   <input type="hidden" name="id" value={course.nanoid} />
                   <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
                     <Link to={`courses/${course.nanoid}/${course.slug}`}>

@@ -1,8 +1,9 @@
 import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
 import ButtonOutline from "~/components/ButtonOutline";
 import { authenticator } from "~/services/auth.server";
+import Course from "~/services/models/Course";
 import { getCourses } from "~/services/requests.server";
 
 export const loader = async ({ request }) => {
@@ -11,11 +12,24 @@ export const loader = async ({ request }) => {
   const owner = user._json.email;
   const data = await getCourses(owner);
 
-  return json(data);
+  return json({ owner, data });
+};
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const nanoid = formData.get("course");
+  const owner = formData.get("owner");
+
+  const res = await Course.findOne({ nanoid, owner }).populate("lessons");
+
+  return { res };
 };
 
 export default function ManageCreate() {
-  const data = useLoaderData();
+  const { owner, data } = useLoaderData();
+  const actionResponse = useActionData();
+  // console.log(data, owner);
+  // console.log(actionResponse);
 
   return (
     <section>
@@ -29,7 +43,7 @@ export default function ManageCreate() {
       </div>
 
       <Form method="post" className="mt-6">
-        <input type="hidden" name="owner" value={data} />
+        <input type="hidden" name="owner" value={owner} />
 
         <div className="mb-6">
           <div className="mb-2 font-bold text-purple-500">
@@ -44,7 +58,7 @@ export default function ManageCreate() {
                 <>
                   <option value="">Please Select</option>
                   {data.map((course) => (
-                    <option key={course._id} value={course.name}>
+                    <option key={course._id} value={course.nanoid}>
                       {course.name}
                     </option>
                   ))}

@@ -1,5 +1,5 @@
-import { json, redirect } from "@remix-run/node";
-import { Form, useFetcher, useOutletContext } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { useFetcher, useOutletContext } from "@remix-run/react";
 import Button from "~/components/Button";
 import Notes from "~/components/Notes";
 import { authenticator } from "~/services/auth.server";

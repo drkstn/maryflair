@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useOutletContext } from "@remix-run/react";
 import Button from "~/components/Button";
 import ButtonOutline from "~/components/ButtonOutline";
@@ -14,7 +14,9 @@ export const loader = async ({ request }) => {
   return json(user._json.email);
 };
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
+  const { nanoid, slug } = params;
+
   const body = await request.formData();
   const owner = body.get("owner");
   const name = body.get("name");
@@ -35,7 +37,7 @@ export const action = async ({ request }) => {
   const newLesson = await Lesson.create(data);
   await Course.updateOne({ _id: course }, { $push: { lessons: newLesson } });
 
-  return null;
+  return redirect(`/manage/courses/${nanoid}/${slug}`);
 };
 
 export default function NewLesson() {
