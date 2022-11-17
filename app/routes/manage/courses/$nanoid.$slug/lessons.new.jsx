@@ -1,7 +1,6 @@
 import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useOutletContext } from "@remix-run/react";
 import Button from "~/components/Button";
-import ButtonOutline from "~/components/ButtonOutline";
 import InputArray from "~/components/InputArray";
 import TextAreaArray from "~/components/TextAreaArray";
 import { authenticator } from "~/services/auth.server";
@@ -73,9 +72,9 @@ export default function NewLesson() {
         <TextAreaArray label="Notes" />
 
         <div className="space-x-2">
-          <Button label="Create" type="submit" />
-          <ButtonOutline label="Reset" type="reset" />
-          <ButtonOutline label="Cancel" path=".." />
+          <Button type="submit" label="Create" />
+          <Button type="reset" genre="outline" label="Reset" />
+          <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>
     </section>

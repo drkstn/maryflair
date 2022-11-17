@@ -2,7 +2,6 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import Button from "~/components/Button";
-import ButtonOutline from "~/components/ButtonOutline";
 import { authenticator } from "~/services/auth.server";
 import { createCourse } from "~/services/requests.server";
 
@@ -106,8 +105,8 @@ export default function CourseNew() {
         </div>
 
         <div className="space-x-2 mt-4">
-          <Button label="Create" type="submit" />
-          <ButtonOutline label="Cancel" path=".." />
+          <Button type="submit" label="Create" />
+          <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>
     </section>

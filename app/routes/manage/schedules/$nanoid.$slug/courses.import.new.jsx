@@ -2,7 +2,6 @@ import { json } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import Button from "~/components/Button";
-import ButtonOutline from "~/components/ButtonOutline";
 import { authenticator } from "~/services/auth.server";
 
 export const loader = async ({ request }) => {
@@ -133,8 +132,8 @@ export default function ManageCreate() {
         </div>
 
         <div className="space-x-2 mt-4">
-          <ButtonOutline label="Back" path="../courses/import" />
-          <Button label="Create" type="submit" />
+          <Button type="submit" label="Create" />
+          <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>
     </section>

@@ -52,7 +52,7 @@ export default function ManageIndex() {
               courses occur.
             </p>
           </div>
-          <Button label="New Schedule" path="schedules/new" />
+          <Button type="link" label="New Schedule" to="schedules/new" />
         </div>
         {data?.schedules?.length > 0 ? (
           <div>
@@ -97,7 +97,7 @@ export default function ManageIndex() {
               A course is a sequential collection of lessons.
             </p>
           </div>
-          <Button label="New Course" path="courses/new" />
+          <Button type="link" label="New Course" to="courses/new" />
         </div>
         {data?.courses?.length > 0 ? (
           <div>

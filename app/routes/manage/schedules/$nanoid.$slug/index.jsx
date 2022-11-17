@@ -8,7 +8,7 @@ export default function ScheduleByIdIndex() {
   return (
     <>
       <div className="mt-4">
-        <Button label="Import Course" path="courses/import" />
+        <Button type="link" label="Import Course" to="courses/import" />
       </div>
       <section className="my-4">
         <ScheduleList data={data} />

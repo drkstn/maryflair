@@ -52,7 +52,7 @@ export default function ScheduleByIdIndex() {
   const { objective, notes, lessons } = context;
 
   return (
-    <section style={{ "overflow-anchor": "none" }}>
+    <section style={{ overflowAnchor: "none" }}>
       <p className="mb-6 mt-2 text-sm text-slate-500 max-w-xl">
         {objective
           ? objective
@@ -60,7 +60,7 @@ export default function ScheduleByIdIndex() {
       </p>
 
       <div className="mb-6 flex items-center justify-between space-x-4">
-        <Button label="Add New Lesson" path="lessons/new" />
+        <Button type="link" label="Add New Lesson" to="lessons/new" />
         <div className="flex items-center space-x-2">
           <div className="flex items-center justify-center h-10 w-10 rounded-full align-middle border border-purple-500 text-purple-500">
             <p className="w-10 text-center text-xl">{lessons.length}</p>

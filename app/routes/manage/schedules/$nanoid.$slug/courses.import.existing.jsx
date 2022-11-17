@@ -1,7 +1,6 @@
 import { json } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
-import ButtonOutline from "~/components/ButtonOutline";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
 import { getCourses } from "~/services/requests.server";
@@ -148,8 +147,8 @@ export default function ManageCreate() {
         </div>
 
         <div className="space-x-2 mt-4">
-          <ButtonOutline label="Back" path="../courses/import" />
-          <Button label="Create" type="submit" />
+          <Button type="submit" label="Create" />
+          <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>
     </section>

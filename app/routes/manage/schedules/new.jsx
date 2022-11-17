@@ -11,7 +11,6 @@ import {
 import { isHoliday } from "date-fns-holiday-us";
 import Button from "~/components/Button";
 import { formatISOWithOptions } from "date-fns/fp";
-import ButtonOutline from "~/components/ButtonOutline";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -174,8 +173,8 @@ export default function ScheduleNew() {
         </div>
 
         <div className="space-x-2 mt-4">
-          <Button label="Create" type="submit" />
-          <ButtonOutline label="Cancel" path=".." />
+          <Button type="submit" label="Create" />
+          <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>
     </section>
