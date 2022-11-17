@@ -4,6 +4,7 @@ import Button from "~/components/Button";
 import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
+import Schedule from "~/services/models/Schedule";
 import { getCourses } from "~/services/requests.server";
 
 export const loader = async ({ request }) => {
@@ -15,7 +16,8 @@ export const loader = async ({ request }) => {
   return json({ owner, courses });
 };
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
+  const scheduleNanoid = params.nanoid;
   const formData = await request.formData();
 
   const values = {
@@ -38,18 +40,38 @@ export const action = async ({ request }) => {
     return { errors, values };
   }
 
-  const { nanoid, owner } = values;
+  const { nanoid, owner, frequency } = values;
 
   const course = await Course.findOne({ nanoid, owner })
     .select("name objective notes lessons -_id")
     .populate("lessons", "name materials assignments tags notes -_id");
 
-  return course;
+  const courseConflict = await Schedule.findOne({
+    nanoid: scheduleNanoid,
+    "courses.name": course.name,
+  });
+
+  if (courseConflict) {
+    errors.courseConflict =
+      "A course with the same name has already been imported to this schedule. Please select a different course or create a new one with a unique name.";
+
+    return { errors, values };
+  }
+
+  const courseWithFreq = { ...course.toObject(), frequency };
+
+  // const res = await Schedule.updateOne(
+  //   { nanoid: scheduleNanoid },
+  //   { $push: { courses: courseWithFreq } }
+  // );
+
+  return courseWithFreq;
 };
 
 export default function ManageCreate() {
   const { owner, courses } = useLoaderData();
   const actionData = useActionData();
+  console.log(actionData);
 
   return (
     <section>
@@ -147,6 +169,7 @@ export default function ManageCreate() {
           <Button type="submit" label="Create" />
           <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
+        <ValidationError error={actionData?.errors?.courseConflict} />
       </Form>
     </section>
   );
