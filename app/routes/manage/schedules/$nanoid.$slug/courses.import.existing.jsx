@@ -10,26 +10,46 @@ export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
 
   const owner = user._json.email;
-  const data = await getCourses(owner);
+  const courses = await getCourses(owner);
 
-  return json({ owner, data });
+  return json({ owner, courses });
 };
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
-  const nanoid = formData.get("course");
-  const owner = formData.get("owner");
 
-  const res = await Course.findOne({ nanoid, owner }).populate("lessons");
+  const values = {
+    owner: formData.get("owner"),
+    nanoid: formData.get("course"),
+    frequency: formData.getAll("frequency").map((num) => parseInt(num)),
+  };
 
-  return { res };
+  const errors = {};
+
+  if (!values.nanoid) {
+    errors.nanoid = "Please select a course";
+  }
+
+  if (!values.frequency || values.frequency.length < 1) {
+    errors.frequency = "Must select at lease one";
+  }
+
+  if (errors.nanoid || errors.frequency) {
+    return { errors, values };
+  }
+
+  const { nanoid, owner } = values;
+
+  const course = await Course.findOne({ nanoid, owner })
+    .select("name objective notes lessons -_id")
+    .populate("lessons", "name materials assignments tags notes -_id");
+
+  return course;
 };
 
 export default function ManageCreate() {
-  const { owner, data } = useLoaderData();
-  const actionResponse = useActionData();
-  // console.log(data, owner);
-  // console.log(actionResponse);
+  const { owner, courses } = useLoaderData();
+  const actionData = useActionData();
 
   return (
     <section>
@@ -54,10 +74,10 @@ export default function ManageCreate() {
               name="course"
               className=" p-1 border rounded-lg border-purple-500"
             >
-              {data?.length > 0 ? (
+              {courses?.length > 0 ? (
                 <>
                   <option value="">Please Select</option>
-                  {data.map((course) => (
+                  {courses.map((course) => (
                     <option key={course._id} value={course.nanoid}>
                       {course.name}
                     </option>
@@ -68,6 +88,9 @@ export default function ManageCreate() {
               )}
             </select>
           </label>
+          {actionData?.errors?.nanoid && (
+            <p className="text-rose-500">{actionData.errors.nanoid}</p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -118,6 +141,9 @@ export default function ManageCreate() {
               />
               Friday
             </label>
+            {actionData?.errors?.frequency && (
+              <p className="text-rose-500">{actionData.errors.frequency}</p>
+            )}
           </div>
         </div>
 
