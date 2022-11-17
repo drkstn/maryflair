@@ -1,5 +1,6 @@
 {
-  "include": ["**/*.js", "**/*.jsx"],
+  "include": ["app/**/*.js", "app/**/*.jsx"],
+  "exclude": ["node_modules", "**/node_modules", "dist", "**/node_modules/*"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "isolatedModules": true,

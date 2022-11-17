@@ -5,13 +5,12 @@ import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
 import Schedule from "~/services/models/Schedule";
-import { getCourses } from "~/services/requests.server";
 
-export const loader = async ({ request }) => {
+export const loader = async ({ request, params }) => {
   const user = await authenticator.isAuthenticated(request);
-
   const owner = user._json.email;
-  const courses = await getCourses(owner);
+
+  const courses = await Course.find({ owner });
 
   return json({ owner, courses });
 };
@@ -42,14 +41,20 @@ export const action = async ({ request, params }) => {
 
   const { nanoid, owner, frequency } = values;
 
+  const schedule = await Schedule.findOne({ nanoid: scheduleNanoid, owner });
+
   const course = await Course.findOne({ nanoid, owner })
     .select("name objective notes lessons -_id")
     .populate("lessons", "name materials assignments tags notes -_id");
 
-  const courseConflict = await Schedule.findOne({
-    nanoid: scheduleNanoid,
-    "courses.name": course.name,
-  });
+  // const courseConflict = await Schedule.findOne({
+  //   nanoid: scheduleNanoid,
+  //   "courses.name": course.name,
+  // });
+
+  const courseConflict = schedule.courses.some(
+    (existingCourse) => existingCourse.name === course.name
+  );
 
   if (courseConflict) {
     errors.courseConflict =
