@@ -1,6 +1,6 @@
 import { Form, Link } from "@remix-run/react";
 
-export default function NavBar({ data }) {
+export default function NavBar({ data, path }) {
   return (
     <>
       <nav className="flex justify-between mb-6 mt-2">
@@ -11,10 +11,22 @@ export default function NavBar({ data }) {
         </h1>
 
         <ul className="flex justify-end items-center space-x-5">
-          <li className="hover:text-purple-500">
+          <li
+            className={`hover:text-purple-500 ${
+              path &&
+              path === "home" &&
+              "border-b-[3px] pt-[3px] border-purple-500"
+            }`}
+          >
             <Link to="/home">Home</Link>
           </li>
-          <li className="hover:text-purple-500">
+          <li
+            className={`hover:text-purple-500 ${
+              path &&
+              path === "manage" &&
+              "border-b-[3px] pt-[3px] border-purple-500"
+            }`}
+          >
             <Link to="/manage">Manage</Link>
           </li>
           <li>

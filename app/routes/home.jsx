@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <main className="lg:mx-16">
-      <NavBar data={data} />
+      <NavBar data={data} path="home" />
       <Outlet />
     </main>
   );
