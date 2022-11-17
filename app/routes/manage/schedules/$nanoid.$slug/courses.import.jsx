@@ -8,7 +8,7 @@ export const loader = async ({ request }) => {
   return json(user._json.email);
 };
 
-export default function ManageCreate() {
+export default function ImportCourse() {
   const data = useLoaderData();
 
   return (

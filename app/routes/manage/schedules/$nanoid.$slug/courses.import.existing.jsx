@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
 import ValidationError from "~/components/ValidationError";
@@ -17,35 +17,36 @@ export const loader = async ({ request, params }) => {
 
 export const action = async ({ request, params }) => {
   const scheduleNanoid = params.nanoid;
+  const { slug } = params;
   const formData = await request.formData();
 
   const values = {
     owner: formData.get("owner"),
-    nanoid: formData.get("course"),
+    courseNanoid: formData.get("course"),
     frequency: formData.getAll("frequency").map((num) => parseInt(num)),
   };
 
+  const { courseNanoid, owner, frequency } = values;
+
   const errors = {};
 
-  if (!values.nanoid) {
-    errors.nanoid = "Must select a course";
+  if (!values.courseNanoid) {
+    errors.courseNanoid = "Must select a course";
   }
 
   if (!values.frequency || values.frequency.length < 1) {
     errors.frequency = "Must select at lease one";
   }
 
-  if (errors.nanoid || errors.frequency) {
+  if (errors.courseNanoid || errors.frequency) {
     return { errors, values };
   }
 
-  const { nanoid, owner, frequency } = values;
-
   const schedule = await Schedule.findOne({ nanoid: scheduleNanoid, owner });
 
-  const course = await Course.findOne({ nanoid, owner })
-    .select("name objective notes lessons -_id")
-    .populate("lessons", "name materials assignments tags notes -_id");
+  const course = await Course.findOne({ nanoid: courseNanoid, owner }).select(
+    "name objective notes lessons"
+  );
 
   // const courseConflict = await Schedule.findOne({
   //   nanoid: scheduleNanoid,
@@ -65,18 +66,17 @@ export const action = async ({ request, params }) => {
 
   const courseWithFreq = { ...course.toObject(), frequency };
 
-  // const res = await Schedule.updateOne(
-  //   { nanoid: scheduleNanoid },
-  //   { $push: { courses: courseWithFreq } }
-  // );
+  await Schedule.updateOne(
+    { nanoid: scheduleNanoid },
+    { $push: { courses: courseWithFreq } }
+  );
 
-  return courseWithFreq;
+  return redirect(`/manage/schedules/${scheduleNanoid}/${slug}`);
 };
 
-export default function ManageCreate() {
+export default function ImportExistingCourse() {
   const { owner, courses } = useLoaderData();
   const actionData = useActionData();
-  console.log(actionData);
 
   return (
     <section>
@@ -105,7 +105,7 @@ export default function ManageCreate() {
                 <>
                   <option value="">Please Select</option>
                   {courses.map((course) => (
-                    <option key={course._id} value={course.nanoid}>
+                    <option key={course.nanoid} value={course.nanoid}>
                       {course.name}
                     </option>
                   ))}
@@ -115,7 +115,7 @@ export default function ManageCreate() {
               )}
             </select>
           </label>
-          <ValidationError error={actionData?.errors?.nanoid} />
+          <ValidationError error={actionData?.errors?.courseNanoid} />
         </div>
 
         <div className="mb-6">
