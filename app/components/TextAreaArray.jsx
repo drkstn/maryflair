@@ -19,7 +19,7 @@ export default function TextAreaArray({ label }) {
     <div className="mb-6">
       <div className="mb-2 flex justify-between">
         <label htmlFor={label.toLowerCase()}>
-          <div className="font-bold text-purple-500">{label}: </div>
+          <div className="font-bold text-purple-500">{label}</div>
         </label>
         <div className=" space-x-2">
           <button

@@ -1,6 +1,7 @@
 import { json } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
+import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
 import Course from "~/services/models/Course";
 import { getCourses } from "~/services/requests.server";
@@ -26,7 +27,7 @@ export const action = async ({ request }) => {
   const errors = {};
 
   if (!values.nanoid) {
-    errors.nanoid = "Please select a course";
+    errors.nanoid = "Must select a course";
   }
 
   if (!values.frequency || values.frequency.length < 1) {
@@ -87,11 +88,7 @@ export default function ManageCreate() {
               )}
             </select>
           </label>
-          {actionData?.errors?.nanoid && (
-            <p className="text-pink-500 font-bold my-2">
-              {actionData.errors.nanoid}
-            </p>
-          )}
+          <ValidationError error={actionData?.errors?.nanoid} />
         </div>
 
         <div className="mb-6">
@@ -142,11 +139,7 @@ export default function ManageCreate() {
               />
               Friday
             </label>
-            {actionData?.errors?.frequency && (
-              <p className="text-pink-500 font-bold my-2">
-                {actionData.errors.frequency}
-              </p>
-            )}
+            <ValidationError error={actionData?.errors?.frequency} />
           </div>
         </div>
 

@@ -1,8 +1,10 @@
 import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
 import TextAreaArray from "~/components/TextAreaArray";
+import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
+import { clear } from "~/services/helpers.server";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -14,15 +16,33 @@ export const action = async ({ request }) => {
 
   const values = {
     owner: formData.get("owner"),
-    nanoid: formData.get("course"),
+    name: formData.get("name"),
     frequency: formData.getAll("frequency").map((num) => parseInt(num)),
+    ...(formData.get("objective") && { objective: formData.get("objective") }),
+    notes: clear(formData.getAll("notes")),
   };
+
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = "Must enter a name";
+  }
+
+  if (!values.frequency || values.frequency.length < 1) {
+    errors.frequency = "Must select at lease one";
+  }
+
+  if (errors.name || errors.frequency) {
+    return { errors, values };
+  }
 
   return values;
 };
 
 export default function ImportNewCourse() {
   const data = useLoaderData();
+  const actionData = useActionData();
+  // console.log(actionData);
 
   return (
     <section>
@@ -40,17 +60,20 @@ export default function ImportNewCourse() {
 
         <div className="mb-6">
           <label>
-            <div className="mb-2 font-bold text-purple-500">Name: </div>
+            <div className="mb-2 font-bold text-purple-500">Name * </div>
             <input
               name="name"
               type="text"
               className="p-1 border rounded-lg border-purple-500 w-full"
             />
           </label>
+          <ValidationError error={actionData?.errors?.name} />
         </div>
 
         <div className="mb-6">
-          <div className="mb-2 font-bold text-purple-500">Weekly Schedule:</div>
+          <div className="mb-2 font-bold text-purple-500">
+            Weekly Schedule *
+          </div>
           <div>
             <label className="inline-block mr-4">
               <input
@@ -98,11 +121,12 @@ export default function ImportNewCourse() {
               Friday
             </label>
           </div>
+          <ValidationError error={actionData?.errors?.frequency} />
         </div>
 
         <div className="mb-6">
           <label>
-            <div className="mb-2 font-bold text-purple-500">Objective: </div>
+            <div className="mb-2 font-bold text-purple-500">Objective</div>
             <textarea
               name="objective"
               type="text"
