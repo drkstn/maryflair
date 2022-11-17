@@ -1,9 +1,11 @@
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
 import TextAreaArray from "~/components/TextAreaArray";
+import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
-import { createCourse } from "~/services/requests.server";
+import { clear } from "~/services/helpers.server";
+import Course from "~/services/models/Course";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -13,30 +15,31 @@ export const loader = async ({ request }) => {
 export const action = async ({ request }) => {
   const formData = await request.formData();
 
-  const owner = formData.get("owner");
-  const name = formData.get("name");
-  const objective = formData.get("objective");
-  const notes = formData
-    .getAll("notes")
-    .reduce(
-      (start, value) => (value.length > 0 ? [...start, value] : start),
-      []
-    );
-
-  const data = {
-    owner,
-    name,
-    ...(objective.length > 0 && { objective }),
-    notes,
+  const values = {
+    owner: formData.get("owner"),
+    name: formData.get("name"),
+    ...(formData.get("objective") && { objective: formData.get("objective") }),
+    notes: clear(formData.getAll("notes")),
   };
 
-  const res = await createCourse(data);
+  const errors = {};
 
-  return redirect(`/manage/courses/${res.nanoid}/${res.slug}`);
+  if (!values.name) {
+    errors.name = "Must enter a name";
+  }
+
+  if (errors.name) {
+    return { errors, values };
+  }
+
+  const response = await Course.create(values);
+
+  return redirect(`/manage/courses/${response.nanoid}/${response.slug}`);
 };
 
 export default function CourseNew() {
   const data = useLoaderData();
+  const actionData = useActionData();
 
   return (
     <section>
@@ -52,18 +55,19 @@ export default function CourseNew() {
 
         <div className="mb-6">
           <label>
-            <div className="mb-2 font-bold text-purple-500">Name: </div>
+            <div className="mb-2 font-bold text-purple-500">Name *</div>
             <input
               name="name"
               type="text"
               className="p-1 border rounded-lg border-purple-500 w-full"
             />
           </label>
+          <ValidationError error={actionData?.errors?.name} />
         </div>
 
         <div className="mb-6">
           <label>
-            <div className="mb-2 font-bold text-purple-500">Objective: </div>
+            <div className="mb-2 font-bold text-purple-500">Objective</div>
             <textarea
               name="objective"
               type="text"
@@ -79,6 +83,7 @@ export default function CourseNew() {
 
         <div className="space-x-2 mt-4">
           <Button type="submit" label="Create" />
+          <Button type="reset" genre="outline" label="Reset" />
           <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>

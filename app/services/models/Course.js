@@ -18,7 +18,16 @@ const CourseSchema = new mongoose.Schema({
   slug: { type: String, slug: "name" },
   objective: String,
   notes: [String],
-  lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
+  lessons: [
+    {
+      name: String,
+      date: String,
+      materials: [String],
+      assignments: [String],
+      notes: [String],
+      tags: [String],
+    },
+  ],
 });
 
 const Course = mongoose.models.Course || mongoose.model("Course", CourseSchema);
