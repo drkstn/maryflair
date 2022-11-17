@@ -10,7 +10,7 @@ import PToInput from "~/components/PToInput";
 export const action = async ({ request, params }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
-  const { nanoid, slug } = params;
+  const { nanoid } = params;
   const course = await Course.findOne({ nanoid, owner });
   const formData = await request.formData();
 

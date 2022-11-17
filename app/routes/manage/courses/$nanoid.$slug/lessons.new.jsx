@@ -52,7 +52,7 @@ export default function NewLesson() {
         </p>
       </div>
 
-      <Form method="post" className="mt-6 max-w-md">
+      <Form method="post" className="mt-6 max-w-lg">
         <input type="hidden" name="owner" value={data} />
         <input type="hidden" name="courseId" value={context._id} />
 

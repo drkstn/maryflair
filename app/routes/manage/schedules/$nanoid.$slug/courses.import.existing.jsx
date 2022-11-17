@@ -61,7 +61,7 @@ export default function ManageCreate() {
         </p>
       </div>
 
-      <Form method="post" className="mt-6">
+      <Form method="post" className="mt-6 max-w-lg">
         <input type="hidden" name="owner" value={owner} />
 
         <div className="mb-6">
@@ -88,14 +88,16 @@ export default function ManageCreate() {
             </select>
           </label>
           {actionData?.errors?.nanoid && (
-            <p className="text-rose-500">{actionData.errors.nanoid}</p>
+            <p className="text-pink-500 font-bold my-2">
+              {actionData.errors.nanoid}
+            </p>
           )}
         </div>
 
         <div className="mb-6">
           <div className="mb-2 font-bold text-purple-500">Weekly Schedule:</div>
           <div>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -104,7 +106,7 @@ export default function ManageCreate() {
               />
               Monday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -113,7 +115,7 @@ export default function ManageCreate() {
               />
               Tuesday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -122,7 +124,7 @@ export default function ManageCreate() {
               />
               Wednesday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -131,7 +133,7 @@ export default function ManageCreate() {
               />
               Thursday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -141,7 +143,9 @@ export default function ManageCreate() {
               Friday
             </label>
             {actionData?.errors?.frequency && (
-              <p className="text-rose-500">{actionData.errors.frequency}</p>
+              <p className="text-pink-500 font-bold my-2">
+                {actionData.errors.frequency}
+              </p>
             )}
           </div>
         </div>

@@ -47,7 +47,7 @@ export default function TextAreaArray({ label }) {
             key={index}
             name={label.toLowerCase()}
             id={label.toLowerCase()}
-            rows={3}
+            rows={2}
             className="flex p-1 border rounded-md border-purple-200 w-full align-top"
           />
         ))}

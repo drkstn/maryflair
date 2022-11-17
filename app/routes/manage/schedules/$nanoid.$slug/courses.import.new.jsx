@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
 import Button from "~/components/Button";
+import TextAreaArray from "~/components/TextAreaArray";
 import { authenticator } from "~/services/auth.server";
 
 export const loader = async ({ request }) => {
@@ -9,15 +9,20 @@ export const loader = async ({ request }) => {
   return json(user._json.email);
 };
 
-export default function ManageCreate() {
-  const data = useLoaderData();
+export const action = async ({ request }) => {
+  const formData = await request.formData();
 
-  const [noteCounter, setNoteCounter] = useState(1);
-  const numOfNotes = Array(noteCounter).fill();
-
-  const handleClick = (event) => {
-    setNoteCounter(noteCounter + 1);
+  const values = {
+    owner: formData.get("owner"),
+    nanoid: formData.get("course"),
+    frequency: formData.getAll("frequency").map((num) => parseInt(num)),
   };
+
+  return values;
+};
+
+export default function ImportNewCourse() {
+  const data = useLoaderData();
 
   return (
     <section>
@@ -30,7 +35,7 @@ export default function ManageCreate() {
         </p>
       </div>
 
-      <Form method="post" className="mt-6">
+      <Form method="post" className="mt-6 max-w-lg">
         <input type="hidden" name="owner" value={data} />
 
         <div className="mb-6">
@@ -39,7 +44,7 @@ export default function ManageCreate() {
             <input
               name="name"
               type="text"
-              className="p-1 border rounded-lg border-purple-500 w-full max-w-md"
+              className="p-1 border rounded-lg border-purple-500 w-full"
             />
           </label>
         </div>
@@ -47,7 +52,7 @@ export default function ManageCreate() {
         <div className="mb-6">
           <div className="mb-2 font-bold text-purple-500">Weekly Schedule:</div>
           <div>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -56,7 +61,7 @@ export default function ManageCreate() {
               />
               Monday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -65,7 +70,7 @@ export default function ManageCreate() {
               />
               Tuesday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -74,7 +79,7 @@ export default function ManageCreate() {
               />
               Wednesday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -83,7 +88,7 @@ export default function ManageCreate() {
               />
               Thursday
             </label>
-            <label className="whitespace-nowrap mr-4">
+            <label className="inline-block mr-4">
               <input
                 type="checkbox"
                 name="frequency"
@@ -101,34 +106,14 @@ export default function ManageCreate() {
             <textarea
               name="objective"
               type="text"
-              className="p-1 border rounded-lg border-purple-500 h-20 w-full max-w-md align-top"
+              rows={3}
+              className="p-1 border rounded-lg border-purple-500 w-full"
             />
           </label>
         </div>
 
         <div className="mb-6">
-          <label>
-            <div className="mb-2 font-bold text-purple-500 ">Notes: </div>
-            <div className="mb-2 p-4 border rounded-lg border-purple-500 max-w-md space-y-4">
-              {numOfNotes.map((value, index) => (
-                <textarea
-                  key={index}
-                  name="notes"
-                  type="text"
-                  className="flex p-1 border rounded-md border-purple-200 w-full h-16 align-top"
-                />
-              ))}
-            </div>
-            <div className="flex justify-end max-w-md">
-              <button
-                type="button"
-                onClick={handleClick}
-                className="text-purple-500 hover:text-purple-700 min-w-max text-sm font-bold"
-              >
-                + Add Note
-              </button>
-            </div>
-          </label>
+          <TextAreaArray label="Notes" />
         </div>
 
         <div className="space-x-2 mt-4">

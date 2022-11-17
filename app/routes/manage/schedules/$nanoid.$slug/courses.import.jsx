@@ -24,8 +24,8 @@ export default function ManageCreate() {
         <input type="hidden" name="owner" value={data} />
 
         <div className="space-x-2 mt-4">
-          <Button type="link" label="New" to="new" />
           <Button type="link" label="Existing" to="existing" />
+          <Button type="link" label="New" to="new" />
           <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>
