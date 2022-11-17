@@ -8,7 +8,7 @@ export const loader = async ({ params, request }) => {
   const owner = user._json.email;
   const { nanoid } = params;
 
-  const data = await Course.findOne({ nanoid, owner }).populate("lessons");
+  const data = await Course.findOne({ nanoid, owner });
 
   if (!data) {
     throw new Response("Not Found", {

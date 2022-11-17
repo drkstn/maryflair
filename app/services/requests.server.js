@@ -1,5 +1,4 @@
 import User from "./models/User";
-import Lesson from "./models/Lesson";
 import Schedule from "./models/Schedule";
 import Course from "./models/Course";
 
@@ -59,22 +58,5 @@ export async function createCourse(data) {
 
 export async function deleteCourse(nanoid) {
   const res = await Course.deleteOne({ nanoid });
-  return res;
-}
-
-// LESSON Requests
-
-export async function getLessons(owner) {
-  const res = await Lesson.find({ owner });
-  return res;
-}
-
-export async function createLesson(data) {
-  const res = await Lesson.create(data);
-  return res;
-}
-
-export async function deleteLesson(_id) {
-  const res = await Lesson.deleteOne({ _id });
   return res;
 }

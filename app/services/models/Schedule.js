@@ -6,6 +6,23 @@ mongoose.plugin(slugGenerator);
 const alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEF";
 const nanoid = customAlphabet(alphabet, 10);
 
+const LessonSchema = new mongoose.Schema({
+  name: String,
+  date: String,
+  materials: [String],
+  assignments: [String],
+  notes: [String],
+  tags: [String],
+});
+
+const CourseSchema = new mongoose.Schema({
+  name: String,
+  frequency: [Number],
+  objective: String,
+  notes: [String],
+  lessons: [LessonSchema],
+});
+
 const ScheduleSchema = new mongoose.Schema({
   nanoid: {
     type: String,
@@ -28,24 +45,7 @@ const ScheduleSchema = new mongoose.Schema({
     weeks: [String],
     dates: [String],
   },
-  courses: [
-    {
-      name: String,
-      objective: String,
-      frequency: [Number],
-      notes: [String],
-      lessons: [
-        {
-          name: String,
-          date: String,
-          materials: [String],
-          assignments: [String],
-          tags: [String],
-          notes: [String],
-        },
-      ],
-    },
-  ],
+  courses: [CourseSchema],
 });
 
 const Schedule =

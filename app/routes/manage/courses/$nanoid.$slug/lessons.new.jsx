@@ -1,12 +1,12 @@
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData, useOutletContext } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
 import InputArray from "~/components/InputArray";
 import TextAreaArray from "~/components/TextAreaArray";
+import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
 import { clear } from "~/services/helpers.server";
 import Course from "~/services/models/Course";
-import Lesson from "~/services/models/Lesson";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -16,32 +16,35 @@ export const loader = async ({ request }) => {
 export const action = async ({ request, params }) => {
   const { nanoid, slug } = params;
 
-  const body = await request.formData();
-  const owner = body.get("owner");
-  const name = body.get("name");
-  const materials = clear(body.getAll("materials"));
-  const assignments = clear(body.getAll("assignments"));
-  const notes = clear(body.getAll("notes"));
-  const course = body.get("courseId");
+  const formData = await request.formData();
 
-  const data = {
-    owner,
-    name,
-    materials,
-    assignments,
-    notes,
-    course,
+  const values = {
+    owner: formData.get("owner"),
+    name: formData.get("name"),
+    materials: clear(formData.getAll("materials")),
+    assignments: clear(formData.getAll("assignments")),
+    notes: clear(formData.getAll("notes")),
   };
 
-  const newLesson = await Lesson.create(data);
-  await Course.updateOne({ _id: course }, { $push: { lessons: newLesson } });
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = "Must enter a name";
+  }
+
+  if (errors.name) {
+    return { errors, values };
+  }
+
+  await Course.updateOne({ nanoid }, { $push: { lessons: values } });
 
   return redirect(`/manage/courses/${nanoid}/${slug}`);
 };
 
 export default function NewLesson() {
   const data = useLoaderData();
-  const context = useOutletContext();
+  const actionData = useActionData();
+  actionData && console.log(actionData);
 
   return (
     <section>
@@ -54,7 +57,6 @@ export default function NewLesson() {
 
       <Form method="post" className="mt-6 max-w-lg">
         <input type="hidden" name="owner" value={data} />
-        <input type="hidden" name="courseId" value={context._id} />
 
         <div className="mb-6">
           <label>
@@ -65,6 +67,7 @@ export default function NewLesson() {
               className="p-1 border rounded-lg border-purple-500 w-full"
             />
           </label>
+          <ValidationError error={actionData?.errors?.name} />
         </div>
 
         <InputArray label="Materials" />
