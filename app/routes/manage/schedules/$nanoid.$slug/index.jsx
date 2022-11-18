@@ -64,7 +64,7 @@ export default function ScheduleByIdIndex() {
                   </div>
                 </Form>
                 <p className="mt-2 text-sm text-slate-500 max-w-xl">
-                  {course.objective.slice(0, 96)}...
+                  {course.objective?.slice(0, 96)}...
                 </p>
               </section>
             ))}
