@@ -1,41 +1,33 @@
-import { json, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import Button from "~/components/Button";
 import { authenticator } from "~/services/auth.server";
-import {
-  deleteCourse,
-  deleteSchedule,
-  getCourses,
-  getSchedules,
-} from "~/services/requests.server";
+import Course from "~/services/models/Course";
+import Schedule from "~/services/models/Schedule";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
 
-  const schedules = await getSchedules(owner);
-  const courses = await getCourses(owner);
+  const schedules = await Schedule.find({ owner });
+  const courses = await Course.find({ owner });
 
   return json({ schedules, courses });
 };
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const id = formData.get("id");
-  const intent = formData.get("intent");
+  const _id = formData.get("id");
+  const action = formData.get("action");
 
-  switch (intent) {
+  switch (action) {
     case "deleteSchedule":
-      await deleteSchedule(id);
-      break;
+      return await Schedule.deleteOne({ _id });
     case "deleteCourse":
-      await deleteCourse(id);
-      break;
+      return await Course.deleteOne({ _id });
     default:
-      console.log(`Sorry, can't find ${intent}.`);
+      throw new Error("Unknown action");
   }
-
-  return redirect("/manage");
 }
 
 export default function ManageIndex() {
@@ -66,19 +58,18 @@ export default function ManageIndex() {
                     }
                   }}
                 >
-                  <input type="hidden" name="id" value={schedule.nanoid} />
+                  <input type="hidden" name="id" value={schedule._id} />
                   <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
                     <Link to={`schedules/${schedule.nanoid}/${schedule.slug}`}>
                       {schedule.name}
                     </Link>
-                    <button
+                    <Button
                       type="submit"
-                      name="intent"
+                      genre="sm-outline-warning"
+                      label="Delete"
+                      name="action"
                       value="deleteSchedule"
-                      className="px-2 rounded-full text-sm font-normal border border-slate-500 text-slate-500 hover:bg-slate-500 hover:text-white"
-                    >
-                      Delete
-                    </button>
+                    />
                   </p>
                 </Form>
               </section>
@@ -111,19 +102,18 @@ export default function ManageIndex() {
                     }
                   }}
                 >
-                  <input type="hidden" name="id" value={course.nanoid} />
+                  <input type="hidden" name="id" value={course._id} />
                   <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
                     <Link to={`courses/${course.nanoid}/${course.slug}`}>
                       {course.name}
                     </Link>
-                    <button
+                    <Button
                       type="submit"
-                      name="intent"
+                      genre="sm-outline-warning"
+                      label="Delete"
+                      name="action"
                       value="deleteCourse"
-                      className="px-2 rounded-full text-sm font-normal border border-slate-500 text-slate-500 hover:bg-slate-500 hover:text-white"
-                    >
-                      Delete
-                    </button>
+                    />
                   </p>
                 </Form>
               </section>
