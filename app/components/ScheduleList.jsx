@@ -9,14 +9,14 @@ export default function ScheduleList({ data }) {
   const { courses } = data;
 
   return (
-    <section>
+    <div>
       {weeks.map((week, index) => (
         <div
           key={index}
           className="mb-4 border border-slate-200 rounded-xl p-3"
         >
           <h1 className="flex justify-between">
-            <span className="font-bold text-sm tracking-wider text-slate-700 uppercase">
+            <span className="text-purple-500 font-bold text-xl">
               Week {index + 1}
             </span>
             <span className="text-sm text-purple-500">
@@ -27,9 +27,7 @@ export default function ScheduleList({ data }) {
             .filter((date) => isSameWeek(parseISO(week), parseISO(date)))
             .map((date) => (
               <div key={date} className="py-2">
-                <p className="text-purple-500 font-bold">
-                  {formatDate2(parseISO(date))}
-                </p>
+                <p className="text-purple-500">{formatDate2(parseISO(date))}</p>
                 {courses.map((subject) =>
                   subject.frequency.includes(getDay(parseISO(date))) ? (
                     <p key={subject.name}>- {subject.name}</p>
@@ -39,6 +37,6 @@ export default function ScheduleList({ data }) {
             ))}
         </div>
       ))}
-    </section>
+    </div>
   );
 }

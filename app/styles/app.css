@@ -697,6 +697,10 @@ video {
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.self-end {
+  align-self: flex-end;
+}
+
 .whitespace-nowrap {
   white-space: nowrap;
 }
