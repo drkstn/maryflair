@@ -11,7 +11,10 @@ export default function ScheduleList({ data }) {
   return (
     <section>
       {weeks.map((week, index) => (
-        <div key={index} className="">
+        <div
+          key={index}
+          className="mb-4 border border-slate-200 rounded-xl p-3"
+        >
           <h1 className="flex justify-between">
             <span className="font-bold text-sm tracking-wider text-slate-700 uppercase">
               Week {index + 1}
@@ -23,7 +26,7 @@ export default function ScheduleList({ data }) {
           {dates
             .filter((date) => isSameWeek(parseISO(week), parseISO(date)))
             .map((date) => (
-              <div key={date}>
+              <div key={date} className="py-2">
                 <p className="text-purple-500 font-bold">
                   {formatDate2(parseISO(date))}
                 </p>
@@ -34,8 +37,6 @@ export default function ScheduleList({ data }) {
                 )}
               </div>
             ))}
-          <p></p>
-          <hr className="my-6" />
         </div>
       ))}
     </section>

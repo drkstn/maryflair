@@ -32,9 +32,12 @@ export default function ScheduleByIdIndex() {
       <section className="mb-6">
         <h2 className="font-bold text-2xl text-slate-700 mb-2">Course List</h2>
         {schedule?.courses?.length > 0 ? (
-          <div>
+          <div className="grid grid-cols-1 md:grid-cols-3 md:space-x-2">
             {schedule.courses.map((course) => (
-              <section className="mb-2" key={course._id}>
+              <section
+                className="mb-2 border border-slate-200 rounded-xl p-3"
+                key={course._id}
+              >
                 <Form
                   method="post"
                   onSubmit={(e) => {
@@ -45,7 +48,7 @@ export default function ScheduleByIdIndex() {
                 >
                   <input type="hidden" name="courseId" value={course._id} />
                   <input type="hidden" name="owner" value={schedule.owner} />
-                  <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
+                  <div className="text-purple-500 hover:text-purple-700 font-bold text-lg flex justify-between">
                     <Link
                       to={`/manage/schedules/${schedule.nanoid}/${schedule.slug}`}
                     >
@@ -53,13 +56,16 @@ export default function ScheduleByIdIndex() {
                     </Link>
                     <Button
                       type="submit"
-                      genre="sm-outline-warning"
+                      genre="sm-warning"
                       label="Remove"
                       name="action"
                       value="remove"
                     />
-                  </p>
+                  </div>
                 </Form>
+                <p className="mt-2 text-sm text-slate-500 max-w-xl">
+                  {course.objective.slice(0, 96)}...
+                </p>
               </section>
             ))}
           </div>
