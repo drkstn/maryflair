@@ -1,5 +1,6 @@
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { getISODay, parseISO } from "date-fns";
 import Button from "~/components/Button";
 import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
@@ -48,11 +49,6 @@ export const action = async ({ request, params }) => {
     "name objective notes lessons"
   );
 
-  // const courseConflict = await Schedule.findOne({
-  //   nanoid: scheduleNanoid,
-  //   "courses.name": course.name,
-  // });
-
   const courseConflict = schedule.courses.some(
     (existingCourse) => existingCourse.name === course.name
   );
@@ -64,11 +60,25 @@ export const action = async ({ request, params }) => {
     return { errors, values };
   }
 
-  const courseWithFreq = { ...course.toObject(), frequency };
+  const dates = schedule.calendar.dates.filter((date) =>
+    frequency.includes(getISODay(parseISO(date)))
+  );
+
+  const lessons = course.lessons.toObject().map((lesson, index) => ({
+    ...lesson,
+    date: dates[index],
+  }));
+
+  const courseDataToImport = {
+    ...course.toObject(),
+    frequency,
+    dates,
+    lessons,
+  };
 
   await Schedule.updateOne(
     { nanoid: scheduleNanoid },
-    { $push: { courses: courseWithFreq } }
+    { $push: { courses: courseDataToImport } }
   );
 
   return redirect(`/manage/schedules/${scheduleNanoid}/${slug}`);

@@ -18,6 +18,7 @@ const LessonSchema = new mongoose.Schema({
 const CourseSchema = new mongoose.Schema({
   name: String,
   frequency: [Number],
+  dates: [String],
   objective: String,
   notes: [String],
   lessons: [LessonSchema],
