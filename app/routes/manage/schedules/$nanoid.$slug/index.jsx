@@ -1,9 +1,10 @@
 import { useOutletContext } from "@remix-run/react";
 import Button from "~/components/Button";
-import Checkbox from "~/components/Checkbox";
 import CourseCards from "~/components/CourseCards";
 import ScheduleList from "~/components/ScheduleList";
 import ScheduleList2 from "~/components/ScheduleList2";
+import ScheduleList3 from "~/components/ScheduleList3";
+import ScheduleList4 from "~/components/ScheduleList4";
 import Schedule from "~/services/models/Schedule";
 
 export async function action({ request, params }) {
@@ -24,8 +25,9 @@ export async function action({ request, params }) {
 }
 
 export default function ScheduleByIdIndex() {
-  const schedule = useOutletContext();
-
+  const data = useOutletContext();
+  const { schedule, dateLookup } = data;
+  console.log(dateLookup);
   return (
     <>
       <div className="mt-4">
@@ -40,11 +42,8 @@ export default function ScheduleByIdIndex() {
       <section>
         <h2 className="font-bold text-2xl text-slate-700 mb-2">Schedule</h2>
         {/* <ScheduleList data={schedule} /> */}
-        <Checkbox label="Lesson One" name="l1" />
-        <Checkbox label="Lesson Two" name="l2" />
-        <Checkbox label="Lesson Three" name="l3" />
-        <hr className="my-6" />
-        <ScheduleList2 schedule={schedule} />
+        {/* <ScheduleList3 schedule={schedule} /> */}
+        <ScheduleList4 schedule={schedule} />
       </section>
     </>
   );

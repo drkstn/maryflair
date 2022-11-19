@@ -1,3 +1,5 @@
+import { parseISO, getDay, isSameDay } from "date-fns";
+
 export const clear = (arr) => {
   return arr.reduce(
     (start, value) => (value.length > 0 ? [...start, value] : start),
@@ -54,4 +56,52 @@ export const moveByIndex = (arr, fromIndex, toIndex) => {
   const newArr = [...leftOfToIndex, item, ...rightOfToIndex];
 
   return newArr;
+};
+
+export const createDateLookup = (dates, courses) => {
+  // Create keys from ISO date strings
+  const dateLookup = dates.reduce((start, date) => {
+    // Create object on each date with 'lessons' key and [] value
+    const lessonsOnDate = courses.map((course) => {
+      const lessons = course.lessons
+        .filter((lesson) => {
+          return isSameDay(parseISO(date), parseISO(lesson.date));
+        })
+        .map((lesson) => {
+          return {
+            ...lesson,
+            course: course.name,
+          };
+        });
+      return lessons;
+    });
+
+    // Create object on each date with 'courses' key and [] value
+    const coursesOnDate = courses
+      .filter((course) => course.frequency.includes(getDay(parseISO(date))))
+      .map((course) => {
+        // Create object on each course with 'lessons' key and [] value
+        const lessonsForCourseOnDate = course.lessons.filter((lesson) => {
+          return isSameDay(parseISO(date), parseISO(lesson.date));
+        });
+
+        return {
+          name: course.name,
+          _id: course._id,
+          frequency: course.frequency,
+          lessons: lessonsForCourseOnDate,
+        };
+      });
+
+    // Return lookup object
+    return {
+      ...start,
+      [date]: {
+        courses: coursesOnDate,
+        lessons: lessonsOnDate.flat(),
+      },
+    };
+  }, {});
+
+  return dateLookup;
 };

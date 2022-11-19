@@ -1,5 +1,6 @@
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
+import { createDateLookup } from "~/services/helpers.server";
 import Schedule from "~/services/models/Schedule";
 
 export const loader = async ({ params, request }) => {
@@ -9,11 +10,17 @@ export const loader = async ({ params, request }) => {
 
   const schedule = await Schedule.findOne({ nanoid, owner });
 
-  return schedule;
+  const dateLookup = createDateLookup(
+    schedule.calendar.dates,
+    schedule.courses
+  );
+
+  return { schedule, dateLookup };
 };
 
 export default function ScheduleById() {
-  const schedule = useLoaderData();
+  const data = useLoaderData();
+  const { schedule } = data;
 
   return (
     <section>
@@ -21,7 +28,7 @@ export default function ScheduleById() {
         Schedule
       </h2>
       <h1 className="text-slate-700 font-bold text-3xl">{schedule.name}</h1>
-      <Outlet context={schedule} />
+      <Outlet context={data} />
     </section>
   );
 }

@@ -1,7 +1,8 @@
 import { isSameWeek, parseISO, getDay, isSameDay } from "date-fns";
 import { format } from "date-fns/fp";
+import { createDateLookup } from "~/services/helpers.server";
 
-export default function ScheduleList2({ schedule }) {
+export default function ScheduleList3({ schedule }) {
   const { dates, weeks } = schedule.calendar;
   const { courses } = schedule;
 
@@ -10,12 +11,23 @@ export default function ScheduleList2({ schedule }) {
   const formatDate = format("MMMM d, y");
   const formatDate2 = format("EEEE, MMMM d");
 
-  const isCourse = (course, date) => {
-    const result = course.frequency.includes(getDay(parseISO(date))) ? (
-      <p className="font-bold text-blue-500">{course.name}</p>
-    ) : null;
-    return result;
-  };
+  const testDate = "2022-10-04";
+
+  // const datesForWeek = (week) => {
+  //   return dates.filter((date) => isSameWeek(parseISO(week), parseISO(date)));
+  // };
+  // const weekDates = weeks.map((week) => datesForWeek(week));
+
+  // const datesForCourses = (course) => {
+  //   return dates
+  //     .filter((date) => course.frequency.includes(getDay(parseISO(date))))
+  //     .map((date) => formatDate2(parseISO(date)));
+  // };
+  // const courseDates = courses.map((course) => datesForCourses(course));
+
+  // console.log(courseDates);
+
+  // const dateLookup = dates.map((date) => ({ [date]: { name: date } }));
 
   return (
     <section>
@@ -35,8 +47,6 @@ export default function ScheduleList2({ schedule }) {
                   </p>
                   {courses.map((course) => (
                     <div key={course._id}>
-                      {isCourse(course, date)}
-
                       {course.lessons
                         .filter((lesson) =>
                           isSameDay(parseISO(date), parseISO(lesson.date))

@@ -30,7 +30,7 @@ export default function CourseCard({ data, course }) {
             <button
               type="button"
               onClick={handleClick}
-              className="text-purple-500 font-normal"
+              className="text-purple-500 font-normal hover:bg-blue-300 hover:text-white w-7 rounded-md"
             >
               {state ? "-" : "+"}
             </button>
