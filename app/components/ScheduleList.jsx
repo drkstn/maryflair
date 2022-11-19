@@ -1,42 +1,52 @@
-import { isSameWeek, parseISO, getDay } from "date-fns";
+import { isSameWeek, parseISO } from "date-fns";
 import { format } from "date-fns/fp";
 
-export default function ScheduleList({ data }) {
-  const { dates, weeks } = data.calendar;
-  const formatDate = format("MMMM d, y");
+export default function ScheduleList({ schedule, dateLookup }) {
+  const { dates, weeks } = schedule.calendar;
+
+  // const formatDate = format("MMMM d, y");
   const formatDate2 = format("EEEE, MMMM d");
 
-  const { courses } = data;
+  const weeksWithDates = weeks.map((week) => {
+    return dates.filter((date) => isSameWeek(parseISO(week), parseISO(date)));
+  });
 
   return (
-    <div>
-      {weeks.map((week, index) => (
-        <div
-          key={index}
-          className="mb-4 border border-slate-200 rounded-xl p-3"
-        >
-          <h1 className="flex justify-between">
-            <span className="text-purple-500 font-bold text-xl">
-              Week {index + 1}
-            </span>
-            <span className="text-sm text-purple-500">
-              {formatDate(parseISO(week))}
-            </span>
+    <section>
+      {weeksWithDates.map((week, index) => (
+        <div key={index}>
+          <h1 className="font-bold text-2xl text-purple-500 mb-2">
+            Week {index + 1}
           </h1>
-          {dates
-            .filter((date) => isSameWeek(parseISO(week), parseISO(date)))
-            .map((date) => (
-              <div key={date} className="py-2">
-                <p className="text-purple-500">{formatDate2(parseISO(date))}</p>
-                {courses.map((subject) =>
-                  subject.frequency.includes(getDay(parseISO(date))) ? (
-                    <p key={subject.name}>- {subject.name}</p>
-                  ) : null
-                )}
+          <hr className="border-4 border-purple-500 mb-4" />
+          <div className="">
+            {week.map((date) => (
+              <div key={date} className="mb-6">
+                <p className="mb-2 font-bold">{formatDate2(parseISO(date))}</p>
+                <div>
+                  {dateLookup[date].courses.map((course) => (
+                    <div
+                      key={course._id}
+                      className="p-2 mb-2 border border-1 rounded-xl"
+                    >
+                      <p className="text-purple-500">{course.name}</p>
+                      {course.lessons.map((lesson) => (
+                        <p key={lesson._id}>{lesson.name}</p>
+                      ))}
+                      <p className="text-slate-400">
+                        {course.lessons.length < 1 && "No Lessons"}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-slate-400">
+                  {dateLookup[date].courses.length < 1 && "No Courses"}
+                </p>
               </div>
             ))}
+          </div>
         </div>
       ))}
-    </div>
+    </section>
   );
 }
