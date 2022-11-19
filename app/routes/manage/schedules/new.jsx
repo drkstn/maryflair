@@ -55,7 +55,7 @@ export async function action({ request }) {
     .filter((date) => !misc.includes(date));
 
   const weeks = eachWeekOfInterval(
-    { start: parseISO(start), end: parseISO(end) },
+    { start: parseISO(dates.at(0)), end: parseISO(dates.at(-1)) },
     { weekStartsOn: 1 }
   ).map(formatDate);
 
