@@ -1,4 +1,4 @@
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { getISODay, parseISO } from "date-fns";
 import Button from "~/components/Button";
@@ -13,16 +13,17 @@ export const loader = async ({ request, params }) => {
 
   const courses = await Course.find({ owner });
 
-  return json({ owner, courses });
+  return courses;
 };
 
 export const action = async ({ request, params }) => {
+  const user = await authenticator.isAuthenticated(request);
   const scheduleNanoid = params.nanoid;
   const { slug } = params;
   const formData = await request.formData();
 
   const values = {
-    owner: formData.get("owner"),
+    owner: user._json.email,
     courseNanoid: formData.get("course"),
     frequency: formData.getAll("frequency").map((num) => parseInt(num)),
   };
@@ -85,7 +86,7 @@ export const action = async ({ request, params }) => {
 };
 
 export default function ImportExistingCourse() {
-  const { owner, courses } = useLoaderData();
+  const courses = useLoaderData();
   const actionData = useActionData();
 
   return (
@@ -100,8 +101,6 @@ export default function ImportExistingCourse() {
       </div>
 
       <Form method="post" className="mt-6 max-w-lg">
-        <input type="hidden" name="owner" value={owner} />
-
         <div className="mb-6">
           <div className="mb-2 font-bold text-purple-500">
             Select a course to import:

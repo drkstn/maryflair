@@ -1,21 +1,16 @@
-import { json } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
 import Button from "~/components/Button";
 import TextAreaArray from "~/components/TextAreaArray";
 import ValidationError from "~/components/ValidationError";
 import { authenticator } from "~/services/auth.server";
 import { clear } from "~/services/helpers.server";
 
-export const loader = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
-  return json(user._json.email);
-};
-
 export const action = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request);
   const formData = await request.formData();
 
   const values = {
-    owner: formData.get("owner"),
+    owner: user._json.email,
     name: formData.get("name"),
     frequency: formData.getAll("frequency").map((num) => parseInt(num)),
     ...(formData.get("objective") && { objective: formData.get("objective") }),
@@ -40,9 +35,7 @@ export const action = async ({ request }) => {
 };
 
 export default function ImportNewCourse() {
-  const data = useLoaderData();
   const actionData = useActionData();
-  // console.log(actionData);
 
   return (
     <section>
@@ -56,8 +49,6 @@ export default function ImportNewCourse() {
       </div>
 
       <Form method="post" className="mt-6 max-w-lg">
-        <input type="hidden" name="owner" value={data} />
-
         <div className="mb-6">
           <label>
             <div className="mb-2 font-bold text-purple-500">Name * </div>

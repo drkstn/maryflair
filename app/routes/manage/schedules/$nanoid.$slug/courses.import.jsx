@@ -1,16 +1,7 @@
-import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import Button from "~/components/Button";
-import { authenticator } from "~/services/auth.server";
-
-export const loader = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
-  return json(user._json.email);
-};
 
 export default function ImportCourse() {
-  const data = useLoaderData();
-
   return (
     <section>
       <div className="mb-4">
@@ -21,8 +12,6 @@ export default function ImportCourse() {
       </div>
 
       <Form method="post" className="mt-6">
-        <input type="hidden" name="owner" value={data} />
-
         <div className="space-x-2 mt-4">
           <Button type="link" label="Existing" to="existing" />
           <Button type="link" label="New" to="new" />

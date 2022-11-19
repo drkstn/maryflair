@@ -1,5 +1,5 @@
-import { Form, useLoaderData } from "@remix-run/react";
-import { redirect, json } from "@remix-run/node";
+import { Form } from "@remix-run/react";
+import { redirect } from "@remix-run/node";
 import { createSchedule } from "~/services/requests.server";
 import { authenticator } from "~/services/auth.server";
 import {
@@ -12,15 +12,11 @@ import { isHoliday } from "date-fns-holiday-us";
 import Button from "~/components/Button";
 import { formatISOWithOptions } from "date-fns/fp";
 
-export const loader = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
-  return json(user._json.email);
-};
-
 export async function action({ request }) {
+  const user = await authenticator.isAuthenticated(request);
   const formData = await request.formData();
 
-  const owner = formData.get("owner");
+  const owner = user._json.email;
   const name = formData
     .get("name")
     .replace(/[^a-zA-Z0-9- ]/g, "")
@@ -82,8 +78,6 @@ export async function action({ request }) {
 }
 
 export default function ScheduleNew() {
-  const data = useLoaderData();
-
   return (
     <section>
       <div className="mb-6">
@@ -97,8 +91,6 @@ export default function ScheduleNew() {
       </div>
 
       <Form method="post">
-        <input type="hidden" name="owner" value={data} />
-
         <div className="mb-6">
           <label>
             <div className="mb-2 font-bold text-purple-500">Name: </div>

@@ -1,5 +1,5 @@
-import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { redirect } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
 import Button from "~/components/Button";
 import InputArray from "~/components/InputArray";
 import TextAreaArray from "~/components/TextAreaArray";
@@ -8,18 +8,14 @@ import { authenticator } from "~/services/auth.server";
 import { clear } from "~/services/helpers.server";
 import Course from "~/services/models/Course";
 
-export const loader = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
-  return json(user._json.email);
-};
-
 export const action = async ({ request, params }) => {
+  const user = await authenticator.isAuthenticated(request);
   const { nanoid, slug } = params;
 
   const formData = await request.formData();
 
   const values = {
-    owner: formData.get("owner"),
+    owner: user._json.email,
     name: formData.get("name"),
     materials: clear(formData.getAll("materials")),
     assignments: clear(formData.getAll("assignments")),
@@ -42,7 +38,6 @@ export const action = async ({ request, params }) => {
 };
 
 export default function NewLesson() {
-  const data = useLoaderData();
   const actionData = useActionData();
   actionData && console.log(actionData);
 
@@ -56,8 +51,6 @@ export default function NewLesson() {
       </div>
 
       <Form method="post" className="mt-6 max-w-lg">
-        <input type="hidden" name="owner" value={data} />
-
         <div className="mb-6">
           <label>
             <div className="mb-2 font-bold text-purple-500">Name: </div>
