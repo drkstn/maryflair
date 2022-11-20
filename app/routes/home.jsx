@@ -7,7 +7,7 @@ export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
   });
-  console.log(user);
+
   return json(user._json);
 };
 
