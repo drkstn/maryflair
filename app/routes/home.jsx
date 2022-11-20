@@ -4,12 +4,10 @@ import { authenticator } from "../services/auth.server.js";
 import NavBar from "~/components/NavBar.jsx";
 
 export const loader = async ({ request }) => {
-  // authenticator.isAuthenticated function returns the user object if found
-  // if user is not authenticated then user would be redirected back to homepage ("/" route)
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/",
   });
-
+  console.log(user);
   return json(user._json);
 };
 

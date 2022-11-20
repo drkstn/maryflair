@@ -1,5 +1,12 @@
 import { Form, Link } from "@remix-run/react";
 import { SocialsProvider } from "remix-auth-socials";
+import { authenticator } from "~/services/auth.server";
+
+export const loader = async ({ request }) => {
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: "/home",
+  });
+};
 
 export default function Index() {
   return (
