@@ -62,11 +62,33 @@ export const quickAddEvent = async (request, date) => {
   const myAuth = await authenticateWithGoogle(request);
 
   const calendar = google.calendar("v3");
-  const calendarEvents = await calendar.events.quickAdd({
-    auth: myAuth,
-    calendarId: "primary",
-    text: "Test event on " + date,
-  });
 
-  return calendarEvents;
+  // const calendarIsFound = await calendar.calendars
+  //   .get({ calendarId: "Fall 2022" })
+  //   .catch((e) => console.log(e));
+
+  // if (!calendarIsFound) {
+  //   await calendar.calendars
+  //     .insert({
+  //       resource: { summary: "Fall 2022" },
+  //     })
+  //     .catch((e) => console.log(e));
+  // }
+  const calendarList = await calendar.calendarList.list({});
+
+  const calendarSearch = calendarList.data.items
+    .filter((item) => item.summary === "Fall 2022")
+    .flat();
+  // const newCalendarEvent = await calendar.events
+  //   .quickAdd({
+  //     calendarId: "ta1pcqibu4shajmvddmt85h8pk@group.calendar.google.com",
+  //     text: "Test event on " + date,
+  //   })
+  //   .catch((e) => console.log(e));
+
+  return calendarSearch[0].id || null;
+  // return isCalendar2;
+  // console.log(isCalendar.data);
+
+  // return calendarEvents;
 };
