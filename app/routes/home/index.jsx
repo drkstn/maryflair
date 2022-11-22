@@ -14,18 +14,6 @@ export const loader = async ({ request }) => {
 
   const schedules = await Schedule.find({ owner });
 
-  const date = new Date();
-  const date2 = date.toLocaleString("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  const date3 = new Intl.DateTimeFormat("en-US").format(date);
-  const date4 = date.toLocaleDateString();
-  const date5 = date.toLocaleString();
-
-  const myDates = { date, date2, date3, date4, date5 };
-
   const today = formatDate(new Date());
 
   const scheduleData = schedules.filter((schedule) => {
@@ -41,13 +29,25 @@ export const loader = async ({ request }) => {
 
   const lessonData = dateLookups.map((lookup) => lookup[today]);
 
-  return { scheduleData, lessonData, today, myDates };
+  return { scheduleData, lessonData };
 };
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, lessonData, today, myDates } = data;
-  console.log(today, myDates);
+  const { scheduleData, lessonData } = data;
+
+  const date = new Date();
+  const date2 = date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const date3 = new Intl.DateTimeFormat("en-US").format(date);
+  const date4 = date.toLocaleDateString();
+  const date5 = date.toLocaleString();
+
+  const myDates = { date, date2, date3, date4, date5 };
+  console.log(myDates);
 
   return (
     <section>
