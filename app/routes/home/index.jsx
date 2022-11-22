@@ -14,11 +14,11 @@ export const loader = async ({ request }) => {
 
   const schedules = await Schedule.find({ owner });
 
-  const day1 = new Date();
-  const today =
-    day1.getFullYear() + "-" + (day1.getMonth() + 1) + "-" + day1.getDate();
-
-  // const today = formatDate(startOfDay(new Date()));
+  const createDate = new Date();
+  const getOffset = createDate.getTimezoneOffset();
+  const todayRaw = createDate - getOffset;
+  const today = formatDate(todayRaw);
+  // const today = formatDate(new Date().getTimezoneOffset());
   const scheduleData = schedules.filter((schedule) => {
     return isWithinInterval(parseISO(today), {
       start: parseISO(schedule.calendar.start),
