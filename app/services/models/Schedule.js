@@ -45,6 +45,7 @@ const ScheduleSchema = new mongoose.Schema({
     },
     weeks: [String],
     dates: [String],
+    timeZone: String,
   },
   courses: [CourseSchema],
 });

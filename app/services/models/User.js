@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
   googleId: String,
   accessToken: String,
   refreshToken: String,
+  timeZone: String,
 });
 
 const User = mongoose.models.User || mongoose.model("User", UserSchema);

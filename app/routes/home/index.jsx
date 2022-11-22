@@ -16,26 +16,34 @@ export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
 
-  const url = new URL(request.url);
-  const date = url.searchParams.get("date");
+  // const url = new URL(request.url);
+  // const date = url.searchParams.get("date");
   // Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const newDate = new Date();
-  const newDate2 = formatInTimeZone(
-    newDate,
-    "America/Los_Angeles",
-    "yyyy-MM-dd HH:mm:ss zzz"
-  );
-  const newDate3 = formatInTimeZone(
-    newDate,
-    Intl.DateTimeFormat().resolvedOptions().timeZone,
-    "yyyy-MM-dd HH:mm:ss zzz"
-  );
+  // const newDate3 = formatInTimeZone(
+  //   newDate,
+  //   Intl.DateTimeFormat().resolvedOptions().timeZone,
+  //   "yyyy-MM-dd HH:mm:ss zzz"
+  // );
 
   const formatDate = formatISOWithOptions({ representation: "date" });
 
   const schedules = await Schedule.find({ owner });
+
+  const date = new Date();
+  const dateInTimeZone = formatInTimeZone(
+    date,
+    schedules[0].calendar.timeZone,
+    "yyyy-MM-dd"
+  );
+
   const scheduleData = schedules.filter((schedule) => {
-    return isWithinInterval(parseISO(date), {
+    const dateInTimeZone = formatInTimeZone(
+      date,
+      schedule.calendar.timeZone,
+      "yyyy-MM-dd"
+    );
+
+    return isWithinInterval(parseISO(dateInTimeZone), {
       start: parseISO(schedule.calendar.start),
       end: parseISO(schedule.calendar.end),
     });
@@ -45,16 +53,23 @@ export const loader = async ({ request }) => {
     return createDateLookup(schedule.calendar.dates, schedule.courses);
   });
 
-  const lessonData = dateLookups.map((lookup) => lookup[date]);
+  const lessonData = dateLookups.map((lookup, index) => {
+    const dateInTimeZone = formatInTimeZone(
+      date,
+      schedules[0].calendar.timeZone,
+      "yyyy-MM-dd"
+    );
+    return lookup[dateInTimeZone];
+  });
 
-  return { scheduleData, lessonData, date, newDate, newDate2, newDate3 };
+  return { scheduleData, lessonData, dateInTimeZone };
 };
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, lessonData, date, newDate, newDate2, newDate3 } = data;
+  const { scheduleData, lessonData, dateInTimeZone } = data;
 
-  console.log(newDate, newDate2, newDate3);
+  console.log(dateInTimeZone);
   return (
     <section>
       <div>
@@ -63,7 +78,7 @@ export default function HomeIndex() {
           A schedule is a defined period of time in which one or more courses
           occur.
         </p>
-        {date && <p>{date}</p>}
+        {dateInTimeZone && <p>{dateInTimeZone}</p>}
       </div>
       <hr className="my-6" />
       <DailyScheduleList scheduleData={scheduleData} lessonData={lessonData} />

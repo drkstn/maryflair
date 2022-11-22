@@ -14,9 +14,12 @@ import { formatISOWithOptions } from "date-fns/fp";
 
 export async function action({ request }) {
   const user = await authenticator.isAuthenticated(request);
-  const formData = await request.formData();
-
   const owner = user._json.email;
+
+  const formData = await request.formData();
+  const timeZone = formData.get("timeZone");
+  console.log(timeZone);
+
   const name = formData
     .get("name")
     .replace(/[^a-zA-Z0-9- ]/g, "")
@@ -91,6 +94,11 @@ export default function ScheduleNew() {
       </div>
 
       <Form method="post">
+        <input
+          type="hidden"
+          name="timeZone"
+          value={Intl.DateTimeFormat().resolvedOptions().timeZone}
+        />
         <div className="mb-6">
           <label>
             <div className="mb-2 font-bold text-purple-500">Name: </div>
