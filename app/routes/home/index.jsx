@@ -1,93 +1,52 @@
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useSubmit,
-} from "@remix-run/react";
-import { Link } from "react-router-dom";
-import Button from "~/components/Button";
+import { useLoaderData } from "@remix-run/react";
+import { isWithinInterval, parseISO } from "date-fns";
+import { formatISOWithOptions } from "date-fns/fp";
+import DailyScheduleList from "~/components/DailyScheduleList";
 import { authenticator } from "~/services/auth.server";
+import { createDateLookup } from "~/services/helpers.server";
 import Schedule from "~/services/models/Schedule";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
+  const formatDate = formatISOWithOptions({ representation: "date" });
 
   const schedules = await Schedule.find({ owner });
 
-  return schedules;
-};
+  const today = formatDate(new Date());
+  const scheduleData = schedules.filter((schedule) => {
+    return isWithinInterval(parseISO(today), {
+      start: parseISO(schedule.calendar.start),
+      end: parseISO(schedule.calendar.end),
+    });
+  });
 
-export const action = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request);
-  const owner = user._json.email;
+  const dateLookups = scheduleData.map((schedule) => {
+    return createDateLookup(schedule.calendar.dates, schedule.courses);
+  });
 
-  const formData = await request.formData();
-  const nanoid = formData.get("course");
+  const lessonData = dateLookups.map((lookup) => lookup[today]);
 
-  if (!nanoid) {
-    return "Please select a schedule";
-  }
-  const schedule = await Schedule.findOne({ nanoid, owner });
-
-  return schedule;
+  return { scheduleData, lessonData };
 };
 
 export default function HomeIndex() {
-  const schedules = useLoaderData();
-
-  // console.log(schedules);
-  const actionData = useActionData();
-  actionData && console.log(actionData);
-
-  const submit = useSubmit();
-
-  function handleChange(event) {
-    submit(event.currentTarget, { replace: true });
-  }
+  const data = useLoaderData();
+  const { scheduleData, lessonData } = data;
+  console.log(lessonData);
+  console.log(scheduleData);
 
   return (
     <section>
-      <h1 className="text-slate-700 font-bold text-3xl">Today's Lesson Plan</h1>
-      <p className="mt-2 text-slate-700 mb-6">
-        Yay! No lessons scheduled. <b>Enjoy.</b>
-      </p>
-
-      <p>
-        Your selected schedule:{" "}
-        {actionData ? actionData.name : schedules[0].name}
-      </p>
-
-      <Form method="post" onChange={handleChange}>
-        <div className="mb-6">
-          <div className="mb-2 font-bold text-purple-500">
-            Select a schedule to view:
-          </div>
-          <label>
-            <select
-              name="course"
-              className=" p-1 border rounded-lg border-purple-500"
-            >
-              {schedules?.length > 0 ? (
-                <>
-                  {/* <option value="">Please Select</option> */}
-                  {schedules.map((schedule) => (
-                    <option key={schedule.nanoid} value={schedule.nanoid}>
-                      {schedule.name}
-                    </option>
-                  ))}
-                </>
-              ) : (
-                <option value="">No schedules found</option>
-              )}
-            </select>
-          </label>
-        </div>
-      </Form>
-
-      <Link to="event" className=" text-purple-500 underline">
-        Create Test Event
-      </Link>
+      <div>
+        <h1 className="text-slate-700 font-bold text-3xl">Today's Schedules</h1>
+        <p className="mt-2 text-sm text-slate-500">
+          A schedule is a defined period of time in which one or more courses
+          occur.
+        </p>
+      </div>
+      <hr className="my-6" />
+      <DailyScheduleList scheduleData={scheduleData} lessonData={lessonData} />
     </section>
   );
 }

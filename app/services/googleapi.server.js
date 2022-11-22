@@ -59,34 +59,32 @@ export const getEventList = async (request) => {
 };
 
 export const quickAddEvent = async (request, date) => {
-  const myAuth = await authenticateWithGoogle(request);
-
+  await authenticateWithGoogle(request);
   const calendar = google.calendar("v3");
 
-  // const calendarIsFound = await calendar.calendars
-  //   .get({ calendarId: "Fall 2022" })
-  //   .catch((e) => console.log(e));
-
-  // if (!calendarIsFound) {
-  //   await calendar.calendars
-  //     .insert({
-  //       resource: { summary: "Fall 2022" },
-  //     })
-  //     .catch((e) => console.log(e));
-  // }
   const calendarList = await calendar.calendarList.list({});
 
-  const calendarSearch = calendarList.data.items
-    .filter((item) => item.summary === "Fall 2022")
-    .flat();
-  // const newCalendarEvent = await calendar.events
-  //   .quickAdd({
-  //     calendarId: "ta1pcqibu4shajmvddmt85h8pk@group.calendar.google.com",
-  //     text: "Test event on " + date,
-  //   })
-  //   .catch((e) => console.log(e));
+  const calendarSearch = calendarList.data.items.filter(
+    (item) => item.summary === "Fall 2022"
+  );
 
-  return calendarSearch[0].id || null;
+  let newCal;
+  if (calendarSearch.length < 1) {
+    newCal = await calendar.calendars
+      .insert({
+        resource: { summary: "Fall 2022" },
+      })
+      .catch((e) => console.log(e));
+  }
+
+  const newCalendarEvent = await calendar.events
+    .quickAdd({
+      calendarId: newCal?.data.id || calendarSearch[0].id,
+      text: "Test event on " + date,
+    })
+    .catch((e) => console.log(e));
+
+  return newCalendarEvent || null;
   // return isCalendar2;
   // console.log(isCalendar.data);
 

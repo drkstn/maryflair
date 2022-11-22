@@ -51,6 +51,7 @@ export const createDateLookup = (dates, courses) => {
     // Create object on each date with 'lessons' key and [] value
     const lessonsOnDate = courses.map((course) => {
       const lessons = course.lessons
+        .toObject()
         .filter((lesson) => {
           return isSameDay(parseISO(date), parseISO(lesson.date));
         })

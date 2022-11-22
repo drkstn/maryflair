@@ -11,7 +11,7 @@ export default function CourseCard({ data, course }) {
   };
 
   return (
-    <section className="mb-2 border border-slate-200 rounded-xl p-3">
+    <section className="mb-2 border border-slate-300 rounded-xl p-3">
       <fetcher.Form
         method="post"
         onSubmit={(e) => {

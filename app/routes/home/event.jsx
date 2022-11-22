@@ -6,12 +6,12 @@ import {
 } from "~/services/googleapi.server.js";
 import Button from "~/components/Button.jsx";
 
-export const loader = async ({ request }) => {
-  const events = await getEventList(request);
-  const calendars = await getCalendarList(request);
+// export const loader = async ({ request }) => {
+//   const events = await getEventList(request);
+//   const calendars = await getCalendarList(request);
 
-  return { events, calendars };
-};
+//   return { events, calendars };
+// };
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
