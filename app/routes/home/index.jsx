@@ -5,6 +5,7 @@ import DailyScheduleList from "~/components/DailyScheduleList";
 import { authenticator } from "~/services/auth.server";
 import { createDateLookup } from "~/services/helpers.server";
 import Schedule from "~/services/models/Schedule";
+import {} from "date-fns/getUnixTime";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -13,16 +14,11 @@ export const loader = async ({ request }) => {
 
   const schedules = await Schedule.find({ owner });
 
-  const day1 = formatDate(new Date());
-  const day2 = formatDate(endOfDay(new Date()));
-  const day3 = formatDate(startOfDay(new Date()));
-  const day4 = formatDate(Date.now());
-  const day5 = formatDate(endOfDay(Date.now()));
-  const day6 = formatDate(startOfDay(Date.now()));
-  const days = { day1, day2, day3, day4, day5, day6 };
-  console.log(days);
+  const day1 = new Date();
+  const today =
+    day1.getFullYear() + "-" + (day1.getMonth() + 1) + "-" + day1.getDate();
 
-  const today = formatDate(startOfDay(new Date()));
+  // const today = formatDate(startOfDay(new Date()));
   const scheduleData = schedules.filter((schedule) => {
     return isWithinInterval(parseISO(today), {
       start: parseISO(schedule.calendar.start),
@@ -36,13 +32,13 @@ export const loader = async ({ request }) => {
 
   const lessonData = dateLookups.map((lookup) => lookup[today]);
 
-  return { scheduleData, lessonData, days };
+  return { scheduleData, lessonData, today };
 };
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, lessonData, days } = data;
-  console.log(days);
+  const { scheduleData, lessonData, today } = data;
+  console.log(today);
 
   return (
     <section>
