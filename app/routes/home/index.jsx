@@ -1,23 +1,41 @@
-import { useLoaderData } from "@remix-run/react";
-import { endOfDay, isWithinInterval, parseISO, startOfDay } from "date-fns";
+import {
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+  useSubmit,
+} from "@remix-run/react";
+import { isWithinInterval, parseISO } from "date-fns";
 import { formatISOWithOptions } from "date-fns/fp";
 import DailyScheduleList from "~/components/DailyScheduleList";
 import { authenticator } from "~/services/auth.server";
 import { createDateLookup } from "~/services/helpers.server";
 import Schedule from "~/services/models/Schedule";
-import {} from "date-fns/getUnixTime";
+import { formatInTimeZone } from "date-fns-tz";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
+
+  const url = new URL(request.url);
+  const date = url.searchParams.get("date");
+  // Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const newDate = new Date();
+  const newDate2 = formatInTimeZone(
+    newDate,
+    "America/Los_Angeles",
+    "yyyy-MM-dd HH:mm:ss zzz"
+  );
+  const newDate3 = formatInTimeZone(
+    newDate,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+    "yyyy-MM-dd HH:mm:ss zzz"
+  );
+
   const formatDate = formatISOWithOptions({ representation: "date" });
 
   const schedules = await Schedule.find({ owner });
-
-  const today = formatDate(new Date());
-
   const scheduleData = schedules.filter((schedule) => {
-    return isWithinInterval(parseISO(today), {
+    return isWithinInterval(parseISO(date), {
       start: parseISO(schedule.calendar.start),
       end: parseISO(schedule.calendar.end),
     });
@@ -27,19 +45,16 @@ export const loader = async ({ request }) => {
     return createDateLookup(schedule.calendar.dates, schedule.courses);
   });
 
-  return { scheduleData, dateLookups };
+  const lessonData = dateLookups.map((lookup) => lookup[date]);
+
+  return { scheduleData, lessonData, date, newDate, newDate2, newDate3 };
 };
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, dateLookups } = data;
+  const { scheduleData, lessonData, date, newDate, newDate2, newDate3 } = data;
 
-  const formatDate = formatISOWithOptions({ representation: "date" });
-  const today = new Date();
-  const lessonData = dateLookups.map((lookup) => lookup[formatDate(today)]);
-
-  console.log(dateLookups);
-
+  console.log(newDate, newDate2, newDate3);
   return (
     <section>
       <div>
@@ -48,6 +63,7 @@ export default function HomeIndex() {
           A schedule is a defined period of time in which one or more courses
           occur.
         </p>
+        {date && <p>{date}</p>}
       </div>
       <hr className="my-6" />
       <DailyScheduleList scheduleData={scheduleData} lessonData={lessonData} />
