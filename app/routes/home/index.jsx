@@ -14,11 +14,16 @@ export const loader = async ({ request }) => {
 
   const schedules = await Schedule.find({ owner });
 
-  const createDate = new Date();
-  const getOffset = createDate.getTimezoneOffset();
-  const todayRaw = createDate - getOffset;
-  const today = formatDate(todayRaw);
-  // const today = formatDate(new Date().getTimezoneOffset());
+  const date = new Date();
+  const date2 =
+    date.getUTCFullYear(+"-" + date.getUTCMonth() + 1) +
+    "-" +
+    date.getUTCDate();
+  const date3 =
+    date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
+  const today = formatDate(new Date());
+
   const scheduleData = schedules.filter((schedule) => {
     return isWithinInterval(parseISO(today), {
       start: parseISO(schedule.calendar.start),
@@ -32,13 +37,13 @@ export const loader = async ({ request }) => {
 
   const lessonData = dateLookups.map((lookup) => lookup[today]);
 
-  return { scheduleData, lessonData, today };
+  return { scheduleData, lessonData, today, date2, date3 };
 };
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, lessonData, today } = data;
-  console.log(today);
+  const { scheduleData, lessonData, today, date2, date3 } = data;
+  console.log(today, date2, date3);
 
   return (
     <section>
