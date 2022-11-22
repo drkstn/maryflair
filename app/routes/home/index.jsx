@@ -1,5 +1,5 @@
 import { useLoaderData } from "@remix-run/react";
-import { isWithinInterval, parseISO } from "date-fns";
+import { isWithinInterval, parseISO, startOfDay } from "date-fns";
 import { formatISOWithOptions } from "date-fns/fp";
 import DailyScheduleList from "~/components/DailyScheduleList";
 import { authenticator } from "~/services/auth.server";
@@ -13,7 +13,7 @@ export const loader = async ({ request }) => {
 
   const schedules = await Schedule.find({ owner });
 
-  const today = formatDate(new Date());
+  const today = formatDate(startOfDay(new Date()));
   const scheduleData = schedules.filter((schedule) => {
     return isWithinInterval(parseISO(today), {
       start: parseISO(schedule.calendar.start),
