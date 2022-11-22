@@ -27,27 +27,18 @@ export const loader = async ({ request }) => {
     return createDateLookup(schedule.calendar.dates, schedule.courses);
   });
 
-  const lessonData = dateLookups.map((lookup) => lookup[today]);
-
-  return { scheduleData, lessonData };
+  return { scheduleData, dateLookups };
 };
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, lessonData } = data;
+  const { scheduleData, dateLookups } = data;
 
-  const date = new Date();
-  const date2 = date.toLocaleString("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  const date3 = new Intl.DateTimeFormat("en-US").format(date);
-  const date4 = date.toLocaleDateString();
-  const date5 = date.toLocaleString();
+  const formatDate = formatISOWithOptions({ representation: "date" });
+  const today = new Date();
+  const lessonData = dateLookups.map((lookup) => lookup[formatDate(today)]);
 
-  const myDates = { date, date2, date3, date4, date5 };
-  console.log(myDates);
+  console.log(dateLookups);
 
   return (
     <section>
