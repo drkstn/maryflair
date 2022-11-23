@@ -11,6 +11,7 @@ import {
 import { isHoliday } from "date-fns-holiday-us";
 import Button from "~/components/Button";
 import { formatISOWithOptions } from "date-fns/fp";
+import User from "~/services/models/User";
 
 export async function action({ request }) {
   const user = await authenticator.isAuthenticated(request);
@@ -18,7 +19,8 @@ export async function action({ request }) {
 
   const formData = await request.formData();
   const timeZone = formData.get("timeZone");
-  console.log(timeZone);
+
+  await User.updateOne({ email: owner }, { timeZone });
 
   const name = formData
     .get("name")

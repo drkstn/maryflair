@@ -11,38 +11,24 @@ import { authenticator } from "~/services/auth.server";
 import { createDateLookup } from "~/services/helpers.server";
 import Schedule from "~/services/models/Schedule";
 import { formatInTimeZone } from "date-fns-tz";
+import User from "~/services/models/User";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
   const owner = user._json.email;
 
-  // const url = new URL(request.url);
-  // const date = url.searchParams.get("date");
-  // Intl.DateTimeFormat().resolvedOptions().timeZone;
-  // const newDate3 = formatInTimeZone(
-  //   newDate,
-  //   Intl.DateTimeFormat().resolvedOptions().timeZone,
-  //   "yyyy-MM-dd HH:mm:ss zzz"
-  // );
+  const url = new URL(request.url);
+  const queryDate = url.searchParams.get("date");
 
+  const userData = await User.findOne({ email: owner });
   const formatDate = formatISOWithOptions({ representation: "date" });
+  const date = new Date();
+  const dateInTimeZone =
+    queryDate || formatInTimeZone(date, userData.timeZone, "yyyy-MM-dd");
 
   const schedules = await Schedule.find({ owner });
 
-  const date = new Date();
-  const dateInTimeZone = formatInTimeZone(
-    date,
-    schedules[0].calendar.timeZone,
-    "yyyy-MM-dd"
-  );
-
   const scheduleData = schedules.filter((schedule) => {
-    const dateInTimeZone = formatInTimeZone(
-      date,
-      schedule.calendar.timeZone,
-      "yyyy-MM-dd"
-    );
-
     return isWithinInterval(parseISO(dateInTimeZone), {
       start: parseISO(schedule.calendar.start),
       end: parseISO(schedule.calendar.end),
@@ -54,11 +40,6 @@ export const loader = async ({ request }) => {
   });
 
   const lessonData = dateLookups.map((lookup, index) => {
-    const dateInTimeZone = formatInTimeZone(
-      date,
-      schedules[0].calendar.timeZone,
-      "yyyy-MM-dd"
-    );
     return lookup[dateInTimeZone];
   });
 
@@ -67,9 +48,8 @@ export const loader = async ({ request }) => {
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, lessonData, dateInTimeZone } = data;
+  const { scheduleData, lessonData } = data;
 
-  console.log(dateInTimeZone);
   return (
     <section>
       <div>
@@ -78,7 +58,6 @@ export default function HomeIndex() {
           A schedule is a defined period of time in which one or more courses
           occur.
         </p>
-        {dateInTimeZone && <p>{dateInTimeZone}</p>}
       </div>
       <hr className="my-6" />
       <DailyScheduleList scheduleData={scheduleData} lessonData={lessonData} />
