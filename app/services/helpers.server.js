@@ -93,3 +93,37 @@ export const createDateLookup = (dates, courses) => {
 
   return dateLookup;
 };
+
+const limitIndex = (index, array) => {
+  if (index < 0) return 0;
+  if (index > array.length - 1) return array.length - 1;
+  return index;
+};
+
+export const updateLessonDate = (lesson, options) => {
+  const { newDate, difference, limiter } = options;
+
+  if (newDate) return { ...lesson, date: newDate };
+
+  if (difference && limiter) {
+    const validDateIndex = limiter.indexOf(lesson.date);
+    const newValidDateIndex = limitIndex(validDateIndex + difference, limiter);
+    return { ...lesson, date: limiter.at(newValidDateIndex) };
+  }
+
+  return lesson;
+};
+
+export const sortByKey = (key) => (a, b) => {
+  const nameA = a[key].toUpperCase();
+  const nameB = b[key].toUpperCase();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+
+  return 0;
+};

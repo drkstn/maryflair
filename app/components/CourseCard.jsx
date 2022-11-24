@@ -21,7 +21,6 @@ export default function CourseCard({ data, course }) {
         }}
       >
         <input type="hidden" name="courseId" value={course._id} />
-        <input type="hidden" name="owner" value={data.owner} />
         <div className="text-purple-500 hover:text-purple-700 font-bold text-lg flex justify-between">
           <Link to={`/manage/schedules/${data.nanoid}/${data.slug}`}>
             {course.name}
