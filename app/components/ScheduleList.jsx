@@ -1,6 +1,7 @@
 import { isSameWeek, parseISO } from "date-fns";
 import { format } from "date-fns/fp";
 import Button from "./Button";
+import LessonCard from "./LessonCard";
 
 export default function ScheduleList({ schedule, dateLookup }) {
   const { dates, weeks } = schedule.calendar;
@@ -34,32 +35,7 @@ export default function ScheduleList({ schedule, dateLookup }) {
                     >
                       <p className="text-purple-500">{course.name}</p>
                       {course.lessons.map((lesson) => (
-                        <div key={lesson._id} className="flex justify-between">
-                          <p>{lesson.name}</p>
-                          <div className="space-x-4">
-                            <button
-                              type="submit"
-                              name="moveLessonDown"
-                              value={lesson._id}
-                              className="font-mono text-purple-500 hover:text-purple-300 text-sm"
-                            >
-                              down
-                            </button>
-                            <button
-                              type="submit"
-                              name="moveLessonUp"
-                              value={lesson._id}
-                              className="font-mono text-purple-500 hover:text-purple-300 text-sm"
-                            >
-                              up
-                            </button>
-                          </div>
-                          <input
-                            type="checkbox"
-                            name="checkboxLessonId"
-                            value={lesson._id}
-                          />
-                        </div>
+                        <LessonCard key={lesson._id} lesson={lesson} />
                       ))}
                       <p className="text-slate-400">
                         {course.lessons.length < 1 && "No Lessons"}

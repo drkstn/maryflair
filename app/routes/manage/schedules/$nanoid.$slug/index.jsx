@@ -13,6 +13,7 @@ export async function action({ request, params }) {
   const selectedLessonIds = formData.getAll("checkboxLessonId");
   const moveLessonDown = formData.get("moveLessonDown");
   const moveLessonUp = formData.get("moveLessonUp");
+  const lessonId = formData.get("lessonId");
   const action = formData.get("action");
 
   const getSelectsAndUpdate = (course, ids, options) => {
@@ -45,14 +46,14 @@ export async function action({ request, params }) {
       };
     });
 
-  if (moveLessonDown) {
-    const update = selectUpdateAndSort([moveLessonDown], { difference: 1 });
-    return Schedule.updateOne({ nanoid: scheduleNanoid }, { courses: update });
-  }
-  if (moveLessonUp) {
-    const update = selectUpdateAndSort([moveLessonUp], { difference: -1 });
-    return Schedule.updateOne({ nanoid: scheduleNanoid }, { courses: update });
-  }
+  // if (moveLessonDown) {
+  //   const update = selectUpdateAndSort([moveLessonDown], { difference: 1 });
+  //   return Schedule.updateOne({ nanoid: scheduleNanoid }, { courses: update });
+  // }
+  // if (moveLessonUp) {
+  //   const update = selectUpdateAndSort([moveLessonUp], { difference: -1 });
+  //   return Schedule.updateOne({ nanoid: scheduleNanoid }, { courses: update });
+  // }
 
   // console.log(singleAction);
   switch (action) {
@@ -60,6 +61,16 @@ export async function action({ request, params }) {
       return await Schedule.updateOne(
         { nanoid: scheduleNanoid },
         { $pull: { courses: { _id: courseId } } }
+      );
+    case "up":
+      return Schedule.updateOne(
+        { nanoid: scheduleNanoid },
+        { courses: selectUpdateAndSort([lessonId], { difference: -1 }) }
+      );
+    case "down":
+      return Schedule.updateOne(
+        { nanoid: scheduleNanoid },
+        { courses: selectUpdateAndSort([lessonId], { difference: 1 }) }
       );
     case "select":
       const newData = selectUpdateAndSort(selectedLessonIds, {
@@ -77,8 +88,7 @@ export default function ScheduleByIdIndex() {
   const data = useOutletContext();
   const fetcher = useFetcher();
   const { schedule, dateLookup } = data;
-  const actionData = fetcher.data;
-  // console.log(actionData);
+  console.log(schedule.courses);
 
   return (
     <>
@@ -93,9 +103,7 @@ export default function ScheduleByIdIndex() {
       </section>
       <section>
         <h2 className="font-bold text-2xl text-slate-700 mb-2">Schedule</h2>
-        <fetcher.Form method="post">
-          <ScheduleList schedule={schedule} dateLookup={dateLookup} />
-        </fetcher.Form>
+        <ScheduleList schedule={schedule} dateLookup={dateLookup} />
       </section>
     </>
   );
