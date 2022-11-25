@@ -4,12 +4,15 @@ export default function LessonCard({ lesson }) {
   const fetcher = useFetcher();
 
   return (
-    <div className="group flex justify-between">
+    <div tabIndex={0} className="group flex justify-between">
       <p>{lesson.name}</p>
       <fetcher.Form method="post">
-        <div className={`space-x-4 hidden group-hover:block`}>
+        <div
+          className={`space-x-4 hidden group-hover:block group-focus:block group-focus-within:block`}
+        >
           <input type="hidden" name="lessonId" value={lesson._id} />
           <button
+            tabIndex={0}
             type="submit"
             name="action"
             value="down"
@@ -18,6 +21,7 @@ export default function LessonCard({ lesson }) {
             down
           </button>
           <button
+            tabIndex={0}
             type="submit"
             name="action"
             value="up"
