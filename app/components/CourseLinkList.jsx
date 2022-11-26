@@ -25,11 +25,11 @@ export default function CourseLinkList({ courses }) {
             <section className="mb-2" key={course.nanoid}>
               <Form method="post" onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={course._id} />
-                <div className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2 group flex">
+                <div className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2 group flex justify-between md:justify-start">
                   <Link to={`courses/${course.nanoid}/${course.slug}`}>
                     {course.name}
                   </Link>
-                  <div className="hidden group-hover:block group-focus:block group-focus-within:block">
+                  <div className="sm:hidden group-hover:block group-focus:block group-focus-within:block">
                     <Button
                       type="submit"
                       genre="sm-outline-warning"

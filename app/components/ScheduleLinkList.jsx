@@ -26,11 +26,11 @@ export default function ScheduleLinkList({ schedules }) {
             <section className="mb-2" key={schedule.nanoid}>
               <Form method="post" onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={schedule._id} />
-                <div className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2 group flex">
+                <div className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2 group flex justify-between md:justify-start">
                   <Link to={`schedules/${schedule.nanoid}/${schedule.slug}`}>
                     {schedule.name}
                   </Link>
-                  <div className="hidden group-hover:block group-focus:block group-focus-within:block">
+                  <div className="sm:hidden group-hover:block group-focus:block group-focus-within:block">
                     <Button
                       type="submit"
                       genre="sm-outline-warning"

@@ -6,11 +6,11 @@ export default function LessonCard({ lesson }) {
   data && console.log(data);
 
   return (
-    <div tabIndex={0} className="group flex justify-between">
+    <div tabIndex={0} className="group flex justify-between md:justify-start">
       <p>{lesson.name}</p>
       <fetcher.Form method="post">
         <div
-          className={`space-x-4 hidden group-hover:block group-focus:block group-focus-within:block`}
+          className={`space-x-4 sm:hidden group-hover:block group-focus:block group-focus-within:block`}
         >
           <input type="hidden" name="lessonId" value={lesson._id} />
           <button
@@ -18,7 +18,7 @@ export default function LessonCard({ lesson }) {
             type="submit"
             name="action"
             value="down"
-            className="font-mono text-purple-500 hover:text-purple-300 text-xs"
+            className="font-mono text-purple-500 hover:text-purple-300 text-sm"
           >
             down
           </button>
@@ -27,7 +27,7 @@ export default function LessonCard({ lesson }) {
             type="submit"
             name="action"
             value="up"
-            className="font-mono text-purple-500 hover:text-purple-300 text-xs"
+            className="font-mono text-purple-500 hover:text-purple-300 text-sm"
           >
             up
           </button>

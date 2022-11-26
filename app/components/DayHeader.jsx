@@ -10,11 +10,11 @@ export default function DayHeader({ date }) {
   const formatDate2 = format("EEEE, MMMM d");
 
   return (
-    <div tabIndex={0} className="group flex">
+    <div tabIndex={0} className="group flex justify-between md:justify-start">
       <p className="mb-2 font-bold">{formatDate2(parseISO(date))}</p>
       <fetcher.Form method="post">
         <div
-          className={`ml-4 hidden group-hover:block group-focus:block group-focus-within:block`}
+          className={`ml-4 sm:hidden group-hover:block group-focus:block group-focus-within:block`}
         >
           <input type="hidden" name="selectedDate" value={date} />
           <button
@@ -25,7 +25,7 @@ export default function DayHeader({ date }) {
             value="addToCalendar"
             className="font-mono text-purple-500 hover:text-purple-300 text-xs"
           >
-            add to calendar
+            + Google Calendar
           </button>
         </div>
       </fetcher.Form>
