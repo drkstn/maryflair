@@ -1,11 +1,18 @@
 import {
+  Link,
   useLoaderData,
   useNavigate,
   useSearchParams,
   useSubmit,
 } from "@remix-run/react";
-import { isWithinInterval, parseISO } from "date-fns";
-import { formatISOWithOptions } from "date-fns/fp";
+import {
+  addDays,
+  isToday,
+  isWithinInterval,
+  parseISO,
+  subDays,
+} from "date-fns";
+import { format, formatISOWithOptions } from "date-fns/fp";
 import DailyScheduleList from "~/components/DailyScheduleList";
 import { authenticator } from "~/services/auth.server";
 import { createDateLookup } from "~/services/helpers.server";
@@ -21,7 +28,6 @@ export const loader = async ({ request }) => {
   const queryDate = url.searchParams.get("date");
 
   const userData = await User.findOne({ email: owner });
-  const formatDate = formatISOWithOptions({ representation: "date" });
   const date = new Date();
   const dateInTimeZone =
     queryDate || formatInTimeZone(date, userData.timeZone, "yyyy-MM-dd");
@@ -48,12 +54,38 @@ export const loader = async ({ request }) => {
 
 export default function HomeIndex() {
   const data = useLoaderData();
-  const { scheduleData, lessonData } = data;
+  const { scheduleData, lessonData, dateInTimeZone } = data;
+
+  const formatDate = formatISOWithOptions({ representation: "date" });
+  const nextDay = formatDate(addDays(parseISO(dateInTimeZone), 1));
+  const prevDay = formatDate(subDays(parseISO(dateInTimeZone), 1));
+
+  const formatDate2 = format("EEEE, MMMM d");
 
   return (
     <section>
       <div>
-        <h1 className="text-slate-700 font-bold text-3xl">Today's Schedules</h1>
+        <div className="flex justify-between">
+          <h1 className="text-slate-700 font-bold text-3xl">
+            {isToday(parseISO(dateInTimeZone))
+              ? "Today's Schedule"
+              : formatDate2(parseISO(dateInTimeZone))}
+          </h1>
+          <div className="space-x-4 text-purple-500">
+            <Link
+              className="hover:text-purple-400"
+              to={`/home?date=${prevDay}`}
+            >
+              &lt; Previous Day
+            </Link>
+            <Link
+              className="hover:text-purple-400"
+              to={`/home?date=${nextDay}`}
+            >
+              Next Day &gt;
+            </Link>
+          </div>
+        </div>
         <p className="mt-2 text-sm text-slate-500">
           A schedule is a defined period of time in which one or more courses
           occur.
