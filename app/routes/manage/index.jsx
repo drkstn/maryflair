@@ -59,18 +59,20 @@ export default function ManageIndex() {
                   }}
                 >
                   <input type="hidden" name="id" value={schedule._id} />
-                  <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
+                  <div className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2 group flex">
                     <Link to={`schedules/${schedule.nanoid}/${schedule.slug}`}>
                       {schedule.name}
                     </Link>
-                    <Button
-                      type="submit"
-                      genre="sm-outline-warning"
-                      label="Delete"
-                      name="action"
-                      value="deleteSchedule"
-                    />
-                  </p>
+                    <div className="hidden group-hover:block group-focus:block group-focus-within:block">
+                      <Button
+                        type="submit"
+                        genre="sm-outline-warning"
+                        label="Delete"
+                        name="action"
+                        value="deleteSchedule"
+                      />
+                    </div>
+                  </div>
                 </Form>
               </section>
             ))}
@@ -103,18 +105,20 @@ export default function ManageIndex() {
                   }}
                 >
                   <input type="hidden" name="id" value={course._id} />
-                  <p className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2">
+                  <div className="text-purple-500 hover:text-purple-700 font-bold text-lg space-x-2 group flex">
                     <Link to={`courses/${course.nanoid}/${course.slug}`}>
                       {course.name}
                     </Link>
-                    <Button
-                      type="submit"
-                      genre="sm-outline-warning"
-                      label="Delete"
-                      name="action"
-                      value="deleteCourse"
-                    />
-                  </p>
+                    <div className="hidden group-hover:block group-focus:block group-focus-within:block">
+                      <Button
+                        type="submit"
+                        genre="sm-outline-warning"
+                        label="Delete"
+                        name="action"
+                        value="deleteCourse"
+                      />
+                    </div>
+                  </div>
                 </Form>
               </section>
             ))}
