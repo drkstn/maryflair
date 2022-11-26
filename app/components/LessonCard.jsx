@@ -2,11 +2,9 @@ import { useFetcher } from "@remix-run/react";
 
 export default function LessonCard({ lesson }) {
   const fetcher = useFetcher();
-  const data = fetcher.data;
-  data && console.log(data);
 
   return (
-    <div tabIndex={0} className="group flex justify-between md:justify-start">
+    <div tabIndex={0} className="group flex justify-between">
       <p>{lesson.name}</p>
       <fetcher.Form method="post">
         <div
@@ -33,7 +31,6 @@ export default function LessonCard({ lesson }) {
           </button>
         </div>
       </fetcher.Form>
-      {/* <input type="checkbox" name="checkboxLessonId" value={lesson._id} /> */}
     </div>
   );
 }

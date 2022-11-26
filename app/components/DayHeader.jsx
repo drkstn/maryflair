@@ -4,8 +4,8 @@ import { format } from "date-fns/fp";
 
 export default function DayHeader({ date }) {
   const fetcher = useFetcher();
-  const data = fetcher.data;
-  data && console.log(data);
+
+  let isAdding = fetcher.submission?.formData.get("action");
 
   const formatDate2 = format("EEEE, MMMM d");
 
@@ -14,7 +14,9 @@ export default function DayHeader({ date }) {
       <p className="mb-2 font-bold">{formatDate2(parseISO(date))}</p>
       <fetcher.Form method="post">
         <div
-          className={`ml-4 sm:hidden group-hover:block group-focus:block group-focus-within:block`}
+          className={`ml-4 group-hover:block group-focus:block group-focus-within:block ${
+            !isAdding && "sm:hidden"
+          }`}
         >
           <input type="hidden" name="selectedDate" value={date} />
           <button
@@ -23,9 +25,13 @@ export default function DayHeader({ date }) {
             type="submit"
             name="action"
             value="addToCalendar"
-            className="font-mono text-purple-500 hover:text-purple-300 text-xs"
+            className={
+              isAdding
+                ? "font-mono text-white bg-purple-500 text-xs py-1 px-2 rounded-full"
+                : "font-mono text-purple-500 hover:text-purple-300 text-xs"
+            }
           >
-            + Google Calendar
+            {isAdding ? "Adding..." : "Add to Google Calendar"}
           </button>
         </div>
       </fetcher.Form>
