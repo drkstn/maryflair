@@ -2,6 +2,8 @@ import { useFetcher } from "@remix-run/react";
 
 export default function LessonCard({ lesson }) {
   const fetcher = useFetcher();
+  const data = fetcher.data;
+  data && console.log(data);
 
   return (
     <div tabIndex={0} className="group flex justify-between">
@@ -16,7 +18,7 @@ export default function LessonCard({ lesson }) {
             type="submit"
             name="action"
             value="down"
-            className="font-mono text-purple-500 hover:text-purple-300 text-sm"
+            className="font-mono text-purple-500 hover:text-purple-300 text-xs"
           >
             down
           </button>
@@ -25,7 +27,7 @@ export default function LessonCard({ lesson }) {
             type="submit"
             name="action"
             value="up"
-            className="font-mono text-purple-500 hover:text-purple-300 text-sm"
+            className="font-mono text-purple-500 hover:text-purple-300 text-xs"
           >
             up
           </button>

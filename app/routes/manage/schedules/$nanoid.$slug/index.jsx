@@ -1,18 +1,20 @@
-import { json } from "@remix-run/node";
-import { useActionData, useFetcher, useOutletContext } from "@remix-run/react";
+import { useOutletContext } from "@remix-run/react";
 import Button from "~/components/Button";
 import CourseCards from "~/components/CourseCards";
 import ScheduleList from "~/components/ScheduleList";
-import { sortByKey, updateLessonDate } from "~/services/helpers.server";
+import { quickAddEvent } from "~/services/googleapi.server";
+import {
+  createDateLookup,
+  sortByKey,
+  updateLessonDate,
+} from "~/services/helpers.server";
 import Schedule from "~/services/models/Schedule";
 
 export async function action({ request, params }) {
   const scheduleNanoid = params.nanoid;
   const formData = await request.formData();
   const courseId = formData.get("courseId");
-  const selectedLessonIds = formData.getAll("checkboxLessonId");
-  const moveLessonDown = formData.get("moveLessonDown");
-  const moveLessonUp = formData.get("moveLessonUp");
+  const selectedDate = formData.get("selectedDate");
   const lessonId = formData.get("lessonId");
   const action = formData.get("action");
 
@@ -46,16 +48,6 @@ export async function action({ request, params }) {
       };
     });
 
-  // if (moveLessonDown) {
-  //   const update = selectUpdateAndSort([moveLessonDown], { difference: 1 });
-  //   return Schedule.updateOne({ nanoid: scheduleNanoid }, { courses: update });
-  // }
-  // if (moveLessonUp) {
-  //   const update = selectUpdateAndSort([moveLessonUp], { difference: -1 });
-  //   return Schedule.updateOne({ nanoid: scheduleNanoid }, { courses: update });
-  // }
-
-  // console.log(singleAction);
   switch (action) {
     case "remove":
       return await Schedule.updateOne(
@@ -72,13 +64,34 @@ export async function action({ request, params }) {
         { nanoid: scheduleNanoid },
         { courses: selectUpdateAndSort([lessonId], { difference: 1 }) }
       );
-    case "select":
-      const newData = selectUpdateAndSort(selectedLessonIds, {
-        difference: -1,
-      });
+    case "addToCalendar":
+      const dateLookup = createDateLookup(
+        schedule.calendar.dates,
+        schedule.courses
+      );
 
-      // return selectUpdateAndSort;
-      return newData;
+      const calendarName = schedule.name;
+
+      const selectedDateData = dateLookup[selectedDate];
+
+      const eventLabel =
+        selectedDateData.courses
+          .map((course) => {
+            const courseString = course.name + ": ";
+            const lessonString = course.lessons
+              .map((lesson) => {
+                return lesson.name;
+              })
+              .join(", ");
+            return course.lessons.length > 0
+              ? courseString + lessonString
+              : courseString + "No Lessons";
+          })
+          .join(", ") + ` on ${selectedDate}`;
+
+      const addedEvent = await quickAddEvent(request, eventLabel, calendarName);
+
+      return addedEvent;
     default:
       throw new Error("Unknown action");
   }
@@ -86,9 +99,7 @@ export async function action({ request, params }) {
 
 export default function ScheduleByIdIndex() {
   const data = useOutletContext();
-  const fetcher = useFetcher();
   const { schedule, dateLookup } = data;
-  console.log(schedule.courses);
 
   return (
     <>

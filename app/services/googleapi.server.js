@@ -58,21 +58,21 @@ export const getEventList = async (request) => {
   return calendarEvents;
 };
 
-export const quickAddEvent = async (request, date) => {
+export const quickAddEvent = async (request, label, calendarName) => {
   await authenticateWithGoogle(request);
   const calendar = google.calendar("v3");
 
   const calendarList = await calendar.calendarList.list({});
 
   const calendarSearch = calendarList.data.items.filter(
-    (item) => item.summary === "Fall 2022"
+    (item) => item.summary === calendarName
   );
 
   let newCal;
   if (calendarSearch.length < 1) {
     newCal = await calendar.calendars
       .insert({
-        resource: { summary: "Fall 2022" },
+        resource: { summary: calendarName },
       })
       .catch((e) => console.log(e));
   }
@@ -80,7 +80,7 @@ export const quickAddEvent = async (request, date) => {
   const newCalendarEvent = await calendar.events
     .quickAdd({
       calendarId: newCal?.data.id || calendarSearch[0].id,
-      text: "Test event on " + date,
+      text: label,
     })
     .catch((e) => console.log(e));
 
