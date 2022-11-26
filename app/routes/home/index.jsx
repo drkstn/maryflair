@@ -13,6 +13,7 @@ import { createDateLookup } from "~/services/helpers.server";
 import Schedule from "~/services/models/Schedule";
 import { formatInTimeZone } from "date-fns-tz";
 import User from "~/services/models/User";
+import Button from "~/components/Button";
 
 export const loader = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request);
@@ -58,32 +59,24 @@ export default function HomeIndex() {
 
   return (
     <section>
-      <div>
-        <div className="flex justify-between">
-          <h1 className="text-slate-700 font-bold text-3xl">
-            {isToday(parseISO(dateInTimeZone))
-              ? "Today's Schedule"
-              : formatDate2(parseISO(dateInTimeZone))}
-          </h1>
-          <div className="space-x-4 text-purple-500">
-            <Link
-              className="hover:text-purple-400 inline-block"
-              to={`/home?date=${prevDay}`}
-            >
-              &lt; Prev
-            </Link>
-            <Link
-              className="hover:text-purple-400 inline-block"
-              to={`/home?date=${nextDay}`}
-            >
-              Next &gt;
-            </Link>
-          </div>
+      <div className="sm:flex justify-between items-start">
+        <h1 className="text-slate-700 font-bold text-2xl">
+          {formatDate2(parseISO(dateInTimeZone))}
+        </h1>
+        <div className="space-x-2 mt-2 sm:mt-0">
+          <Button
+            type="link"
+            label="Previous"
+            genre="sm"
+            to={`/home?date=${prevDay}`}
+          />
+          <Button
+            type="link"
+            label="Next"
+            genre="sm"
+            to={`/home?date=${nextDay}`}
+          />
         </div>
-        <p className="mt-2 text-sm text-slate-500">
-          A schedule is a defined period of time in which one or more courses
-          occur.
-        </p>
       </div>
       <hr className="my-6" />
       <DailyScheduleList scheduleData={scheduleData} lessonData={lessonData} />

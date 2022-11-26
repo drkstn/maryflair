@@ -3,10 +3,10 @@ export default function DailyScheduleList({ scheduleData, lessonData }) {
     <>
       {scheduleData.map((schedule, scheduleIndex) => (
         <section key={schedule._id} className="mb-6">
-          <h2 className="font-bold text-2xl text-slate-700 mb-2">
+          <h2 className="font-bold text-2xl text-purple-500 mb-2">
             {schedule.name}
           </h2>
-          <hr className="mb-4" />
+          <hr className="border-4 border-purple-500 mb-4" />
 
           {lessonData[scheduleIndex]?.courses?.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 md:space-x-2">
