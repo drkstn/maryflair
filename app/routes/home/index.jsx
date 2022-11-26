@@ -73,16 +73,16 @@ export default function HomeIndex() {
           </h1>
           <div className="space-x-4 text-purple-500">
             <Link
-              className="hover:text-purple-400"
+              className="hover:text-purple-400 inline-block"
               to={`/home?date=${prevDay}`}
             >
-              &lt; Previous Day
+              &lt; Prev
             </Link>
             <Link
-              className="hover:text-purple-400"
+              className="hover:text-purple-400 inline-block"
               to={`/home?date=${nextDay}`}
             >
-              Next Day &gt;
+              Next &gt;
             </Link>
           </div>
         </div>
