@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 import { createSchedule } from "~/services/requests.server";
 import { authenticator } from "~/services/auth.server";
@@ -12,6 +12,7 @@ import { isHoliday } from "date-fns-holiday-us";
 import Button from "~/components/Button";
 import { formatISOWithOptions } from "date-fns/fp";
 import User from "~/services/models/User";
+import ValidationError from "~/components/ValidationError";
 
 export async function action({ request }) {
   const user = await authenticator.isAuthenticated(request);
@@ -31,6 +32,28 @@ export async function action({ request }) {
   const end = formData.get("end");
   const excludeHolidays = formData.get("excludeHolidays") || false;
   const excludeWeekends = formData.get("excludeWeekends") || false;
+
+  // START Validate
+  const errors = {};
+
+  if (!name) {
+    errors.name = "Must enter a name";
+  }
+
+  if (!start) {
+    errors.start = "Must choose a start date";
+  }
+
+  if (!end) {
+    errors.end = "Must choose an end date";
+  } else if (end <= start) {
+    errors.end = "End date must occur after start date";
+  }
+
+  if (errors.name || errors.start || errors.end) {
+    return { errors };
+  }
+  // END Validate
 
   const formatDate = formatISOWithOptions({ representation: "date" });
 
@@ -83,6 +106,8 @@ export async function action({ request }) {
 }
 
 export default function ScheduleNew() {
+  const actionData = useActionData();
+
   return (
     <section>
       <div className="mb-6">
@@ -95,7 +120,7 @@ export default function ScheduleNew() {
         </p>
       </div>
 
-      <Form method="post">
+      <Form method="post" className="mt-6 max-w-lg">
         <input
           type="hidden"
           name="timeZone"
@@ -103,13 +128,38 @@ export default function ScheduleNew() {
         />
         <div className="mb-6">
           <label>
-            <div className="mb-2 font-bold text-purple-500">Name: </div>
+            <div className="mb-2 font-bold text-purple-500">Name *</div>
             <input
               name="name"
               type="text"
-              className="p-1 border rounded-lg border-purple-500 w-full max-w-md"
+              className="p-1 border rounded-lg border-purple-500 w-full"
             />
           </label>
+          <ValidationError error={actionData?.errors?.name} />
+        </div>
+
+        <div className="mb-6">
+          <label>
+            <div className="mb-2 font-bold text-purple-500">Start Date *</div>
+            <input
+              name="start"
+              type="date"
+              className="p-1 border rounded-lg border-purple-500"
+            />
+          </label>
+          <ValidationError error={actionData?.errors?.start} />
+        </div>
+
+        <div className="mb-6">
+          <label>
+            <div className="mb-2 font-bold text-purple-500">End Date *</div>
+            <input
+              name="end"
+              type="date"
+              className="p-1 border rounded-lg border-purple-500"
+            />
+          </label>
+          <ValidationError error={actionData?.errors?.end} />
         </div>
 
         <div className="mb-6">
@@ -125,28 +175,6 @@ export default function ScheduleNew() {
               <option value="year">Year</option>
               <option value="other">Other</option>
             </select>
-          </label>
-        </div>
-
-        <div className="mb-6">
-          <label>
-            <div className="mb-2 font-bold text-purple-500">Start Date: </div>
-            <input
-              name="start"
-              type="date"
-              className="p-1 border rounded-lg border-purple-500"
-            />
-          </label>
-        </div>
-
-        <div className="mb-6">
-          <label>
-            <div className="mb-2 font-bold text-purple-500">End Date: </div>
-            <input
-              name="end"
-              type="date"
-              className="p-1 border rounded-lg border-purple-500"
-            />
           </label>
         </div>
 
@@ -176,6 +204,7 @@ export default function ScheduleNew() {
 
         <div className="space-x-2 mt-4">
           <Button type="submit" label="Create" />
+          <Button type="reset" genre="outline" label="Reset" />
           <Button type="link" genre="outline" label="Cancel" to=".." />
         </div>
       </Form>

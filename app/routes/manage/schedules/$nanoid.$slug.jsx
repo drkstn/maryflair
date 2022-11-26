@@ -1,3 +1,4 @@
+import { redirect } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 import { createDateLookup } from "~/services/helpers.server";
@@ -9,6 +10,16 @@ export const loader = async ({ params, request }) => {
   const { nanoid } = params;
 
   const schedule = await Schedule.findOne({ nanoid, owner });
+
+  if (!schedule) {
+    throw new Response("Not Found", {
+      status: 404,
+    });
+  }
+
+  if (params.slug !== schedule?.slug) {
+    return redirect(`../${nanoid}/${schedule.slug}`);
+  }
 
   const dateLookup = createDateLookup(
     schedule.calendar.dates,

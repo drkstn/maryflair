@@ -104,7 +104,11 @@ export default function ScheduleByIdIndex() {
   return (
     <>
       <div className="mt-4">
-        <Button type="link" label="Import Course" to="courses/import" />
+        <Button
+          type="link"
+          label="Import Course"
+          to="courses/import/existing"
+        />
       </div>
       <hr className="my-6" />
       <section>
