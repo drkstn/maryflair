@@ -1,10 +1,4 @@
-import {
-  Link,
-  useLoaderData,
-  useNavigate,
-  useSearchParams,
-  useSubmit,
-} from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import {
   addDays,
   isToday,
