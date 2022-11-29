@@ -1,11 +1,5 @@
-import { Link, useLoaderData } from "@remix-run/react";
-import {
-  addDays,
-  isToday,
-  isWithinInterval,
-  parseISO,
-  subDays,
-} from "date-fns";
+import { useLoaderData } from "@remix-run/react";
+import { addDays, isWithinInterval, parseISO, subDays } from "date-fns";
 import { format, formatISOWithOptions } from "date-fns/fp";
 import DailyScheduleList from "~/components/DailyScheduleList";
 import { authenticator } from "~/services/auth.server";

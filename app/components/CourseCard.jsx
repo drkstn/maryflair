@@ -6,6 +6,10 @@ export default function CourseCard({ data, course }) {
   const fetcher = useFetcher();
   const [state, setState] = useState(false);
 
+  const datesWithLessons = course.lessons.reduce((start, value) => {
+    return start.includes(value.date) ? start : [...start, value.date];
+  }, []).length;
+
   const handleClick = (e) => {
     setState(!state);
   };
@@ -35,11 +39,34 @@ export default function CourseCard({ data, course }) {
             </button>
           </div>
         </div>
-        <p className="mt-2 text-sm text-slate-500 max-w-xl">
+        <p className="mt-2 text-sm text-slate-500">
           {state ? course.objective : course.objective?.slice(0, 96) + "..."}
         </p>
         <div hidden={!state}>
-          <div className="flex justify-end">
+          <hr className="mt-4" />
+          <div className="flex justify-between">
+            <p className="mt-2 text-slate-700">Total Lessons</p>
+            <p className="mt-2 text-purple-500 font-bold">
+              {course.lessons.length}
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <p className="mt-2 text-slate-700">Days Available for Lessons</p>
+            <p className="mt-2 text-purple-500 font-bold">
+              {course.dates.length}
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <p className="mt-2 text-slate-700">Days with Lessons</p>
+            <p className="mt-2 text-purple-500 font-bold">{datesWithLessons}</p>
+          </div>
+          <div className="flex justify-between">
+            <p className="mt-2 text-slate-700">Days without Lessons</p>
+            <p className="mt-2 text-purple-500 font-bold">
+              {course.dates.length - datesWithLessons}
+            </p>
+          </div>
+          <div className="flex justify-end mt-2">
             <Button
               type="submit"
               genre="sm-warning"
