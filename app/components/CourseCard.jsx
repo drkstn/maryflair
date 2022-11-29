@@ -10,6 +10,21 @@ export default function CourseCard({ data, course }) {
     return start.includes(value.date) ? start : [...start, value.date];
   }, []).length;
 
+  const freq = course.frequency.map((value) => {
+    const dayOfTheWeek = [
+      "Sundays",
+      "Mondays",
+      "Tuesdays",
+      "Wednesdays",
+      "Thursdays",
+      "Fridays",
+      "Saturdays",
+    ];
+    return dayOfTheWeek[value];
+  });
+
+  console.log(freq.join(", "));
+
   const handleClick = (e) => {
     setState(!state);
   };
@@ -44,6 +59,12 @@ export default function CourseCard({ data, course }) {
         </p>
         <div hidden={!state}>
           <hr className="mt-4" />
+          <div className="flex justify-between">
+            <p className="mt-2 text-slate-700">Recurs</p>
+            <p className="mt-2 text-purple-500 text-right ">
+              {freq.join(", ")}
+            </p>
+          </div>
           <div className="flex justify-between">
             <p className="mt-2 text-slate-700">Total Lessons</p>
             <p className="mt-2 text-purple-500 font-bold">
