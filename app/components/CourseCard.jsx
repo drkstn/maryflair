@@ -1,6 +1,7 @@
 import { Link, useFetcher } from "@remix-run/react";
 import { useState } from "react";
 import Button from "./Button";
+import ShowFrequency from "./ShowFrequency";
 
 export default function CourseCard({ data, course }) {
   const fetcher = useFetcher();
@@ -9,21 +10,6 @@ export default function CourseCard({ data, course }) {
   const datesWithLessons = course.lessons.reduce((start, value) => {
     return start.includes(value.date) ? start : [...start, value.date];
   }, []).length;
-
-  const freq = course.frequency.map((value) => {
-    const dayOfTheWeek = [
-      "Sundays",
-      "Mondays",
-      "Tuesdays",
-      "Wednesdays",
-      "Thursdays",
-      "Fridays",
-      "Saturdays",
-    ];
-    return dayOfTheWeek[value];
-  });
-
-  console.log(freq.join(", "));
 
   const handleClick = (e) => {
     setState(!state);
@@ -54,17 +40,12 @@ export default function CourseCard({ data, course }) {
             </button>
           </div>
         </div>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="my-2 text-sm text-slate-500">
           {state ? course.objective : course.objective?.slice(0, 96) + "..."}
         </p>
+        <ShowFrequency frequency={course.frequency} />
         <div hidden={!state}>
           <hr className="mt-4" />
-          <div className="flex justify-between">
-            <p className="mt-2 text-slate-700">Recurs</p>
-            <p className="mt-2 text-purple-500 text-right ">
-              {freq.join(", ")}
-            </p>
-          </div>
           <div className="flex justify-between">
             <p className="mt-2 text-slate-700">Total Lessons</p>
             <p className="mt-2 text-purple-500 font-bold">
