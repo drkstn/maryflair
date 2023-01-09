@@ -1,34 +1,9 @@
-# Welcome to Remix!
+# Mary Flair
 
-- [Remix Docs](https://remix.run/docs)
+Mary Flair is a tool for educators of all types to help facilitate easy lesson plan creation, deployment and management. It also aims to integrate into an ecosystem many educators are already familiar with — Google.
 
-## Deployment
+This application was developed as a capstone project for [Parsity](https://parsity.io/).
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
+Technologies used include Remix/React, Tailwind CSS, Mongoose, MongoDB Atlas, Google OAuth 2.0 and Calendar, date-fns, nanoid. Deployed via Vercel.
 
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
-
-```sh
-npm i -g vercel
-vercel
-```
-
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
-
-## Development
-
-To run your Remix app locally, make sure your project's local dependencies are installed:
-
-```sh
-npm install
-```
-
-Afterwards, start the Remix development server like so:
-
-```sh
-npm run dev
-```
-
-Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
-
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+Visit [Mary Flair](https://maryflair.vercel.app).
